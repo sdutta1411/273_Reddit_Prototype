@@ -1,8 +1,8 @@
-import logo from "./logo.svg";
+
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Switch, Route, Link } from "react-router-dom";
 import "./App.css";
-import Navbar from "./components/navBar";
+import Navbar from "./components/navBar/navBar";
 
 const theme = createMuiTheme({
   palette: {
