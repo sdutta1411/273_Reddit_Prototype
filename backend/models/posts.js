@@ -56,11 +56,11 @@ const postSchema = new mongoose.Schema({
     default: 1,
   },
   
-  famousAlgo: {
+  famousPost: {
     type: Number,
     default: Date.now,
   },
-  controversialAlgo: {
+  controversialPost: {
     type: Number,
     default: 0,
   },
