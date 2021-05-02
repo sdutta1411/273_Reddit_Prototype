@@ -1,9 +1,9 @@
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Switch, Route, Link } from "react-router-dom";
 import "./App.css";
-import Navbar from "./components/navBar/navBar";
-import loginForm from "./components/loginForm/loginForm";
-import SignUp from "./components/signupForm/signupForm";
+import Navbar from "./components/NavBar/navBar";
+import loginForm from "./components/LoginForm/loginForm";
+import SignUp from "./components/SignupForm/signupForm";
 const theme = createMuiTheme({
   palette: {
     primary: {

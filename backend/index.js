@@ -40,8 +40,8 @@ app.listen(3001, (req, res) => {
   console.log("server running on port 3001....");
 });
 
-// User Routes
 
 const user = require("./routes/user_routes");
 
+// User Routes
 app.use("/api/user", user);

@@ -1,25 +1,38 @@
 const bcrypt = require("bcryptjs");
-const db = require("../config/mysql_config");
+const connection = require("../config/mysql_config");
 
+//User Registration
 const signup = (req, res) => {
   console.log(req.body);
   var salt = bcrypt.genSaltSync(10);
   var hash = bcrypt.hashSync(req.body.password, salt);
-  const name = req.body.name;
-  const email = req.body.email;
-  const password = hash;
+  // const name = req.body.name;
+  // const email = req.body.email;
+  // const password = hash;
 
-  const sqlQuery = "INSERT INTO user (name,email,password) VALUES (?,?,?)";
-  const values = [name, email, password];
+  const sqlQuery = `INSERT INTO user (name,email,password) VALUES (?,?,?)`;
+  const values = [req.body.name, req.body.email, hash];
 
   console.log(values);
 
-  db.query(sqlQuery, values, function (err, results, fields) {
-    console.log(err);
-    res.send(results);
+  connection.query(sqlQuery, values, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.json({
+        status: false,
+        message: "There are some error with query",
+      });
+    } else {
+      res.json({
+        status: true,
+        data: results,
+        message: "User Registered Sucessfully",
+      });
+    }
   });
 };
 
+//User Login
 const login = (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -27,55 +40,43 @@ const login = (req, res) => {
   console.log(email);
   console.log(password);
 
-  const sqlQuery = "SELECT * FROM user WHERE email = ?";
-  const values = email;
+  connection.query(
+    "SELECT * FROM user WHERE email = ?",
+    [email],
+    function (err, results, fields) {
+      console.log("Results");
+      console.log(results);
+      if (results.length > 0) {
+        console.log(results);
 
-  console.log(values);
-
-  db.query(sqlQuery, values, function (err, results, fields) {
-    if (err) {
-      console.log(err);
-    }
-    console.log(results);
-
-    if (results.length > 0) {
-      hashedPassword = results[0].password;
-
-      bcrypt
-        .compare(password, hashedPassword)
-        .then((match) => {
-          if (match) {
-            console.log("True block");
-            console.log(hashedPassword);
-            res.json({
-              loggedIn: true,
-              email: email,
-              name: results[0].name,
-              // phone: results[0].phone,
-              // currency: results[0].currency,
-              // timezone: results[0].timezone,
-              // language: results[0].language,
-              // id: results[0].id,
-              // imagepath: results[0].imagepath,
-            });
-          } else {
-            res.json({
-              loggedIn: false,
-              message: "Incorrect Username or Password",
-            });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+        const comparison = bcrypt
+          .compare(req.body.password, results[0].password)
+          .then((match) => {
+            console.log(match)
+            if (match) {
+              res.json({
+                status: true,
+                message: "Login Successful",
+                userDetails: results[0],
+              });
+            } else {
+              res.json({
+                status: false,
+                message: "Login Denied",
+              });
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        res.json({
+          status: false,
+          message: "User Doesnot Exits",
         });
-    } else {
-      console.log("False block");
-      res.json({
-        loggedIn: false,
-        message: "User does not exist",
-      });
+      }
     }
-  });
+  );
 };
 
 exports.signup = signup;

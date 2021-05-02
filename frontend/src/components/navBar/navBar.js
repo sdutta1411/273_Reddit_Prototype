@@ -9,6 +9,9 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
+import RedditIcon from "@material-ui/icons/Reddit";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import SearchIcon from "@material-ui/icons/Search";
 
 const drawerWidth = 240;
 
@@ -86,6 +89,14 @@ export default function Navbar() {
       <CssBaseline />
       <AppBar position="static">
         <Toolbar>
+          <Button
+            className={classes.logo}
+            color="primary"
+            startIcon={<RedditIcon fontSize="large" />}
+            size="large"
+          >
+            reddit
+          </Button>
           <Typography variant="h6" className={classes.title}>
             <Button color="inherit" component={Link} to="/">
               Home
