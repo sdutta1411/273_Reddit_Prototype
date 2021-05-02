@@ -4,6 +4,7 @@ import "./App.css";
 import Navbar from "./components/NavBar/navBar";
 import loginForm from "./components/LoginForm/loginForm";
 import SignUp from "./components/SignupForm/signupForm";
+
 const theme = createMuiTheme({
   palette: {
     primary: {

@@ -4,12 +4,10 @@ var bodyParser = require("body-parser");
 
 const cors = require("cors");
 
-var mongoConfig = require("./config/mongo_config");
-
 var mysqlConfig = require("./config/mysql_config");
 
 //Connecting to Mongo Server
-mongoConfig();
+
 
 const app = express();
 
