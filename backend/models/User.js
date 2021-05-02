@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+/* import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
@@ -65,4 +65,4 @@ const userSchema = new mongoose.Schema(
   
   
   
-  module.exports = mongoose.model('User', userSchema);
+  module.exports = mongoose.model('User', userSchema); */
