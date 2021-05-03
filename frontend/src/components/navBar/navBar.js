@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Navbar() {
+ const Navbar = () =>{
   const classes = useStyles();
 
   const theme = useTheme();
@@ -113,3 +113,6 @@ export default function Navbar() {
     </div>
   );
 }
+
+
+export default Navbar;
