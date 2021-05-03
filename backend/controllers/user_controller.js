@@ -1,5 +1,9 @@
 const bcrypt = require("bcryptjs");
 const connection = require("../config/mysql_config");
+const jwt = require("jsonwebtoken");
+const { secret } = require("../config/util");
+const { auth } = require("../config/passport");
+auth();
 
 //User Registration
 const signup = (req, res) => {
@@ -52,13 +56,21 @@ const login = (req, res) => {
         const comparison = bcrypt
           .compare(req.body.password, results[0].password)
           .then((match) => {
-            console.log(match)
+            console.log(match);
             if (match) {
-              res.json({
-                status: true,
-                message: "Login Successful",
-                userDetails: results[0],
+              const payload = {
+                id: results[0].user_id,
+                email: results[0].email,
+              };
+              const token = jwt.sign(payload, secret, {
+                expiresIn: 1008000,
               });
+              res.status(200).send("Bearer " + token);
+              // res.json({
+              //   status: true,
+              //   message: "Login Successful",
+              //   userDetails: results[0],
+              // });
             } else {
               res.json({
                 status: false,
@@ -79,5 +91,10 @@ const login = (req, res) => {
   );
 };
 
+const test = (req, res) => {
+  res.send("hello hello");
+};
+
+exports.test = test;
 exports.signup = signup;
 exports.login = login;
