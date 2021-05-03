@@ -40,6 +40,15 @@ app.listen(3001, (req, res) => {
 
 
 const user = require("./routes/user_routes");
+const community = require("./routes/community_routes");
+const post = require("./routes/post_routes");
+const comment = require("./routes/comment_routes");
 
 // User Routes
 app.use("/api/user", user);
+//Community Routes
+app.use("/api/community", community);
+//Post Routes
+app.use("/api/post", post);
+//Comment Routes
+app.use("/api/comment", comment);
