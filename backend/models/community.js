@@ -15,11 +15,25 @@ const communitySchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    rules:[{
+      title:{
+        type: String,
+        required: true
+      },
+      description:{
+        type: String,
+      }
+  }],
     posts: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post',
       },
+    ],
+    communityPictures: [
+      {
+        type:String
+      }
     ],
     admin: {
       type: mongoose.Schema.Types.ObjectId,
@@ -35,11 +49,7 @@ const communitySchema = new mongoose.Schema(
       type: Number,
       default: 1,
     },
-  },
-  {
-    timestamps: true,
-  }
-);
+  },{timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }});
 
 
 module.exports = mongoose.model('Community', communitySchema);

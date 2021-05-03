@@ -22,12 +22,10 @@ const replySchema = new mongoose.Schema({
         ref: 'User',
       },
     ],
-    pointsCount: {
-      type: Number,
-      default: 1,
-    },
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now },
-  });
+    // pointsCount: {
+    //   type: Number,
+    //   default: 1,
+    // },
+  },{timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }});
   
   module.exports = mongoose.model('Reply', replySchema);

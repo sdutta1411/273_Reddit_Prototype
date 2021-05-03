@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const postSchema = mongoose.postSchema;
-
+const Populate = require('../utils/autopopulate');
 
 const postSchema = new mongoose.Schema({
   title: {
@@ -25,11 +25,7 @@ const postSchema = new mongoose.Schema({
     imageLink: {
       type: String,
       trim: true,
-    },
-    imageId: {
-      type: String,
-      trim: true,
-    },
+    }
   },
   community: {
     type: mongoose.Schema.Types.ObjectId,
@@ -51,34 +47,29 @@ const postSchema = new mongoose.Schema({
       ref: 'User',
     },
   ],
-  pointsCount: {
-    type: Number,
-    default: 1,
-  },
+  // pointsCount: {
+  //   type: Number,
+  //   default: 1,
+  // },
   
-  famousPost: {
-    type: Number,
-    default: Date.now,
-  },
-  controversialPost: {
-    type: Number,
-    default: 0,
-  },
-  comments: [commentSchema],
-  commentCount: {
-    type: Number,
-    default: 0,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
- 
-});
+  // famousPost: {
+  //   type: Number,
+  //   default: Date.now,
+  // },
+  // controversialPost: {
+  //   type: Number,
+  //   default: 0,
+  // },
+  comments :[{
+    comment:{
+           type: Schema.Types.ObjectId,
+           ref: 'comments'
+       }
 
+   }],
+},{timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }});
 
+PostSchema
+    .pre('findOne', Populate('author'))
+    .pre('find', Populate('author'))
 module.exports = mongoose.model('Post', postSchema);

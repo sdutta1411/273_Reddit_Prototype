@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const commentSchema = mongoose.commentSchema;
+const Populate = require('../utils/autopopulate');
+
 
 const commentSchema = new mongoose.Schema({
     commentedBy: {
@@ -10,7 +12,13 @@ const commentSchema = new mongoose.Schema({
       type: String,
       trim: true,
     },
-    replies: [replySchema],
+    // replies: [replySchema],
+    comments: [
+      {
+        type: Schema.Types.ObjectId, 
+        ref: "Comment"
+      }
+    ],
     upvotedBy: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -27,7 +35,12 @@ const commentSchema = new mongoose.Schema({
       type: Number,
       default: 1,
     },
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now },
-  });
+  },{timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }});
+
+CommentSchema
+.pre('findOne', Populate('author'))
+.pre('find', Populate('author'))
+.pre('findOne', Populate('comments'))
+.pre('find', Populate('comments'))
+
   module.exports = mongoose.model('Comment', commentSchema);
