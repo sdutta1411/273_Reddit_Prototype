@@ -24,11 +24,12 @@ const useStyles = makeStyles({
 });
 
 const Home = (props) => {
+  const classes = useStyles();
   var items = [
     {
       name: "Random Name #1",
       description: "Probably the most random thing you have ever seen!",
-      image: './reddit-img1.png',
+      image: {image1},
     },
     {
       name: "Random Name #2",
@@ -40,38 +41,36 @@ const Home = (props) => {
   return (
     <Carousel>
       {items.map((item, i) => (
-        <Item key={i} item={item} />
+        <Grid container justify="center">
+        
+        <Card className={classes.root}>
+          <CardActionArea>
+            <CardMedia
+              className={classes.media}
+              image={item.image}
+              title={item.name}
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                {item.name}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {item.description}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+        </Grid>   
       ))}
     </Carousel>
   );
 };
 
-function Item(props) {
-  const classes = useStyles();
-  return (
-    <Grid container justify="center">
-      {/* <h2>{props.item.name}</h2>
-      <p>{props.item.description}</p>
-      <img src={props.item.image} /> */}
-      <Card className={classes.root}>
-        <CardActionArea>
-          <CardMedia
-            className={classes.media}
-            image={props.item.image}
-            title={props.item.name}
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {props.item.name}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {props.item.description}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-      </Grid>   
-  );
-}
+// function Item(props) {
+//   const classes = useStyles();
+//   return (
+    
+//   );
+
 
 export default Home;
