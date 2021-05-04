@@ -6,9 +6,10 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
-
+import Signin from "../loginForm/loginForm"
+import Signup from "../signupForm/signupForm"
 import { Link } from "react-router-dom";
-import Tooltip from "@material-ui/core/Tooltip";
+// import Tooltip from "@material-ui/core/Tooltip";
 
 const drawerWidth = 240;
 
@@ -91,12 +92,8 @@ export default function Navbar() {
               Home
             </Button>
           </Typography>
-          <Button color="inherit" component={Link} to="/login">
-            login
-          </Button>
-          <Button color="inherit" component={Link} to="/signup">
-            Sign Up
-          </Button>
+          <Signin/>
+         <Signup/>  
         </Toolbar>
       </AppBar>
     </div>

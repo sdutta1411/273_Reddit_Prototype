@@ -2,7 +2,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/navBar/navBar";
-import loginForm from "./components/loginForm/loginForm";
+// import SignIn from "./components/loginForm/loginForm";
 import SignUp from "./components/signupForm/signupForm";
 
 const theme = createMuiTheme({
@@ -28,7 +28,6 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <Navbar />
         <Switch>
-          <Route path="/login" exact component={loginForm} />
           <Route path="/signup" exact component={SignUp} />
         </Switch>
       </ThemeProvider>
