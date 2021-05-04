@@ -49,6 +49,6 @@ app.use("/api/user", user);
 //Community Routes
 app.use("/api/community", community);
 //Post Routes
-app.use("/api/post", post);
+app.use("/api/posts", post);
 //Comment Routes
 app.use("/api/comment", comment);

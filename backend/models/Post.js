@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const postSchema = mongoose.postSchema;
 const Populate = require('../utils/autopopulate');
 
-const postSchema = new mongoose.Schema({
+const PostSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -21,12 +21,12 @@ const postSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  imageSubmission: {
+  imageSubmission: [{
     imageLink: {
       type: String,
       trim: true,
     }
-  },
+  }],
   community: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Community',
