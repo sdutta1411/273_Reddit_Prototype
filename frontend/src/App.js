@@ -5,6 +5,7 @@ import Navbar from "./components/NavBar/navBar";
 import LoginForm from "./components/LoginForm/loginForm";
 import SignUp from "./components/SignupForm/signupForm";
 import Home from "./components/LandingPage/home";
+import SearchBar from "./components/CommunitySearch/searchbar.js";
 
 const theme = createMuiTheme({
   palette: {
