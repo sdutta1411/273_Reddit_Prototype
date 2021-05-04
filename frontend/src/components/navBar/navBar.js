@@ -9,7 +9,10 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Signin from "../loginForm/loginForm"
 import Signup from "../signupForm/signupForm"
 import { Link } from "react-router-dom";
-// import Tooltip from "@material-ui/core/Tooltip";
+
+
+import RedditIcon from "@material-ui/icons/Reddit";
+
 
 const drawerWidth = 240;
 
@@ -77,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Navbar() {
+ const Navbar = () =>{
   const classes = useStyles();
 
   const theme = useTheme();
@@ -87,6 +90,14 @@ export default function Navbar() {
       <CssBaseline />
       <AppBar position="static">
         <Toolbar>
+          <Button
+            className={classes.logo}
+            color="primary"
+            startIcon={<RedditIcon fontSize="large" />}
+            size="large"
+          >
+            reddit
+          </Button>
           <Typography variant="h6" className={classes.title}>
             <Button color="inherit" component={Link} to="/">
               Home
@@ -99,3 +110,6 @@ export default function Navbar() {
     </div>
   );
 }
+
+
+export default Navbar;

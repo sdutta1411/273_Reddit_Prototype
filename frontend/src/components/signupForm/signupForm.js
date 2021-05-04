@@ -141,8 +141,8 @@ export default function Signup() {
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link href="#" variant="body2">
-                      {"Already a redditor?"} <SignIn></SignIn>
+                    <Link variant="body2" >
+                      Already a redditor? <SignIn ></SignIn>
                     </Link>
                   </Grid>
                 </Grid>
