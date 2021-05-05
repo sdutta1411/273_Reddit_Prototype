@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) => {
+/* module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define("User", {
     userId: {
       type: Sequelize.STRING,
@@ -31,4 +31,6 @@ module.exports = (sequelize, Sequelize) => {
   });
 
   return Tutorial;
-};
+}; */
+
+
