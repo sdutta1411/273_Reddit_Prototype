@@ -7,12 +7,10 @@ import CreatePost from './CreatePost';
 import Paper from '@material-ui/core/Paper';
 import {useEffect ,setState} from 'react'
 import axios from 'axios';
-import {  useSelector,useDispatch } from 'react-redux';
 
 export default function CommunityHomePage() {
     var userLocalStorage = JSON.parse(localStorage.getItem("user"));
     const token = userLocalStorage.token;
-    const dispatch = useDispatch();
 
     useEffect(() =>{
         const onLoadCommunityHomePage = () =>{
