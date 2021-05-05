@@ -9,6 +9,9 @@ import CreatePost from "./components/CommunityHomePage/CreatePost";
 import Post from "./components/CommunityHomePage/Post";
 import ImageAndVideo from "./components/CommunityHomePage/ImageAndVideo";
 import LinkPostType from "./components/CommunityHomePage/LinkPostType";
+import Home from "./components/LandingPage/home";
+import SearchBar from "./components/CommunitySearch/searchbar.js";
+
 
 const theme = createMuiTheme({
   palette: {
@@ -40,7 +43,7 @@ const App = () => {
           <Route path="/createpost/post" exact component={Post} />
           <Route path="/createpost/imageandvideo" exact component={ImageAndVideo} />
           <Route path="/createpost/link" exact component={LinkPostType} />
-
+          <Route path="/" exact component={Home} />
         </Switch>
       </ThemeProvider>
     </div>
