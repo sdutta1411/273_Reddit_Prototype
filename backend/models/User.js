@@ -1,4 +1,4 @@
-/* module.exports = (sequelize, Sequelize) => {
+/* /* module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define("User", {
     userId: {
       type: Sequelize.STRING,
@@ -33,4 +33,44 @@
   return Tutorial;
 }; */
 
+/* const mongoose = require('mongoose');
+const { commentSchema } = require('./post');
 
+const userSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      minlength: 3,
+      maxlength: 20,
+      required: true,
+      trim: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    emailid:{
+      type: String
+    },
+    gender: {
+      type: String
+    },
+    location: {
+      type: String
+    },
+    description: {
+      type: String
+    },
+    profilepicture: {
+      type: Sequelize.STRING
+    },
+    topics: [{
+      type: STRING
+    }],
+    
+ 
+);
+
+
+module.exports = mongoose.model('User', userSchema);
+ */
