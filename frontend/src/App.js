@@ -2,7 +2,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 
-import Navbar from "./components/navBar/navBar";
+import Navbar from "./components/NavBar/navBar";
 import Home from "./components/LandingPage/home";
 
 
