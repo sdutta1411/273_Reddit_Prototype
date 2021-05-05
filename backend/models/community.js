@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const communitySchema = mongoose.communitySchema;
 
 
-const communitySchema = new mongoose.Schema(
+const CommunitySchema = new mongoose.Schema(
   {
     communityName: {
       type: String,
@@ -52,4 +52,4 @@ const communitySchema = new mongoose.Schema(
   },{timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }});
 
 
-module.exports = mongoose.model('Community', communitySchema);
+module.exports = mongoose.model('Community', CommunitySchema);

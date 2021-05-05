@@ -4,6 +4,7 @@ import "./App.css";
 
 import Navbar from "./components/NavBar/navBar";
 import Home from "./components/LandingPage/home";
+import SearchBar from "./components/CommunitySearch/searchbar.js";
 
 
 const theme = createMuiTheme({
@@ -29,6 +30,13 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <Navbar />
         <Switch>
+          {/* <Route path="/login" exact component={LoginForm} />
+          <Route path="/signup" exact component={SignUp} /> */}
+          <Route path="/communityhome" exact component={CommunityHomePage} />
+          <Route path="/createpost" exact component={CreatePost} />
+          <Route path="/createpost/post" exact component={Post} />
+          <Route path="/createpost/imageandvideo" exact component={ImageAndVideo} />
+          <Route path="/createpost/link" exact component={LinkPostType} />
           <Route path="/" exact component={Home} />
         </Switch>
       </ThemeProvider>

@@ -18,8 +18,8 @@
     "mongoose": "^5.12.6",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.7",
-    "sequelize": "^6.6.2",
     "passport": "^0.4.1",
-    "passport-jwt": "^4.0.0"
+    "passport-jwt": "^4.0.0",
+    "sequelize": "^6.6.2"
   }
 }
