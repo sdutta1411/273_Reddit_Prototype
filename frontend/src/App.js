@@ -2,9 +2,14 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 
-import Navbar from "./components/NavBar/navBar";
+import Navbar from "./components/NavBar/NavBar";
 import Home from "./components/LandingPage/home";
 import SearchBar from "./components/CommunitySearch/searchbar.js";
+import CommunityHomePage from "./components/CommunityHomePage/CommunityHomePage";
+import CreatePost from "./components/CommunityHomePage/CreatePost";
+import Post from "./components/CommunityHomePage/Post";
+import ImageAndVideo from "./components/CommunityHomePage/ImageAndVideo";
+import LinkPostType from "./components/CommunityHomePage/LinkPostType";
 
 
 const theme = createMuiTheme({

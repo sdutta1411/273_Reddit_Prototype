@@ -111,21 +111,21 @@ const signupuser = (req, res) => {
                   email: req.body.email,
                   password: req.body.password
               });
-              bcrypt.genSaltSync(10, (err, salt) => {
-                  bcrypt.hashSync(newUser.password, salt, (err, hash) => {
-                      if(err) throw err;
+              bcrypt.genSalt(10, (err, salt) => {
+                  bcrypt.hash(newUser.password, salt, (error, hash) => {
+                      console.log("Hash "+ hash);
+                      if(error){
+                        console.log("Hash error "+ JSON.stringify(error));
+                        throw error;
+                      } 
                       newUser.password = hash;
                       console.log("New user: "+newUser);
-                      var token = jwt.sign({ id: newUser.id }, keys.secret, {
-                          expiresIn: 86400 // 24 hours
-                        });
                       newUser.save(err => {
                           if (err) {
                             res.status(500).send({ message: err });
                             return;
-                          }
-                
-                          res.json({ userId: newUser._id, username: newUser.username, email: newUser.email, token:'Bearer '+ token });
+                          }                
+                          res.json({ userId: newUser._id, username: newUser.username, email: newUser.email});
                         });
                   })
               })

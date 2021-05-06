@@ -21,6 +21,7 @@ app.use(
     extended: true,
   })
 );
+app.use(bodyParser.json());
 
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
