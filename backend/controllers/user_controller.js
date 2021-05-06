@@ -117,23 +117,25 @@ const signupuser = (req, res) => {
         return res.status(400).json("Email already exists");
       } else {
         console.log("Creating a new user");
+
         const newUser = new UserProfile({
           username: req.body.username,
           email: req.body.email,
           password: req.body.password,
         });
-        bcrypt.genSaltSync(10, (err, salt) => {
-          bcrypt.hashSync(newUser.password, salt, (err, hash) => {
-            if (err) throw err;
+
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if (err) {
+              throw err;
+            }
             newUser.password = hash;
-            console.log("New user: " + newUser);
-            var token = jwt.sign({ id: newUser.id }, keys.secret, {
+            var token = jwt.sign({ id: newUser.id }, secret, {
               expiresIn: 86400, // 24 hours
             });
             newUser.save((err) => {
               if (err) {
                 res.status(500).send({ message: err });
-                return;
               }
 
               res.json({
@@ -145,11 +147,10 @@ const signupuser = (req, res) => {
 
             });
           });
+        }).catch(function (err) {
+          res.status(400).json(err);
         });
       }
-    })
-    .catch(function (err) {
-      res.status(400).json(err);
     });
 };
 
