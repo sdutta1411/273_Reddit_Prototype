@@ -3,11 +3,23 @@ const connection = require("../config/mysql_config");
 const jwt = require("jsonwebtoken");
 const { secret } = require("../config/util");
 const { auth } = require("../config/passport");
+const UserProfile = require("../models/UserProfile");
 auth();
+
+const validateRegisterInput = require("../validation/registration");
 
 //User Registration
 const signup = (req, res) => {
   console.log(req.body);
+  const { errors, isValid } = validateRegisterInput(req.body);
+  // Check Validations
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  console.log("we get here eventually");
+
   var salt = bcrypt.genSaltSync(10);
   var hash = bcrypt.hashSync(req.body.password, salt);
   // const name = req.body.name;
@@ -22,12 +34,12 @@ const signup = (req, res) => {
   connection.query(sqlQuery, values, function (error, results, fields) {
     if (error) {
       console.log(error);
-      res.json({
+      res.status(400).json({
         status: false,
-        message: "There are some error with query",
+        message: "User already registered",
       });
     } else {
-      res.json({
+      res.status(200).json({
         status: true,
         data: results,
         message: "User Registered Sucessfully",
@@ -91,10 +103,60 @@ const login = (req, res) => {
   );
 };
 
+// @route   POST api/users/signup
+// @desc    Tests signup route
+// @access  Public
+const signupuser = (req, res) => {
+  console.log("In Sign Up Mongo user API");
+  // router.post('/signup', (req, res) => {
+  UserProfile.findOne({ email: req.body.email })
+    .then((user) => {
+      // validation
+      if (user) {
+        //errors.email = 'Email already exists';
+        return res.status(400).json("Email already exists");
+      } else {
+        console.log("Creating a new user");
+        const newUser = new UserProfile({
+          username: req.body.username,
+          email: req.body.email,
+          password: req.body.password,
+        });
+        bcrypt.genSaltSync(10, (err, salt) => {
+          bcrypt.hashSync(newUser.password, salt, (err, hash) => {
+            if (err) throw err;
+            newUser.password = hash;
+            console.log("New user: " + newUser);
+            var token = jwt.sign({ id: newUser.id }, keys.secret, {
+              expiresIn: 86400, // 24 hours
+            });
+            newUser.save((err) => {
+              if (err) {
+                res.status(500).send({ message: err });
+                return;
+              }
+
+              res.json({
+                userId: newUser._id,
+                username: newUser.username,
+                email: newUser.email,
+                token: "Bearer " + token,
+              });
+            });
+          });
+        });
+      }
+    })
+    .catch(function (err) {
+      res.status(400).json(err);
+    });
+};
+
 const test = (req, res) => {
   res.send("hello hello");
 };
 
 exports.test = test;
 exports.signup = signup;
+exports.signupuser = signupuser;
 exports.login = login;

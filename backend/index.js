@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 var bodyParser = require("body-parser");
-
+const passport = require('passport');
 const cors = require("cors");
 
 var mysqlConfig = require("./config/mysql_config");
@@ -14,6 +14,8 @@ InitiateMongoServer();
 
 const app = express();
 
+//passport middleware
+app.use(passport.initialize());
 app.use(
   bodyParser.urlencoded({
     extended: true,
@@ -40,8 +42,6 @@ app.use(cors());
 app.listen(3001, (req, res) => {
   console.log("server running on port 3001....");
 });
-
-
 const user = require("./routes/user_routes");
 //const community = require("./routes/community_routes");
 //const post = require("./routes/post_routes");

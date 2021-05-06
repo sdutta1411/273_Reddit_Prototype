@@ -34,4 +34,4 @@ const createnewpost = async(req, res) => {
         res.status(200).json(post));
     };
 
-exports.createpost = createpost;
+exports.createnewpost = createnewpost;

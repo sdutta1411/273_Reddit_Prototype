@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const postSchema = mongoose.postSchema;
 const Populate = require('../utils/autopopulate');
 
 const PostSchema = new mongoose.Schema({
@@ -62,14 +61,13 @@ const PostSchema = new mongoose.Schema({
   // },
   comments :[{
     comment:{
-           type: Schema.Types.ObjectId,
+           type: mongoose.Schema.Types.ObjectId,
            ref: 'comments'
        }
-
    }],
 },{timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }});
 
 PostSchema
     .pre('findOne', Populate('author'))
     .pre('find', Populate('author'))
-module.exports = mongoose.model('Post', postSchema);
+module.exports = mongoose.model('Post', PostSchema);
