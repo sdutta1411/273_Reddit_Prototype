@@ -35,18 +35,17 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <Navbar />
         <Switch>
+
           {/* <Route path="/login" exact component={LoginForm} />
-          <Route path="/signup" exact component={SignUp} /> 
+          <Route path="/signup" exact component={SignUp} /> */}
+
           <Route path="/communityhome" exact component={CommunityHomePage} />
           <Route path="/createpost" exact component={CreatePost} />
           <Route path="/createpost/post" exact component={Post} />
-          <Route
-            path="/createpost/imageandvideo"
-            exact
-            component={ImageAndVideo}
-          />
+          <Route path="/createpost/imageandvideo" exact component={ImageAndVideo}/>
           <Route path="/createpost/link" exact component={LinkPostType} />
-          <Route path="/" exact component={Home} />*/}
+
+          {/* <Route path="/" exact component={Home} /> */}
         </Switch>
       </ThemeProvider>
     </div>
