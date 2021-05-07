@@ -5,12 +5,12 @@ const passport = require('passport');
 const cors = require("cors");
 
 var mysqlConfig = require("./config/mysql_config");
-const mongoConfig = require('./config/util').mongoURI;
+var InitiateMongoServer = require("./config/mongo_config");
+
 //Connecting to Mongo Server
-mongoose
-    .connect(mongoConfig)
-    .then(() => console.log("MongoDb connected"))
-    .catch(err => console.log(err));
+mongoose.Promise = global.Promise;
+mongoose.set("useCreateIndex", true);
+InitiateMongoServer();
 
 const app = express();
 
@@ -21,6 +21,7 @@ app.use(
     extended: true,
   })
 );
+app.use(bodyParser.json());
 
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -44,14 +45,17 @@ app.listen(3001, (req, res) => {
 });
 const user = require("./routes/user_routes");
 //const community = require("./routes/community_routes");
-const post = require("./routes/post_routes");
+//const post = require("./routes/post_routes");
 //const comment = require("./routes/comment_routes");
+const message = require("./routes/message_routes");
 
 // User Routes
 app.use("/api/user", user);
 //Community Routes
 //app.use("/api/community", community);
 //Post Routes
-app.use("/api/posts", post);
-//Comment Routes
+//app.use("/api/posts", post);
+//Comment Routescls
 //app.use("/api/comment", comment);
+//Message Routes
+app.use("/api/message", message);

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Form,FormControl,Modal,Container,Row, Col,Image} from 'react-bootstrap';
-import NavBarAfterLogin from '../NavBar/NavBarAfterLogin';
 import Grid from '@material-ui/core/Grid';
 import CommunityCover from './CommunityCover';
 import CreatePost from './CreatePost';

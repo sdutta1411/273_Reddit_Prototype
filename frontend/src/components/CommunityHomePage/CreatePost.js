@@ -1,6 +1,5 @@
 import React from 'react'
 import { Form,FormControl,Modal,Container,Row, Col,Image} from 'react-bootstrap';
-import Navbar from '../NavBar/NavBar';
 import Divider from '@material-ui/core/Divider';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';

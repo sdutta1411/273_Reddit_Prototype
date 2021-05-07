@@ -6,13 +6,11 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Signin from "../LoginForm/loginForm"
-import Signup from "../SignupForm/signupForm"
+import Signin from "../loginForm/loginForm";
+import Signup from "../signupForm/signupForm";
 import { Link } from "react-router-dom";
 
-
 import RedditIcon from "@material-ui/icons/Reddit";
-
 
 const drawerWidth = 240;
 
@@ -80,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
- const Navbar = () =>{
+const Navbar = () => {
   const classes = useStyles();
 
   const theme = useTheme();
@@ -103,13 +101,12 @@ const useStyles = makeStyles((theme) => ({
               Home
             </Button>
           </Typography>
-          <Signin/>
-         <Signup/>  
+          <Signin />
+          <Signup />
         </Toolbar>
       </AppBar>
     </div>
   );
-}
-
+};
 
 export default Navbar;
