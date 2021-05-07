@@ -4,7 +4,7 @@ const Messages = require("../models/message-model");
 const getChats = (req, res) => {
   const { users } = req.body;
   console.log(req.body);
-
+  console.log(users)
   Messages.find(
     {
       "users.user": { $all: users },

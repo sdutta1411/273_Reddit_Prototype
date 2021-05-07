@@ -6,7 +6,6 @@ const cors = require("cors");
 
 var mysqlConfig = require("./config/mysql_config");
 var InitiateMongoServer = require("./config/mongo_config");
-
 //Connecting to Mongo Server
 mongoose.Promise = global.Promise;
 mongoose.set("useCreateIndex", true);

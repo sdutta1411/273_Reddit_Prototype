@@ -13,7 +13,7 @@ const InitiateMongoServer = async () => {
         await mongoose.connect(config.db.conn, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            poolSize: 10,
+            poolSize: 70,
             bufferMaxEntries: 0,
         });
         console.log("Connected to Mongo DB !!");
