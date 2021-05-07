@@ -3,45 +3,122 @@ const connection = require("../config/mysql_config");
 const Community = require("../models/Community");
 const Post = require("../models/Post");
 const UserProfile = require("../models/UserProfile");
-
-//Create a New Text Post
-const createnewpost = async(req, res) => {
-    console.log("Create Post API");
-    Community.findOne({ communityName: req.body.communityName }).then(community => {
-        if(!community){
-            return res.status(404).json({message: 'Community does not exist.'});
+const postTypeValidator = require("../utils/postTypeValidator");
+    // create new post
+    const createnewpost = async (req, res) => {
+        console.log("create post controller...");
+        const {
+          email,
+          title,
+          communityName,
+          postType,
+          textSubmission,
+          linkSubmission,
+          imageSubmission,
+        } = req.body;
+      
+        const validatedFields = postTypeValidator(
+          postType,
+          textSubmission,
+          linkSubmission,
+          imageSubmission
+        );
+      
+        const author = await UserProfile.findOne({ email: req.body.email });
+        if(author) console.log("user exists");
+        const targetCommunity = await Community.findOne({ communityName: req.body.communityName });
+        if(targetCommunity) console.log("community exists");
+        if (!author) {
+          return res
+            .status(404)
+            .send({ message: 'User does not exist.' });
         }
-    else{
-    console.log("Community found id: "+community._id);
-    var postfields = {};
-    UserProfile.findOne({ email: req.body.email }).then(user => {
-    console.log("User found id: "+user._id);
-    postfields.author = user._id;
-    postfields.community = community._id;
-    postfields.postType=req.body.postType;
-    postfields.title = req.body.title;
-    if(req.body.textSubmission){
-    postfields.textSubmission = req.body.textSubmission;
-    }
-    postfields.imageSubmission = [];
-    if(req.body.linkSubmission){
-        postfields.linkSubmission = req.body.linkSubmission;
-    }
-    if(req.body.imageSubmission){
-    req.body.imageSubmission.forEach(images=>{
-    postfields.push(images);
-    });
-    }
-    console.log("post fields: "+JSON.stringify(postfields));
-    console.log("Creating a post in community: "+req.body.communityName);
-    //create post
-    new Post(postfields).save().then(post=>
-        res.status(200).json(post));
-    }).catch(function(err) {
-        res.status(400).json(err);
-    })
-    }
-    })    
-    };
+      
+        if (!targetCommunity) {
+          return res.status(404).send({
+            message: `Community : '${targetCommunity.communityName}' does not exist in database.`,
+          });
+        }      
+        console.log("creating post");
+        const newPost = new Post({
+          title,
+          community: targetCommunity._id,
+          author: author._id,
+          upvotedBy: [author._id],
+          pointsCount: 1,
+         ...validatedFields,
+        });
+            var images = [];
+            if(req.body.postType==='Image'){
+            if(req.body.imageSubmission){
 
-exports.createnewpost = createnewpost;
+            req.body.imageSubmission.forEach(image=>{
+                console.log("pushing images: "+image);
+                images.push(image);
+            });
+            newPost.imageSubmission.concat(images);
+            }
+        }
+
+        const savedPost = await newPost.save();
+        console.log("saved post: "+savedPost);      
+        targetCommunity.posts = targetCommunity.posts.concat(savedPost._id);
+        await targetCommunity.save();
+        console.log("targetCommunity: "+targetCommunity);
+        author.posts = author.posts.concat(savedPost._id);
+        await author.save();  
+
+        const populatedPost = await savedPost
+          .populate('author', 'username')
+          .populate('community', 'communityName')
+          .execPopulate();      
+        res.status(200).json(populatedPost);
+      };
+
+    // Get Posts
+    const getPosts = async (req, res) => {
+        const page = Number(req.query.page);
+        const limit = Number(req.query.limit);
+        const sortBy = req.query.sortby;
+      
+        let sortQuery;
+        switch (sortBy) {
+          case 'new':
+            sortQuery = { createdAt: -1 };
+            break;
+          case 'top':
+            sortQuery = { pointsCount: -1 };
+            break;
+          case 'best':
+            sortQuery = { voteRatio: -1 };
+            break;
+          case 'old':
+            sortQuery = { createdAt: 1 };
+            break;
+          default:
+            sortQuery = {};
+        }
+      
+        const postsCount = await Post.countDocuments();
+        const paginated = paginateResults(page, limit, postsCount);
+        const allPosts = await Post.find({})
+          .sort(sortQuery)
+          .select('-comments')
+          .limit(limit)
+          .skip(paginated.startIndex)
+          .populate('author', 'username')
+          .populate('community', 'communityName');
+      
+        const paginatedPosts = {
+          previous: paginated.results.previous,
+          results: allPosts,
+          next: paginated.results.next,
+        };
+      
+        res.status(200).json(paginatedPosts);
+      };
+      
+    module.exports = {
+        createnewpost,
+        getPosts
+    };

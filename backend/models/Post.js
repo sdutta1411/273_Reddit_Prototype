@@ -19,11 +19,12 @@ const PostSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  imageSubmission: [{
-    imageLink: {
+  imageSubmission: [
+    {
+    //imageLink: {
       type: String,
       trim: true,
-    }
+    //}
   }],
   communityName: {
     type: mongoose.Schema.Types.ObjectId,
@@ -31,25 +32,28 @@ const PostSchema = new mongoose.Schema({
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'UserProfile',
   },
   upvotedBy: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'UserProfile',
     },
   ],
   downvotedBy: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'UserProfile',
     },
   ],
-
-  // pointsCount: {
-  //   type: Number,
-  //   default: 1,
-  // },
+  voteRatio: {
+    type: Number,
+    default: 0,
+  },
+  pointsCount: {
+    type: Number,
+    default: 1,
+  },
   
   // famousPost: {
   //   type: Number,

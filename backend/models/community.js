@@ -44,7 +44,7 @@ const CommunitySchema = new mongoose.Schema(
         ref: 'User',
       },
     ],
-    userCount: {
+    subscriberCount: {
       type: Number,
       default: 1,
     },

@@ -6,18 +6,26 @@ import CreatePost from './CreatePost';
 import Paper from '@material-ui/core/Paper';
 import {useEffect ,setState} from 'react'
 import axios from 'axios';
+import backendUrl from '../../backendUrl';
+
 
 export default function CommunityHomePage() {
+
+    const baseUrl = `${backendUrl}/api/community`;
+
     var userLocalStorage = JSON.parse(localStorage.getItem("user"));
     const token = userLocalStorage.token;
 
     useEffect(() =>{
         const onLoadCommunityHomePage = () =>{
+            var sortBy = 'mostpopular';
+            var limit = 10;
+            var page = 100;
             const requestOptions = {
                 method: 'GET',
                headers: { 'Content-Type': 'application/json' ,'Authorization': token},
               }
-            axios.get("http://localhost:3001/api/community/getCommunityDetails",requestOptions)
+            axios.get(`${baseUrl}/getPosts/?sortby=${sortBy}&limit=${limit}&page=${page}`,requestOptions)
             .then(response=>{
                 console.log("Response: "+response.data)
             }).catch(err=>{
