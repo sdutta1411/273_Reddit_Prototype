@@ -4,6 +4,7 @@ const Community = require("../models/Community");
 const Post = require("../models/Post");
 const UserProfile = require("../models/UserProfile");
 const postTypeValidator = require("../utils/postTypeValidator");
+const paginateResults = require("../utils/paginateResults");
     // create new post
     const createnewpost = async (req, res) => {
         console.log("create post controller...");
@@ -77,10 +78,10 @@ const postTypeValidator = require("../utils/postTypeValidator");
 
     // Get Posts
     const getPosts = async (req, res) => {
+        const communityName = req.query.communityName;
         const page = Number(req.query.page);
         const limit = Number(req.query.limit);
         const sortBy = req.query.sortby;
-      
         let sortQuery;
         switch (sortBy) {
           case 'new':
@@ -97,11 +98,12 @@ const postTypeValidator = require("../utils/postTypeValidator");
             break;
           default:
             sortQuery = {};
-        }
-      
+        }      
         const postsCount = await Post.countDocuments();
         const paginated = paginateResults(page, limit, postsCount);
-        const allPosts = await Post.find({})
+        const com = await Community.findOne({communityName:req.query.communityName});
+        console.log("com: "+com);
+        const allPosts = await Post.findOne({community:com._id})
           .sort(sortQuery)
           .select('-comments')
           .limit(limit)
@@ -113,8 +115,7 @@ const postTypeValidator = require("../utils/postTypeValidator");
           previous: paginated.results.previous,
           results: allPosts,
           next: paginated.results.next,
-        };
-      
+        };      
         res.status(200).json(paginatedPosts);
       };
       

@@ -4,7 +4,7 @@ const replySchema = mongoose.replySchema;
 const replySchema = new mongoose.Schema({
     repliedBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'UserProfile',
     },
     replyBody: {
       type: String,
@@ -13,13 +13,13 @@ const replySchema = new mongoose.Schema({
     upvotedBy: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'UserProfile',
       },
     ],
     downvotedBy: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'UserProfile',
       },
     ],
     pointsCount: {

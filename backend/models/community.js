@@ -36,12 +36,12 @@ const CommunitySchema = new mongoose.Schema(
     ],
     admin: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'UserProfile',
     },
     subscribedBy: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'UserProfile',
       },
     ],
     subscriberCount: {

@@ -26,7 +26,7 @@ const PostSchema = new mongoose.Schema({
       trim: true,
     //}
   }],
-  communityName: {
+  community: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Community',
   },

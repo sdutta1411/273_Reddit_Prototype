@@ -18,14 +18,15 @@ export default function CommunityHomePage() {
 
     useEffect(() =>{
         const onLoadCommunityHomePage = () =>{
-            var sortBy = 'mostpopular';
+            var sortBy = 'old';
             var limit = 10;
             var page = 100;
+            var communityName = 'Team11';
             const requestOptions = {
                 method: 'GET',
                headers: { 'Content-Type': 'application/json' ,'Authorization': token},
               }
-            axios.get(`${baseUrl}/getPosts/?sortby=${sortBy}&limit=${limit}&page=${page}`,requestOptions)
+            axios.get(`${baseUrl}/getPosts/?communityName=${communityName}&sortby=${sortBy}&limit=${limit}&page=${page}`,requestOptions)
             .then(response=>{
                 console.log("Response: "+response.data)
             }).catch(err=>{
