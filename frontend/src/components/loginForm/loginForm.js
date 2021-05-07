@@ -15,6 +15,10 @@ import Container from '@material-ui/core/Container';
 import Modal from '@material-ui/core/Modal';
 import Paper from '@material-ui/core/Paper';
 import img from "../../images/Reddit.png"
+import axios from 'axios';
+import { useState ,useEffect} from 'react'
+import {useHistory} from 'react-router-dom';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,8 +54,10 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn() {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
- 
+  const history = useHistory();
   const [open, setOpen] = React.useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleOpen = () => {
     setOpen(true);
@@ -60,6 +66,26 @@ export default function SignIn() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const loadSuccess = () =>{
+    history.push('/dashboard');
+  }
+  const handleLogin = (e) =>{
+    e.preventDefault();
+    axios
+    .post("http://localhost:3001/api/user/login", {
+      email,
+      password,
+    })
+    .then((response) => {
+      if (response.status !== 400) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+        loadSuccess();
+      }
+    }).catch(err=>{
+      console.log("Error while login:: "+err);
+        });
+  }
 
   return (
     <div>
@@ -86,7 +112,7 @@ export default function SignIn() {
               <Typography component="h1" variant="h5">
                 Sign in
               </Typography>
-              <form className={classes.form} noValidate>
+              <form className={classes.form} onSubmit={handleLogin}>
                 <TextField
                   variant="outlined"
                   margin="normal"
@@ -95,6 +121,8 @@ export default function SignIn() {
                   id="email"
                   label="Email Address"
                   name="email"
+                  value={email} 
+                  onChange={e=> setEmail(e.target.value)}
                   autoComplete="email"
                   autoFocus
                 />
@@ -107,6 +135,8 @@ export default function SignIn() {
                   name="password"
                   label="Password"
                   type="password"
+                  value={password} 
+                  onChange={e=> setPassword(e.target.value)}
                   id="password"
                   autoComplete="current-password"
                 /><br/>

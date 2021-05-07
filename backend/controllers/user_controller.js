@@ -77,12 +77,11 @@ const login = (req, res) => {
               const token = jwt.sign(payload, secret, {
                 expiresIn: 1008000,
               });
-              res.status(200).send("Bearer " + token);
-              // res.json({
-              //   status: true,
-              //   message: "Login Successful",
-              //   userDetails: results[0],
-              // });
+              res.status(200).send({
+                username: results[0].name,
+                email: results[0].email,                            
+                token: 'Bearer '+ token,
+              });
             } else {
               res.json({
                 status: false,

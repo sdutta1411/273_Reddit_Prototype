@@ -30,6 +30,7 @@ export default function CreatePostFooter({title,text,imgvidurls,link}) {
             'Authorization': token
         }
         const body = {
+            'email':userLocalStorage.email,
             'communityName':userLocalStorage.communityName,
             'title':title,
             // 'postType':
@@ -42,6 +43,7 @@ export default function CreatePostFooter({title,text,imgvidurls,link}) {
             headers: headers
         })
         .then(response=>{
+            console.log("Response for create new post: "+response.data)
         }).catch(err=>{
             console.log(err);
         });

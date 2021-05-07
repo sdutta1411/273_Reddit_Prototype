@@ -18,7 +18,6 @@ const CommunitySchema = new mongoose.Schema(
     rules:[{
       title:{
         type: String,
-        required: true
       },
       description:{
         type: String,

@@ -10,7 +10,6 @@ const PostSchema = new mongoose.Schema({
   },
   postType: {
     type: String,
-    required: true,
   },
   textSubmission: {
     type: String,
@@ -26,7 +25,7 @@ const PostSchema = new mongoose.Schema({
       trim: true,
     }
   }],
-  community: {
+  communityName: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Community',
   },
@@ -46,6 +45,7 @@ const PostSchema = new mongoose.Schema({
       ref: 'User',
     },
   ],
+
   // pointsCount: {
   //   type: Number,
   //   default: 1,
@@ -59,6 +59,7 @@ const PostSchema = new mongoose.Schema({
   //   type: Number,
   //   default: 0,
   // },
+
   comments :[{
     comment:{
            type: mongoose.Schema.Types.ObjectId,
