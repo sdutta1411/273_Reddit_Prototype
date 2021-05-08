@@ -11,6 +11,10 @@ import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import API_URL from '../../config/constants';
 import {useHistory} from 'react-router-dom';
+import backendUrl from '../../backendUrl';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import {useEffect ,useState,setState} from 'react'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +45,16 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-export default function CommunityCover() {
+export default function CommunityCover({communityName,isUserSub}) {
+  const baseUrl = `${backendUrl}/api/posts`;
+  var userLocalStorage = JSON.parse(localStorage.getItem("user"));
+  const token = userLocalStorage.token;
+  const email = userLocalStorage.email;
+
+  const[openJoinComm, setOpenJoinComm] = useState(false);
+  const[openLeaveComm, setOpenLeaveComm] = useState(false);
+
+
   const history = useHistory();
 
     const classes = useStyles();
@@ -50,16 +63,95 @@ export default function CommunityCover() {
     const handleCreatePost = () =>{
       history.push('/createpost');
     }
+
+    const handleJoinCommunity = async() =>{
+      console.log("calling join community api");
+      try {
+        const headers = {
+          'Content-Type': 'application/json' ,
+          'Authorization': token
+        }
+        const body = {
+         'email':email,'communityName':'Farewell part'
+        }
+        const response = await axios.post('http://localhost:3001/api/community/joinCommunity',body,{
+          headers: headers
+        });
+        if(response.status===200){
+          console.log("Response: "+response.data);
+          setOpenJoinComm(true);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+      const handleLeaveCommunity = async() =>{
+      console.log("Calling leave community");
+      try{
+        const headers = {
+          'Content-Type': 'application/json' ,
+          'Authorization': token
+        }
+        const body = {
+         'email':email,'communityName':'Farewell part'
+        }
+        const response = await axios.post('http://localhost:3001/api/community/leaveCommunity',body,{
+          headers: headers
+        });
+        if(response.status===200){
+          console.log("Response: "+response.data);
+          setOpenLeaveComm(true);
+        }
+      }catch(err){
+        console.log("Error while leaving group: "+err);
+      }
+    }
+
+    function Alert(props) {
+      return <MuiAlert elevation={10} variant="filled" {...props} />;
+    }
+    const handleJoinCommClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }    
+      setOpenJoinComm(false);
+    };
+
+    const handleLeaveCommClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }    
+      setOpenLeaveComm(false);
+    };
     
     return (
         <>
+            <Snackbar open={openJoinComm} autoHideDuration={6000} onClose={handleJoinCommClose}>
+                    <Alert style={{fontSize:"20px"}} onClose={handleJoinCommClose} severity="success">
+                        You joined community
+                    </Alert>
+            </Snackbar>
 
+            <Snackbar open={openLeaveComm} autoHideDuration={6000} onClose={handleLeaveCommClose}>
+                    <Alert style={{fontSize:"20px"}} onClose={handleLeaveCommClose} severity="error">
+                        You left community
+                    </Alert>
+            </Snackbar>
 
         <Card className={classes.root}>
         <div className={classes.details}>
           <CardContent className={classes.content}>
             <Typography style={{marginLeft:"70px"}} component="h5" variant="h5">
               Group Name
+            {isUserSub?
+            <Button onClick={handleLeaveCommunity} style={{fontWeight:"bold",marginLeft:"200px",fontSize:"12px",textAlign:"center",color:"#FFFFFF",background:"#0079D3",borderRadius:"10px"}} variant="contained">
+              Joined
+            </Button>:
+            <Button onClick={handleJoinCommunity} style={{fontWeight:"bold",marginLeft:"200px",fontSize:"12px",textAlign:"center",color:"#FFFFFF",background:"#0079D3",borderRadius:"10px"}} variant="contained">
+              Join
+            </Button>
+            }
             <Button onClick={handleCreatePost} style={{fontWeight:"bold",marginLeft:"1000px",fontSize:"16px",padding:"10px 20px 10px 20px",textAlign:"center",lineHeight:"20.7px",color:"#FFFFFF",background:"#2ECC40",borderRadius:"10px"}} variant="contained">
             Create Post
             </Button>

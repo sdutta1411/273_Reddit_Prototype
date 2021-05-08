@@ -3,6 +3,7 @@ const connection = require("../config/mysql_config");
 const Community = require("../models/Community");
 const Post = require("../models/Post");
 const UserProfile = require("../models/UserProfile");
+var _ = require('lodash');
 
 //Create a New Community
 const createnewcommunity = async(req, res) => {  
@@ -47,7 +48,77 @@ const getAllCommunityDetails = async(req, res) => {
       });
 };
 
+// Join Community - Community Home Page
+const joinCommunity = async(req, res) => {  
+  console.log("Join Community API"+req.body.email+","+req.body.communityName);
+  const comm = await Community.findOne({ communityName: req.body.communityName });
+  const user = await UserProfile.findOne({email:req.body.email});
+  console.log("community exists: "+comm);
+  console.log("user exists: "+user);
+
+  if(comm){
+    comm.subscribedBy = comm.subscribedBy.concat(user._id);
+    await comm.save();
+    user.subscribedCommunities = user.subscribedCommunities.concat(comm._id);
+    await user.save();
+    return res.status(200).json("You joined community");
+  }  
+};
+
+// Leave Community - Community Home Page
+const leaveCommunity = async(req, res) => {  
+  console.log("Leave Community API"+req.body.email+","+req.body.communityName);
+  const comm = await Community.findOne({ communityName: req.body.communityName });
+  const user = await UserProfile.findOne({email:req.body.email});
+  console.log("community exists: "+comm);
+  console.log("user exists: "+user);
+  if(comm){
+    _.remove(comm.subscribedBy, function(v) { return v === user._id; });
+    console.log("removed user: "+user._id+ " from comm: "+comm._id+":::"+comm.subscribedBy); 
+    await comm.save();
+    _.pull(user.subscribedCommunities, comm._id);
+    await user.save();
+    return res.status(200).json("You left community");
+  }  
+};
+
+// Get User communities - Community Home Page
+const getUserCommunities = async(req, res) => {  
+  console.log("Get User communities API"+JSON.stringify(req.body.email));
+  //const comm = await Community.findOne({ communityName: req.body.communityName });
+  //const user = await UserProfile.findOne({user:req.user.id});
+  //console.log("community exists: "+comm);
+  //console.log("user exists: "+user);
+  const usercomms = await UserProfile.find({email:req.body.email},{subscribedCommunities:1});
+  console.log("usercomms: "+usercomms);
+  return res.status(200).json(usercomms);
+};
+
+// Check if user is a member of community - Community Home Page
+const checkUserSubscribed = async(req, res) => {  
+  console.log("checkUserSubscribed API"+JSON.stringify(req.body.email));
+  var userSubscribed = false;
+  const usercomms = await UserProfile.find({email:req.body.email},{subscribedCommunities:1});
+  const c = await Community.findOne({communityName:req.body.communityName});
+  console.log("c:: "+c._id)
+  //console.log("usercomms: "+usercomms[0].subscribedCommunities);
+  usercomms[0].subscribedCommunities.forEach(comm=>{
+    if(comm!==c._id){
+      userSubscribed = true;
+    }
+  })
+  if(userSubscribed===true){
+    return res.status(200).json("You have subscribed to this community");
+  }else{
+    return res.status(404).json("You have not subscribed to this community");
+  }  
+};
+
 module.exports = {
   createnewcommunity,
-  getAllCommunityDetails
+  getAllCommunityDetails,
+  joinCommunity,
+  leaveCommunity,
+  getUserCommunities,
+  checkUserSubscribed
 };

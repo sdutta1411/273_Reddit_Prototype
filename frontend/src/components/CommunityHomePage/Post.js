@@ -12,7 +12,7 @@ import Chip from '@material-ui/core/Chip';
 import ChatRoundedIcon from '@material-ui/icons/ChatRounded';
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import axios from 'axios';
-import Editor from '@draft-js-plugins/editor';
+// import Editor from '@draft-js-plugins/editor';
 import CreatePostFooter from './CreatePostFooter';
 import { useState } from "react";
 

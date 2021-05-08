@@ -102,21 +102,25 @@ const paginateResults = require("../utils/paginateResults");
         const postsCount = await Post.countDocuments();
         const paginated = paginateResults(page, limit, postsCount);
         const com = await Community.findOne({communityName:req.query.communityName});
-        console.log("com: "+com);
-        const allPosts = await Post.findOne({community:com._id})
-          .sort(sortQuery)
-          .select('-comments')
-          .limit(limit)
-          .skip(paginated.startIndex)
-          .populate('author', 'username')
-          .populate('community', 'communityName');
-      
-        const paginatedPosts = {
-          previous: paginated.results.previous,
-          results: allPosts,
-          next: paginated.results.next,
-        };      
-        res.status(200).json(paginatedPosts);
+        //console.log("com: "+com);
+        // const allPosts = await Post.findOne({community:com._id})
+        //   .sort(sortQuery)
+        //   .select('-comments')
+        //   .limit(limit)
+        //   .skip(paginated.startIndex)
+        //   .populate('author', 'username')
+        //   .populate('community', 'communityName');
+
+        const postsByComm = await Post.find({community:com._id}).sort(sortQuery).select('-comments');
+        console.log("postsByComm:: "+postsByComm);
+        // console.log("all posts::"+allPosts);
+        // const paginatedPosts = {
+        //   previous: paginated.results.previous,
+        //   results: allPosts,
+        //   next: paginated.results.next,
+        // };      
+        // res.status(200).json(paginatedPosts);
+        res.status(200).json(postsByComm)
       };
       
     module.exports = {
