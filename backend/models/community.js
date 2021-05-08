@@ -18,7 +18,6 @@ const CommunitySchema = new mongoose.Schema(
     rules:[{
       title:{
         type: String,
-        required: true
       },
       description:{
         type: String,
@@ -37,15 +36,15 @@ const CommunitySchema = new mongoose.Schema(
     ],
     admin: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'UserProfile',
     },
     subscribedBy: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'UserProfile',
       },
     ],
-    userCount: {
+    subscriberCount: {
       type: Number,
       default: 1,
     },

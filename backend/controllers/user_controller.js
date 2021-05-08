@@ -77,12 +77,11 @@ const login = (req, res) => {
               const token = jwt.sign(payload, secret, {
                 expiresIn: 1008000,
               });
-              res.status(200).send("Bearer " + token);
-              // res.json({
-              //   status: true,
-              //   message: "Login Successful",
-              //   userDetails: results[0],
-              // });
+              res.status(200).send({
+                username: results[0].name,
+                email: results[0].email,                            
+                token: 'Bearer '+ token,
+              });
             } else {
               res.json({
                 status: false,
@@ -121,15 +120,7 @@ const signupuser = (req, res) => {
         const newUser = new UserProfile({
           username: req.body.username,
           email: req.body.email,
-          password: req.body.password,
         });
-
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(newUser.password, salt, (err, hash) => {
-            if (err) {
-              throw err;
-            }
-            newUser.password = hash;
             var token = jwt.sign({ id: newUser.id }, secret, {
               expiresIn: 86400, // 24 hours
             });
@@ -145,9 +136,7 @@ const signupuser = (req, res) => {
                 token: "Bearer " + token,
               });
 
-            });
-          });
-        }).catch(function (err) {
+            }).catch(function (err) {
           res.status(400).json(err);
         });
       }
