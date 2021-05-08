@@ -5,7 +5,7 @@ import loginForm from "./components/loginForm/loginForm";
 import signupForm from "./components/signupForm/signupForm";
 import Navbar from "./components/navBar/navBar";
 import Home from "./components/LandingPage/home";
-import SearchBar from "./components/CommunitySearch/searchbar.js";
+/* import SearchBar from "./components/CommunitySearch/searchbar.js"; */
 import CommunityHomePage from "./components/CommunityHomePage/CommunityHomePage";
 import CreatePost from "./components/CommunityHomePage/CreatePost";
 import Post from "./components/CommunityHomePage/Post";
