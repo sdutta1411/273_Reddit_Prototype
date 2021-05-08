@@ -21,6 +21,7 @@ export default function Post() {
 
     const[title,setTitle] = useState("");
     const[text, setText] = useState("");
+    const postType="Text";
 
     return (
         <>
@@ -66,7 +67,7 @@ export default function Post() {
             />
             </CardContent>
             <br/>
-            <CreatePostFooter title={title} text={text} />
+            <CreatePostFooter postType={postType} title={title} text={text} />
             </Card>            
         </Col>
         </Row>

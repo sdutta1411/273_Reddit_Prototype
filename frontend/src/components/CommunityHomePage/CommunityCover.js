@@ -72,7 +72,7 @@ export default function CommunityCover({communityName,isUserSub}) {
           'Authorization': token
         }
         const body = {
-         'email':email,'communityName':'Farewell part'
+         'email':email,'communityName':'Avengers'
         }
         const response = await axios.post('http://localhost:3001/api/community/joinCommunity',body,{
           headers: headers
@@ -94,7 +94,7 @@ export default function CommunityCover({communityName,isUserSub}) {
           'Authorization': token
         }
         const body = {
-         'email':email,'communityName':'Farewell part'
+         'email':email,'communityName':'Avengers'
         }
         const response = await axios.post('http://localhost:3001/api/community/leaveCommunity',body,{
           headers: headers
@@ -142,17 +142,17 @@ export default function CommunityCover({communityName,isUserSub}) {
         <Card className={classes.root}>
         <div className={classes.details}>
           <CardContent className={classes.content}>
-            <Typography style={{marginLeft:"70px"}} component="h5" variant="h5">
+            <Typography style={{marginLeft:"70px"}}>
               Group Name
             {isUserSub?
-            <Button onClick={handleLeaveCommunity} style={{fontWeight:"bold",marginLeft:"200px",fontSize:"12px",textAlign:"center",color:"#FFFFFF",background:"#0079D3",borderRadius:"10px"}} variant="contained">
+            <Button onClick={handleLeaveCommunity} style={{textTransform:"none",fontWeight:"bold",marginLeft:"200px",fontSize:"12px",textAlign:"center",color:"#FFFFFF",background:"#0079D3",borderRadius:"10px"}} variant="contained">
               Joined
             </Button>:
-            <Button onClick={handleJoinCommunity} style={{fontWeight:"bold",marginLeft:"200px",fontSize:"12px",textAlign:"center",color:"#FFFFFF",background:"#0079D3",borderRadius:"10px"}} variant="contained">
+            <Button onClick={handleJoinCommunity} style={{textTransform:"none",fontWeight:"bold",marginLeft:"200px",fontSize:"12px",textAlign:"center",color:"#FFFFFF",background:"#0079D3",borderRadius:"10px"}} variant="contained">
               Join
             </Button>
             }
-            <Button onClick={handleCreatePost} style={{fontWeight:"bold",marginLeft:"1000px",fontSize:"16px",padding:"10px 20px 10px 20px",textAlign:"center",lineHeight:"20.7px",color:"#FFFFFF",background:"#2ECC40",borderRadius:"10px"}} variant="contained">
+            <Button onClick={handleCreatePost} style={{textTransform:"none",fontWeight:"bold",marginLeft:"700px",fontSize:"14px",textAlign:"center",color:"#FFFFFF",background:"#2ECC40",borderRadius:"10px"}} variant="contained">
             Create Post
             </Button>
             </Typography>

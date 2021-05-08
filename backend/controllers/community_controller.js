@@ -73,10 +73,13 @@ const leaveCommunity = async(req, res) => {
   console.log("community exists: "+comm);
   console.log("user exists: "+user);
   if(comm){
-    _.remove(comm.subscribedBy, function(v) { return v === user._id; });
-    console.log("removed user: "+user._id+ " from comm: "+comm._id+":::"+comm.subscribedBy); 
+    comm.subscribedBy = comm.subscribedBy.filter(
+      (s) => s.toString() !== user._id.toString()
+    );
     await comm.save();
-    _.pull(user.subscribedCommunities, comm._id);
+    user.subscribedCommunities = user.subscribedCommunities.filter(
+      (s) => s.toString() !== comm._id.toString()
+    );
     await user.save();
     return res.status(200).json("You left community");
   }  
@@ -96,20 +99,22 @@ const getUserCommunities = async(req, res) => {
 
 // Check if user is a member of community - Community Home Page
 const checkUserSubscribed = async(req, res) => {  
-  console.log("checkUserSubscribed API"+JSON.stringify(req.body.email));
+  console.log("checkUserSubscribed API"+JSON.stringify(req.body.email)+" "+JSON.stringify(req.body.communityName));
   var userSubscribed = false;
   const usercomms = await UserProfile.find({email:req.body.email},{subscribedCommunities:1});
   const c = await Community.findOne({communityName:req.body.communityName});
   console.log("c:: "+c._id)
-  //console.log("usercomms: "+usercomms[0].subscribedCommunities);
+  console.log("usercomms: "+usercomms[0].subscribedCommunities);
   usercomms[0].subscribedCommunities.forEach(comm=>{
-    if(comm!==c._id){
+    if(String(comm).valueOf() == new String(c._id).valueOf()){
       userSubscribed = true;
     }
   })
   if(userSubscribed===true){
+    console.log("user is subscribed to community");
     return res.status(200).json("You have subscribed to this community");
   }else{
+    console.log("user is not subscribed to community");
     return res.status(404).json("You have not subscribed to this community");
   }  
 };

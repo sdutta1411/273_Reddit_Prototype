@@ -16,7 +16,7 @@ export default function CommunityHomePage() {
 
     var userLocalStorage = JSON.parse(localStorage.getItem("user"));
     const token = userLocalStorage.token;
-    var communityName = 'Team11';
+    var communityName = 'Avengers';
 
     useEffect(() =>{
         const onLoadCommunityHomePage = async() =>{
@@ -46,6 +46,7 @@ export default function CommunityHomePage() {
             headers: headers
             });
             if(response.status===200){
+                console.log("user is subscribed to community:: "+JSON.stringify(response.data))
                 setIsUserSub(true);
             }
         }
