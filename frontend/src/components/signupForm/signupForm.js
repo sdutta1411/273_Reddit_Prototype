@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -17,30 +16,6 @@ import Modal from "@material-ui/core/Modal";
 import Paper from "@material-ui/core/Paper";
 import img from "../../images/Reddit.png";
 import SignIn from "../LoginForm/loginForm";
-=======
-import React, { useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import RedditIcon from '@material-ui/icons/Reddit';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Modal from '@material-ui/core/Modal';
-import Paper from '@material-ui/core/Paper';
-import img from "../../images/Reddit.png"
-import SignIn from '../loginForm/loginForm';
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { userSignup } from "../../actions/signUpAction"
-import { Redirect } from "react-router";
->>>>>>> 0fbaea687a93ae44c410c36f430bada3fa8dc9e3
 
 const useStyles = makeStyles((theme) => ({
   root: {
