@@ -1,9 +1,9 @@
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Switch, Route, Link } from "react-router-dom";
 import "./App.css";
-import loginForm from "./components/loginForm/loginForm";
-import signupForm from "./components/signupForm/signupForm";
-import Navbar from "./components/navBar/navBar";
+import loginForm from "./components/LoginForm/loginForm";
+import signupForm from "./components/SignupForm/signupForm";
+import Navbar from "./components/NavBar/navBar";
 import Home from "./components/LandingPage/home";
 import SearchBar from "./components/CommunitySearch/searchbar.js";
 import CommunityHomePage from "./components/CommunityHomePage/CommunityHomePage";
@@ -48,7 +48,7 @@ const App = () => {
           <Route path="/createpost/link" exact component={LinkPostType} />
           <Route path="/dashboard" exact component={DashboardPage} />
 
-          {/* <Route path="/" exact component={Home} /> */}
+          <Route path="/" exact component={Home} />
         </Switch>
       </ThemeProvider>
     </div>
