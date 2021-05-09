@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -16,6 +16,10 @@ import Modal from "@material-ui/core/Modal";
 import Paper from "@material-ui/core/Paper";
 import img from "../../images/Reddit.png";
 import SignIn from "../LoginForm/loginForm";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { userSignup } from "../../actions/signUpAction"
+import { Redirect } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   root: {
