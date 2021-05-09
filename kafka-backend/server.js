@@ -6,8 +6,9 @@ var InitiateMongoServer = require("./database")
 InitiateMongoServer();
 //topics files
 
-let user_login = require("./services/authentication/user_login");
-let signup = require("./services/authentication/signup");
+// let user_login = require("./services/authentication/user_login");
+// let signup = require("./services/authentication/signup");
+let chat = require("./services/chat")
 
 
 function handleTopicRequest(topic_name, fname) {
@@ -21,7 +22,7 @@ function handleTopicRequest(topic_name, fname) {
     var data = JSON.parse(message.value);
     console.log("123", data.data);
     fname.handle_request(data.data, function (err, res) {
-      console.log("after handle" + res);
+      // console.log("after handle" + res);
       var payloads = [
         {
           topic: data.replyTo,
@@ -41,7 +42,7 @@ function handleTopicRequest(topic_name, fname) {
 }
 
 function response(data, res, producer) {
-  console.log("after handle", res);
+  // console.log("after handle", res);
   var payloads = [
     {
       topic: data.replyTo,
@@ -66,5 +67,6 @@ function response(data, res, producer) {
 // Add your TOPICs here
 //first argument is topic name
 //second argument is a function that will handle this topic request
-handleTopicRequest("user_login", user_login);
-handleTopicRequest("signup", signup);
+// handleTopicRequest("user_login", user_login);
+// handleTopicRequest("signup", signup);
+handleTopicRequest("chat", chat);
