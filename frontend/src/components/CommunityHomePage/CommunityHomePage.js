@@ -1,5 +1,9 @@
 import React from 'react'
 import { Form,FormControl,Modal,Container,Row, Col,Image} from 'react-bootstrap';
+<<<<<<< HEAD
+// import NavBarAfterLogin from '../NavBar/NavBarAfterLogin';
+=======
+>>>>>>> d07c2997e48552b4a23318fd0238ada703506086
 import Grid from '@material-ui/core/Grid';
 import CommunityCover from './CommunityCover';
 import CreatePost from './CreatePost';
@@ -19,6 +23,21 @@ export default function CommunityHomePage() {
     var communityName = 'Avengers';
 
     useEffect(() =>{
+<<<<<<< HEAD
+        // const onLoadCommunityHomePage = () =>{
+        //     const requestOptions = {
+        //         method: 'GET',
+        //        headers: { 'Content-Type': 'application/json' ,'Authorization': token},
+        //       }
+        //     axios.get("http://localhost:3001/api/community/getCommunityDetails",requestOptions)
+        //     .then(response=>{
+        //         console.log("Response: "+response.data)
+        //     }).catch(err=>{
+        //     console.log(err);
+        //     });
+        // }
+        // onLoadCommunityHomePage();
+=======
         const onLoadCommunityHomePage = async() =>{
             var sortBy = 'old';
             var limit = 10;
@@ -51,6 +70,7 @@ export default function CommunityHomePage() {
             }
         }
         onLoadCommunityHomePage();
+>>>>>>> d07c2997e48552b4a23318fd0238ada703506086
     },[]);
     return (
         <>
