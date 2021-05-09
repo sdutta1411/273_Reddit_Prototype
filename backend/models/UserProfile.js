@@ -11,10 +11,10 @@ const UserProfileSchema = new mongoose.Schema(
         required: true,
         unique: true 
     },
-    password:{
-        type: String,
-        required: true
-    },
+    // password:{
+    //     type: String,
+    //     required: true
+    // },
     avatar:{
         type:String
     },
@@ -29,7 +29,23 @@ const UserProfileSchema = new mongoose.Schema(
     },
     description: {
         type:String
-    }
+    },
+    posts: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Post',
+        },
+      ],
+    subscribedCommunities: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Community',
+        },
+      ],
+    totalComments: {
+        type: Number,
+        default: 0,
+      },
   },{timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }});
 
 

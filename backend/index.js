@@ -4,11 +4,20 @@ const passport = require('passport');
 const cors = require("cors");
 
 var mysqlConfig = require("./config/mysql_config");
+<<<<<<< HEAD
 const mongoConfig = require('./config/util').mongoURI;
 const chat = require("./routes/chat")
 const user = require("./routes/user_routes");
 const post = require("./routes/post_routes");
 const bodyParser = require("body-parser");
+=======
+var InitiateMongoServer = require("./config/mongo_config");
+
+//Connecting to Mongo Server
+mongoose.Promise = global.Promise;
+mongoose.set("useCreateIndex", true);
+InitiateMongoServer();
+>>>>>>> d07c2997e48552b4a23318fd0238ada703506086
 
 const app = express();
 app.use(express.json())
@@ -21,7 +30,10 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+<<<<<<< HEAD
 
+=======
+>>>>>>> d07c2997e48552b4a23318fd0238ada703506086
 
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -39,6 +51,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+<<<<<<< HEAD
 
 
 
@@ -62,16 +75,32 @@ mongoConnection();
 
 
 
+=======
+app.use(cors());
+app.listen(3001, (req, res) => {
+  console.log("server running on port 3001....");
+});
+const user = require("./routes/user_routes");
+const community = require("./routes/community_routes");
+const post = require("./routes/post_routes");
+//const comment = require("./routes/comment_routes");
+const message = require("./routes/message_routes");
+>>>>>>> d07c2997e48552b4a23318fd0238ada703506086
 
 // User Routes
 app.use("/api/user", user);
 app.use("/api/chat",chat);
 //Community Routes
-//app.use("/api/community", community);
+app.use("/api/community", community);
 //Post Routes
 app.use("/api/posts", post);
-//Comment Routes
+//Comment Routescls
 //app.use("/api/comment", comment);
+<<<<<<< HEAD
 app.listen(3001, (req, res) => {
   console.log("server running on port 3001....");
 });
+=======
+//Message Routes
+app.use("/api/message", message);
+>>>>>>> d07c2997e48552b4a23318fd0238ada703506086

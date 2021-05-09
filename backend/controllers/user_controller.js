@@ -77,12 +77,11 @@ const login = (req, res) => {
               const token = jwt.sign(payload, secret, {
                 expiresIn: 1008000,
               });
-              res.status(200).send("Bearer " + token);
-              // res.json({
-              //   status: true,
-              //   message: "Login Successful",
-              //   userDetails: results[0],
-              // });
+              res.status(200).send({
+                username: results[0].name,
+                email: results[0].email,                            
+                token: 'Bearer '+ token,
+              });
             } else {
               res.json({
                 status: false,
@@ -117,23 +116,17 @@ const signupuser = (req, res) => {
         return res.status(400).json("Email already exists");
       } else {
         console.log("Creating a new user");
+
         const newUser = new UserProfile({
           username: req.body.username,
           email: req.body.email,
-          password: req.body.password,
         });
-        bcrypt.genSaltSync(10, (err, salt) => {
-          bcrypt.hashSync(newUser.password, salt, (err, hash) => {
-            if (err) throw err;
-            newUser.password = hash;
-            console.log("New user: " + newUser);
-            var token = jwt.sign({ id: newUser.id }, keys.secret, {
+            var token = jwt.sign({ id: newUser.id }, secret, {
               expiresIn: 86400, // 24 hours
             });
             newUser.save((err) => {
               if (err) {
                 res.status(500).send({ message: err });
-                return;
               }
 
               res.json({
@@ -142,13 +135,11 @@ const signupuser = (req, res) => {
                 email: newUser.email,
                 token: "Bearer " + token,
               });
-            });
-          });
+
+            }).catch(function (err) {
+          res.status(400).json(err);
         });
       }
-    })
-    .catch(function (err) {
-      res.status(400).json(err);
     });
 };
 

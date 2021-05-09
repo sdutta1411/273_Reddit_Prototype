@@ -14,11 +14,19 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Modal from '@material-ui/core/Modal';
 import Paper from '@material-ui/core/Paper';
+<<<<<<< HEAD
 import img from "../../images/Reddit.png";
 import { Redirect } from "react-router";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { userLogin } from "../../actions/loginAction"
+=======
+import img from "../../images/Reddit.png"
+import axios from 'axios';
+import { useState ,useEffect} from 'react'
+import {useHistory} from 'react-router-dom';
+
+>>>>>>> d07c2997e48552b4a23318fd0238ada703506086
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,10 +62,18 @@ const useStyles = makeStyles((theme) => ({
 const SignIn = (props) => {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
+<<<<<<< HEAD
  
   const [open, setOpen] = useState(false);
   const [inputs, setInputs] = useState({});
   let redirectVar = null;
+=======
+  const history = useHistory();
+  const [open, setOpen] = React.useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+>>>>>>> d07c2997e48552b4a23318fd0238ada703506086
   const handleOpen = () => {
     setOpen(true);
   };
@@ -78,6 +94,26 @@ const SignIn = (props) => {
       console.log("redirect");
       redirectVar = <Redirect to="/communityhome" />;
     }
+  }
+
+  const loadSuccess = () =>{
+    history.push('/dashboard');
+  }
+  const handleLogin = (e) =>{
+    e.preventDefault();
+    axios
+    .post("http://localhost:3001/api/user/login", {
+      email,
+      password,
+    })
+    .then((response) => {
+      if (response.status !== 400) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+        loadSuccess();
+      }
+    }).catch(err=>{
+      console.log("Error while login:: "+err);
+        });
   }
 
   return (
@@ -106,7 +142,11 @@ const SignIn = (props) => {
               <Typography component="h1" variant="h5">
                 Sign in
               </Typography>
+<<<<<<< HEAD
               <form className={classes.form} onSubmit={handleSubmit} noValidate>
+=======
+              <form className={classes.form} onSubmit={handleLogin}>
+>>>>>>> d07c2997e48552b4a23318fd0238ada703506086
                 <TextField
                   variant="outlined"
                   margin="normal"
@@ -115,6 +155,8 @@ const SignIn = (props) => {
                   id="email"
                   label="Email Address"
                   name="email"
+                  value={email} 
+                  onChange={e=> setEmail(e.target.value)}
                   autoComplete="email"
                   autoFocus
                   onChange={handleInputChange} value={inputs.email}
@@ -128,6 +170,8 @@ const SignIn = (props) => {
                   name="password"
                   label="Password"
                   type="password"
+                  value={password} 
+                  onChange={e=> setPassword(e.target.value)}
                   id="password"
                   autoComplete="current-password"
                   onChange={handleInputChange} value={inputs.password}

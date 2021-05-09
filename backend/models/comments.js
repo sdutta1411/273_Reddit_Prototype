@@ -22,13 +22,13 @@ const commentSchema = new mongoose.Schema({
     upvotedBy: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'UserProfile',
       },
     ],
     downvotedBy: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'UserProfile',
       },
     ],
     pointsCount: {

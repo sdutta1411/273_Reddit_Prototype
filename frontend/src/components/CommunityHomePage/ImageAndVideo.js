@@ -16,6 +16,8 @@ export default function ImageAndVideo() {
     const[imgvid, setImgAndVid] = useState([]);
     const[imgvidurls,setImgAndVidUrls] = useState([]);
     const[noOfImg, setNoOfImg] = useState(0);
+    const postType="Image";
+
     console.log("noOfImg: "+noOfImg);
 
     const uploadImage = (files) =>{
@@ -93,7 +95,7 @@ export default function ImageAndVideo() {
             />             */}
             </CardContent>
             <br/>
-            <CreatePostFooter title={title} imgvidurls={imgvidurls}/>
+            <CreatePostFooter postType={postType} title={title} imgvidurls={imgvidurls}/>
             </Card>
         </Col>
         </Row>
