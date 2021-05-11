@@ -1,0 +1,50 @@
+.ModerationPage {
+    width: 200px;
+    font-size: small;
+    box-shadow:  2px 0px 1px 1px #F4f5fa;
+    border: 0px solid;
+    z-index: 1;
+}
+
+.ModerationPage__logo {
+    display:  flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ModerationPage__logo > img {
+    width: 60%;
+    margin: 10px 0;
+}
+
+.ModerationPage__search {
+    margin: 2em 0;
+}
+
+.ModerationPage__search > input {
+    padding: 8px 10px;
+    border: 1px solid #f4f5fa;
+    box-shadow: 0px 1px 0px 1px #f4f5fa;
+    border-radius: 0px 50px 50px 0px;
+    position: relative;
+    outline-width: 0;
+}
+
+.ModerationPage__search > i {
+    right: 30px;
+    position: relative;
+}
+
+.ModerationPage a {
+    text-decoration: none;
+    color: #808080;
+}
+
+.ModerationPage__link li {
+ padding: 10px 15px;
+}
+
+.ModerationPage hr {
+    margin: 2.5em 0 ;
+    border: 1px solid #f4f5fa;
+}

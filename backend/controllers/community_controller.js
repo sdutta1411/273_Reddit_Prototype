@@ -120,7 +120,7 @@ const checkUserSubscribed = async(req, res) => {
 };
 
 const approveUsers = async(req, res) => {  
-  console.log("Approve User request API"+req.body.email+","+req.body.communityName);
+  /* console.log("Approve User request API"+req.body.email+","+req.body.communityName);
   const comm = await Community.findOne({ communityName: req.body.communityName });
   const user = await UserProfile.findOne({email:req.body.email});
   console.log("community exists: "+comm);
@@ -135,10 +135,10 @@ const approveUsers = async(req, res) => {
     );
     await user.save();
     return res.status(200).json("You left community");
-  }  
+  }   */
 };
 const removeUsers = async(req, res) => {  
-  console.log("Leave Community API"+req.body.email+","+req.body.communityName);
+  /* console.log("Leave Community API"+req.body.email+","+req.body.communityName);
   const comm = await Community.findOne({ communityName: req.body.communityName });
   const user = await UserProfile.findOne({email:req.body.email});
   console.log("community exists: "+comm);
@@ -153,11 +153,38 @@ const removeUsers = async(req, res) => {
     );
     await user.save();
     return res.status(200).json("You left community");
-  }  
+  }   */
 };
 
+/* 
+const removeUsers = async(req, callback) => {
+    let search = {
+        "_id": req.list_id
+    }
+    let update = {
+        $pull: {
+            "list": req.user_id
+        }
+    }
+    ListModel.findOneAndUpdate(search, update , {safe: true, new: true, useFindAndModify: false}, function(err, result){
+    if(err) {
+        callback(null,{
+            success: false,
+            msg: "Something went wrong",
+            payload: err
+        })
+    } else {
+        callback(null,{
+            success: true,
+            msg: "Successfully removed the user" ,
+            payload: result
+        }) 
+    }
+    });
+} */
+
 const searchCommunity = async(req, res) => {  
-  console.log("Leave Community API"+req.body.email+","+req.body.communityName);
+  /* console.log("Leave Community API"+req.body.email+","+req.body.communityName);
   const comm = await Community.findOne({ communityName: req.body.communityName });
   const user = await UserProfile.findOne({email:req.body.email});
   console.log("community exists: "+comm);
@@ -172,7 +199,7 @@ const searchCommunity = async(req, res) => {
     );
     await user.save();
     return res.status(200).json("You left community");
-  }  
+  }   */
 };
 
 
