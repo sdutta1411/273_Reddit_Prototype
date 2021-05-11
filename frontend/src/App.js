@@ -52,7 +52,7 @@ const App = () => {
           <Route path="/createpost/post" exact component={Post} />
           <Route path="/createpost/imageandvideo" exact component={ImageAndVideo}/>
           <Route path="/createpost/link" exact component={LinkPostType} />
-<<<<<<< HEAD
+
          */}
 
           <Route path="/dashboard" exact component={DashboardPage} />
