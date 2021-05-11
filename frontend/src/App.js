@@ -2,7 +2,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Switch,Route } from "react-router-dom";
 import "./App.css";
 
-import loginForm from "./components/LoginForm/loginForm";
+import LoginForm from "./components/LoginForm/LoginForm";
 import signupForm from "./components/SignupForm/signupForm";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -17,7 +17,7 @@ import Post from "./components/CommunityHomePage/Post";
 import ImageAndVideo from "./components/CommunityHomePage/ImageAndVideo";
 import LinkPostType from "./components/CommunityHomePage/LinkPostType";
 import DashboardPage from "./components/DasboardPage/DashboardPage";
-
+/* import ModerationPage from "./components/CommunityModeration/ModerationPage" */
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -54,7 +54,8 @@ const App = () => {
           <Route path="/createpost/link" exact component={LinkPostType} />
 
          */}
-
+         {/*  <Route path="/ModerationPage" exact component={ModerationPage} /> */}
+           
           <Route path="/dashboard" exact component={DashboardPage} />
 
 

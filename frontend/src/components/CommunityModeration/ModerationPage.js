@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 import React from 'react';
 import {Link} from "react-router-dom";
-import image from "../../images/Reddit.png";
+/* import image from "../../images/Reddit.png"; */
 import "./ModerationPage.css";
 export default function ModerationPage(){
     const menus = [
@@ -35,10 +35,10 @@ export default function ModerationPage(){
       ];
         return(
             <div className="CommunityModerator">
-                <div className="CommunityModerator_logo">
-                    // eslint-disable-next-line jsx-a11y/img-redundant-alt
+                {/* <div className="CommunityModerator_logo">
+                    
                     <img src = {image} alt="this is reddit image"/>
-                </div>
+                </div> */}
              <div className="CommunityModerator_search">
                  <input type="text" name="search" placeholder="Search"/>
             </div>
