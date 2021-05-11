@@ -10,5 +10,8 @@ router.post("/registeruser", userController.signupuser);
 router.post("/login", userController.login);
 //test route
 router.post("/test", checkAuth, userController.test);
+//get user details from mongo
+router.post("/getUserDetails", checkAuth, userController.getUserDetails);
+
 
 module.exports = router;

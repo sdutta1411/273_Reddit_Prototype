@@ -147,7 +147,16 @@ const test = (req, res) => {
   res.send("hello hello");
 };
 
-exports.test = test;
-exports.signup = signup;
-exports.signupuser = signupuser;
-exports.login = login;
+const getUserDetails = async(req,res) =>{
+console.log("In get user details api");
+const user = await UserProfile.findOne({email:req.body.email});
+console.log("User:: "+user);
+res.status(200).json(user);
+}
+module.exports = {
+  test,
+  signup,
+  signupuser,
+  login,
+  getUserDetails
+};
