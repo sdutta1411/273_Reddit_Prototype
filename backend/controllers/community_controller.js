@@ -119,11 +119,71 @@ const checkUserSubscribed = async(req, res) => {
   }  
 };
 
+const approveUsers = async(req, res) => {  
+  console.log("Approve User request API"+req.body.email+","+req.body.communityName);
+  const comm = await Community.findOne({ communityName: req.body.communityName });
+  const user = await UserProfile.findOne({email:req.body.email});
+  console.log("community exists: "+comm);
+  console.log("user exists: "+user);
+  if(comm){
+    comm.subscribedBy = comm.subscribedBy.filter(
+      (s) => s.toString() !== user._id.toString()
+    );
+    await comm.save();
+    user.subscribedCommunities = user.subscribedCommunities.filter(
+      (s) => s.toString() !== comm._id.toString()
+    );
+    await user.save();
+    return res.status(200).json("You left community");
+  }  
+};
+const removeUsers = async(req, res) => {  
+  console.log("Leave Community API"+req.body.email+","+req.body.communityName);
+  const comm = await Community.findOne({ communityName: req.body.communityName });
+  const user = await UserProfile.findOne({email:req.body.email});
+  console.log("community exists: "+comm);
+  console.log("user exists: "+user);
+  if(comm){
+    comm.subscribedBy = comm.subscribedBy.filter(
+      (s) => s.toString() !== user._id.toString()
+    );
+    await comm.save();
+    user.subscribedCommunities = user.subscribedCommunities.filter(
+      (s) => s.toString() !== comm._id.toString()
+    );
+    await user.save();
+    return res.status(200).json("You left community");
+  }  
+};
+
+const searchCommunity = async(req, res) => {  
+  console.log("Leave Community API"+req.body.email+","+req.body.communityName);
+  const comm = await Community.findOne({ communityName: req.body.communityName });
+  const user = await UserProfile.findOne({email:req.body.email});
+  console.log("community exists: "+comm);
+  console.log("user exists: "+user);
+  if(comm){
+    comm.subscribedBy = comm.subscribedBy.filter(
+      (s) => s.toString() !== user._id.toString()
+    );
+    await comm.save();
+    user.subscribedCommunities = user.subscribedCommunities.filter(
+      (s) => s.toString() !== comm._id.toString()
+    );
+    await user.save();
+    return res.status(200).json("You left community");
+  }  
+};
+
+
 module.exports = {
   createnewcommunity,
   getAllCommunityDetails,
   joinCommunity,
   leaveCommunity,
   getUserCommunities,
-  checkUserSubscribed
+  checkUserSubscribed,
+  approveUsers,
+  removeUsers,
+  searchCommunity
 };

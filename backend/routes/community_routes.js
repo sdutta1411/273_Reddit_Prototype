@@ -21,5 +21,16 @@ router.post("/getUserCommunities", checkAuth, communityController.getUserCommuni
 //Check if user is a member of community - community home page
 router.post("/checkUserSubscribed", checkAuth, communityController.checkUserSubscribed);
 
+/* //approve users their request to join
+router.post("/approveUsers", checkAuth, communityController.approveUsers);
+
+//remove users from the moderation page
+router.post("/removeUsers", checkAuth, communityController.removeUsers);
+
+//search communities
+router.get("/searchCommunity", checkAuth, communityController.searchCommunity);
+
+ */
+
 
 module.exports = router;
