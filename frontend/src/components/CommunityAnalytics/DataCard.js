@@ -9,17 +9,16 @@ import {
   Legend,
 } from "recharts";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: "48%",
+    // maxWidth: "48%",
     marginTop:"3%",
-    marginLeft:"2%"
+    marginLeft:"2%",
+    marginRight:"2%"
   },
   bullet: {
     display: "inline-block",
@@ -33,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 12,
   },
   card: {
-    marginRight:"2%",
+    // marginRight:"2%",
   },
 
 }));
@@ -42,7 +41,7 @@ export default function GraphCard(props) {
   const classes = useStyles();
   return (
     <div>
-      <Card className={classes.root}>
+      <Card className={classes.root} variant="outlined">
         <CardContent>
         <Typography variant="h5" component="h2" className={classes.title}>
             {props.text}

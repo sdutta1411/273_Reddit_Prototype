@@ -1,111 +1,243 @@
 import React from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import RedditIcon from "@material-ui/icons/Reddit";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import Modal from "@material-ui/core/Modal";
-import Paper from "@material-ui/core/Paper";
-import img from "../../images/Reddit.png";
-import GraphCard from "./DataCard"
+import Typography from "@material-ui/core/Typography";
+import GraphCard from "./DataCard";
+import TextCard from "./TextCard";
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
+    // height: "100vh",
+    // display: "flex",
   },
-  image: {
-    backgroundImage: `url(${img})`,
-    backgroundRepeat: "no-repeat",
-    backgroundColor:
-      theme.palette.type === "light"
-        ? theme.palette.grey[50]
-        : theme.palette.grey[900],
-    backgroundSize: "cover",
-    backgroundPosition: "center",
+  title: {
+    fontSize: "30px",
+    marginTop: "1%",
+    marginLeft: "3%",
   },
-  paper: {
-    margin: theme.spacing(8, 4),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
+  formRow: {
+    // marginLeft: "1%",
+    overflowX: 'auto'
   },
 }));
 
 export default function CommunityAnalytics() {
-    const data = [
-        {
-          name: "page 1",
-          UserCount: 4000,
-          PostCount: 2400,
-          ActiveUser: "2400",
-          BestPost: "URL TO POST",
-        },
-        {
-          name: "page 2",
-          UserCount: 3000,
-          PostCount: 1398,
-          ActiveUser: "2210",
-          BestPost: "URL TO POST",
-        },
-        {
-          name: "page 3",
-          UserCount: 2000,
-          PostCount: 9800,
-          ActiveUser: "2290",
-          BestPost: "URL TO POST",
-        },
-        {
-          name: "page 4",
-          UserCount: 2780,
-          PostCount: 3908,
-          ActiveUser: "2000",
-          BestPost: "URL TO POST",
-        },
-        {
-          name: "page 5",
-          UserCount: 1890,
-          PostCount: 4800,
-          ActiveUser: "2181",
-          BestPost: "URL TO POST",
-        },
-        {
-          name: "page 6",
-          UserCount: 2390,
-          PostCount: 3800,
-          ActiveUser: "2500",
-          BestPost: "URL TO POST",
-        },
-        {
-          name: "page 7",
-          UserCount: 3490,
-          PostCount: 4300,
-          ActiveUser: "2100",
-          BestPost: "URL TO POST",
-        },
-      ];
+  const data = [
+    {
+      name: "page 1",
+      UserCount: 3960,
+      PostCount: 240,
+      ActiveUser: "2400",
+      UserPostCount: 9,
+      BestPost: "URL TO POST",
+    },
+    {
+      name: "page 2",
+      UserCount: 3000,
+      PostCount: 138,
+      ActiveUser: "2210",
+      UserPostCount: 10,
+      BestPost: "URL TO POST",
+    },
+    {
+      name: "page 3",
+      UserCount: 2000,
+      PostCount: 800,
+      ActiveUser: "2290",
+      UserPostCount: 19,
+      BestPost: "URL TO POST",
+    },
+    {
+      name: "page 4",
+      UserCount: 2780,
+      PostCount: 908,
+      ActiveUser: "2000",
+      UserPostCount: 29,
+      BestPost: "URL TO POST",
+    },
+    {
+      name: "page 5",
+      UserCount: 1890,
+      PostCount: 540,
+      ActiveUser: "2181",
+      UserPostCount: 12,
+      BestPost: "URL TO POST",
+    },
+    {
+      name: "page 6",
+      UserCount: 2390,
+      PostCount: 380,
+      ActiveUser: "2500",
+      UserPostCount: 15,
+      BestPost: "URL TO POST",
+    },
+    {
+      name: "page 7",
+      UserCount: 3490,
+      PostCount: 430,
+      ActiveUser: "2100",
+      UserPostCount: 28,
+      BestPost: "URL TO POST",
+    },
+    {
+      name: "page 8",
+      UserCount: 490,
+      PostCount: 40,
+      ActiveUser: "2100",
+      UserPostCount: 82,
+      BestPost: "URL TO POST",
+    },
+  ];
+  const userTableData = [
+      {
+          name:'page 1',
+          ActiveUser: "Ujjwal",
+          UserPostCount: 19
+      },
+      {
+          name:'page 2',
+          ActiveUser: "Ujjwal",
+          UserPostCount: 19
+      },
+      {
+          name:'page 3',
+          ActiveUser: "Ujjwal",
+          UserPostCount: 19
+      },
+      {
+          name:'page 4',
+          ActiveUser: "Ujjwal",
+          UserPostCount: 19
+      },
+      {
+          name:'page 5',
+          ActiveUser: "Ujjwal",
+          UserPostCount: 19
+      },
+      {
+          name:'page 6',
+          ActiveUser: "Ujjwal",
+          UserPostCount: 19
+      },
+      {
+          name:'page 7',
+          ActiveUser: "Ujjwal",
+          UserPostCount: 19
+      },
+      {
+          name:'page 8',
+          ActiveUser: "Ujjwal",
+          UserPostCount: 19
+      },
+  ]
+
+  const communityTableData = [
+      {
+          name: 'page 1',
+          title: 'Demo',
+          Author: 'Ujjwal',
+          Votes: 1
+      },
+      {
+          name: 'page 2',
+          title: 'Demo2',
+          Author: 'Ujjwal',
+          Votes: 312
+      },
+      {
+          name: 'page 3',
+          title: 'Demo3',
+          Author: 'Ujjwal',
+          Votes: 101
+      },
+      {
+          name: 'page 4',
+          title: 'Demo4',
+          Author: 'Ujjwal',
+          Votes: 10
+      },
+      {
+          name: 'page 5',
+          title: 'Demo5',
+          Author: 'Ujjwal',
+          Votes: 12
+      },
+      {
+          name: 'page 6',
+          title: 'Demo6',
+          Author: 'Ujjwal',
+          Votes: 112
+      },
+      {
+          name: 'page 7',
+          title: 'Demo7',
+          Author: 'Ujjwal',
+          Votes: 102
+      },
+      {
+          name: 'page 8',
+          title: 'Demo8',
+          Author: 'Ujjwal',
+          Votes: 101
+      },
+  ]
   const classes = useStyles();
   return (
-    <div>
-      <GraphCard text="Number Of Posts Per Community" data={data} x_key="PostCount" bar_color = "#82ca9d"/>
-      <GraphCard text="Number Of Users Per Community" data={data} x_key="UserCount" bar_color = "#c882ca"/>
+    <div className={classes.root}>
+      <Typography variant="h5" component="h2" className={classes.title}>
+        Community Analytics
+      </Typography>
+      <Grid
+        container
+        // spacing={2}
+        direction="row"
+        justify="center"
+        alignItems="center"
+        className={classes.formRow}
+      >
+        <Grid item xs zeroMinWidth>
+          <GraphCard
+            text="Number Of Posts Per Community"
+            data={data}
+            x_key="PostCount"
+            bar_color="#82ca9d"
+          />
+        </Grid>
+        <Grid item xs zeroMinWidth>
+          <GraphCard
+            text="Number Of Users Per Community"
+            data={data}
+            x_key="UserCount"
+            bar_color="#c882ca"
+          />
+        </Grid>
+      </Grid>
+      <Grid
+        container
+        // spacing={2}
+        direction="row"
+        justify="center"
+        alignItems="center"
+        className={classes.formRow}
+      >
+        <Grid item xs zeroMinWidth>
+          <TextCard
+            text="Most Active User Per Community"
+            data={userTableData}
+            tableHead={['Community', 'User', 'Number Of Posts']}
+            bar_color="#82ca9d"
+          />
+        </Grid>
+        <Grid item xs zeroMinWidth>
+          <TextCard
+            text="Most Popular Post Per Community"
+            data={communityTableData}
+            tableHead={['Community', 'Post Title', 'Author', 'Votes']}
+            bar_color="#c882ca"
+          />
+        </Grid>
+      </Grid>
     </div>
   );
 }
