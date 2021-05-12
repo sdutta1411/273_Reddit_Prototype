@@ -10,7 +10,6 @@ const PostSchema = new mongoose.Schema({
   },
   postType: {
     type: String,
-    required: true,
   },
   textSubmission: {
     type: String,
@@ -20,11 +19,12 @@ const PostSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  imageSubmission: [{
-    imageLink: {
+  imageSubmission: [
+    {
+    //imageLink: {
       type: String,
       trim: true,
-    }
+    //}
   }],
   community: {
     type: mongoose.Schema.Types.ObjectId,
@@ -32,24 +32,28 @@ const PostSchema = new mongoose.Schema({
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'UserProfile',
   },
   upvotedBy: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'UserProfile',
     },
   ],
   downvotedBy: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'UserProfile',
     },
   ],
-  // pointsCount: {
-  //   type: Number,
-  //   default: 1,
-  // },
+  voteRatio: {
+    type: Number,
+    default: 0,
+  },
+  pointsCount: {
+    type: Number,
+    default: 1,
+  },
   
   // famousPost: {
   //   type: Number,
@@ -59,6 +63,7 @@ const PostSchema = new mongoose.Schema({
   //   type: Number,
   //   default: 0,
   // },
+
   comments :[{
     comment:{
            type: mongoose.Schema.Types.ObjectId,

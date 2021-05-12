@@ -12,7 +12,7 @@ import Chip from '@material-ui/core/Chip';
 import ChatRoundedIcon from '@material-ui/icons/ChatRounded';
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import axios from 'axios';
-import Editor from '@draft-js-plugins/editor';
+// import Editor from '@draft-js-plugins/editor';
 import CreatePostFooter from './CreatePostFooter';
 import { useState } from "react";
 
@@ -21,6 +21,7 @@ export default function Post() {
 
     const[title,setTitle] = useState("");
     const[text, setText] = useState("");
+    const postType="Text";
 
     return (
         <>
@@ -66,7 +67,7 @@ export default function Post() {
             />
             </CardContent>
             <br/>
-            <CreatePostFooter title={title} text={text} />
+            <CreatePostFooter postType={postType} title={title} text={text} />
             </Card>            
         </Col>
         </Row>

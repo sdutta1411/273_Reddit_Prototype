@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-/* import { InputAdornment, IconButton, TextField } from '@material-ui/core';
+import { InputAdornment, IconButton, TextField } from '@material-ui/core';
 import { useNavStyles } from '../styles/muiStyles';
 import SearchIcon from '@material-ui/icons/Search';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
- */
-/* const SearchBar = ({ isMobile, setSearchOpen }) => {
+
+const SearchBar = ({ isMobile, setSearchOpen }) => {
   const [searchInput, setSearchInput] = useState('');
   const history = useHistory();
   const classes = useNavStyles();
@@ -29,7 +29,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
       <form onSubmit={handleSearch}>
         <TextField
           type="search"
-          placeholder="Search for posts…"
+          placeholder="Search for community"
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           className={classes.inputField}
@@ -54,43 +54,6 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
       </form>
     </div>
   );
-};
-
-export default SearchBar;
- */
-
-
-
-const SearchBar = ({ searchQuery, setSearchQuery }) => {
-    const history = useHistory();
-    const onSubmit = (e) => {
-        history.push(`?s=${searchQuery}`);
-        e.preventDefault();
-    };
-
-    return (
-        <form
-            action="/"
-            method="get"
-            autoComplete="off"
-            onSubmit={onSubmit}
-        >
-            <label htmlFor="header-search">
-                <span className="visually-hidden">
-                    Search 
-                </span>
-            </label>
-            <input
-                value={searchQuery}
-                onInput={(e) => setSearchQuery(e.target.value)}
-                type="text"
-                id="header-search"
-                placeholder="Search"
-                name="s"
-            />
-            <button type="submit">Search</button>
-        </form>
-    );
 };
 
 export default SearchBar;

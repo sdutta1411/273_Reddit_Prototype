@@ -13,6 +13,8 @@ export default function LinkPostType() {
 
     const[title,setTitle] = useState("");
     const[link,setLink] = useState("");
+    const postType="Link";
+
     return (
         <>
         <Container>
@@ -45,7 +47,7 @@ export default function LinkPostType() {
             />            
             </CardContent>
             <br/>
-            <CreatePostFooter title={title} url={link} />
+            <CreatePostFooter postType={postType} title={title} link={link} />
             </Card>
         </Col>
         </Row>

@@ -3,11 +3,16 @@ import Chip from '@material-ui/core/Chip';
 import ChatRoundedIcon from '@material-ui/icons/ChatRounded';
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import axios from 'axios';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import {useEffect ,useState,setState} from 'react'
 
 
-export default function CreatePostFooter({title,text,imgvidurls,link}) {
+export default function CreatePostFooter({postType,title,text,imgvidurls,link}) {
     var userLocalStorage = JSON.parse(localStorage.getItem("user"));
     var token = userLocalStorage.token;
+    const[openPostSnack, setOpenPostSnack] = useState(false);    
+    console.log("Post type:: "+postType);
     console.log("Title & text in Create post FOOTER" +title+ ","+text);
     console.log("imgvidurls :"+imgvidurls);
     console.log("link: "+link);
@@ -23,6 +28,16 @@ export default function CreatePostFooter({title,text,imgvidurls,link}) {
         console.log("clicked handleSaveDraftClick");
     }
 
+    function Alert(props) {
+        return <MuiAlert elevation={10} variant="filled" {...props} />;
+    }
+    const handlePostSnack = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }    
+        setOpenPostSnack(false);
+      };
+
     const handlePostClick = () =>{
         console.log("creating text post");
         const headers = {
@@ -30,9 +45,10 @@ export default function CreatePostFooter({title,text,imgvidurls,link}) {
             'Authorization': token
         }
         const body = {
-            'communityName':userLocalStorage.communityName,
+            'email':userLocalStorage.email,
+            'communityName':'Avengers',
             'title':title,
-            // 'postType':
+            'postType':postType,
             'textSubmission':text,
             'imageSubmission':imgvidurls,
             'linkSubmission':link
@@ -42,6 +58,10 @@ export default function CreatePostFooter({title,text,imgvidurls,link}) {
             headers: headers
         })
         .then(response=>{
+            console.log("Response for create new post: "+response.data);
+            if(response.status===200){
+                setOpenPostSnack(true);
+            }
         }).catch(err=>{
             console.log(err);
         });
@@ -49,6 +69,12 @@ export default function CreatePostFooter({title,text,imgvidurls,link}) {
 
     return (
         <>
+            <Snackbar open={openPostSnack} autoHideDuration={6000} onClose={handlePostSnack}>
+                    <Alert style={{fontSize:"20px"}} onClose={handlePostSnack} severity="success">
+                        You posted!
+                    </Alert>
+            </Snackbar>
+
             <Chip
             style={{marginLeft:"20px",fontWeight:"bold",fontSize:"15px",color:"#999",background:"#FFFFFF"}}
             icon={<ChatRoundedIcon />}

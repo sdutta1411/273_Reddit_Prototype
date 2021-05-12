@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,7 +14,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Modal from '@material-ui/core/Modal';
 import Paper from '@material-ui/core/Paper';
-import img from "../../images/Reddit.png"
+import img from "../../images/Reddit.png";
+import { Redirect } from "react-router";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { userLogin } from "../../actions/loginAction"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,12 +51,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+const SignIn = (props) => {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
  
-  const [open, setOpen] = React.useState(false);
-
+  const [open, setOpen] = useState(false);
+  const [inputs, setInputs] = useState({});
+  let redirectVar = null;
   const handleOpen = () => {
     setOpen(true);
   };
@@ -60,9 +65,29 @@ export default function SignIn() {
   const handleClose = () => {
     setOpen(false);
   };
+  const handleInputChange = (event) => {
+    event.persist();
+    setInputs(inputs => ({...inputs, [event.target.name]: event.target.value}));
+  } 
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+    console.log(inputs);
+    props.userLogin(inputs);
+    console.log(props.user)
+    if(props.user.status === true){
+      console.log("redirect");
+      redirectVar = <Redirect to="/communityhome" />;
+    }
+  }
+
+  // const loadSuccess = () =>{
+  //   history.push('/dashboard');
+  // }
+
 
   return (
     <div>
+    {redirectVar}
     <Button color="inherit" onClick={handleOpen}>
         Login
       </Button>
@@ -86,18 +111,18 @@ export default function SignIn() {
               <Typography component="h1" variant="h5">
                 Sign in
               </Typography>
-              <form className={classes.form} noValidate>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  autoFocus
-                />
+              <form className={classes.form} onSubmit={handleSubmit} noValidate>
+              <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              onChange={handleInputChange} value={inputs.email}
+            />
                 <br/>
                 <TextField
                   variant="outlined"
@@ -109,6 +134,7 @@ export default function SignIn() {
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  onChange={handleInputChange} value={inputs.password}
                 /><br/>
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
@@ -151,3 +177,14 @@ export default function SignIn() {
 }
 
 
+SignIn.propTypes = {
+  userLogin: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.login.user,
+  };
+};
+export default connect(mapStateToProps, { userLogin })(SignIn);
