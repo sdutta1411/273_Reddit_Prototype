@@ -10,6 +10,17 @@ import Select from "@material-ui/core/Select";
 import InviteComponent from "./InviteComponent";
 import Icon from "@material-ui/core/Icon";
 
+//////////////////////////////////
+// This Page Needs 4 APIs
+// 1. Get MyCommunities (same as analytics)
+// 2. Get All users
+// 3. Send Invites
+// 4. View Invite Status + Time it was accepted
+// 5. Notification for user on pending invites?? 
+//////////////////////////////////
+// If implementing notification then we need to create an invites page for user OR display invites on this page itself.
+// Notification???
+//////////////////////////////////
 // import Autocomplete from "@material-ui/lab/Autocomplete";
 
 const useStyles = makeStyles((theme) => ({
