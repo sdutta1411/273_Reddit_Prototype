@@ -119,6 +119,7 @@ const checkUserSubscribed = async(req, res) => {
   }  
 };
 
+// change status
 const approveUsers = async(req, res) => {  
   /* console.log("Approve User request API"+req.body.email+","+req.body.communityName);
   const comm = await Community.findOne({ communityName: req.body.communityName });
