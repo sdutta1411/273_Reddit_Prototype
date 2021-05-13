@@ -6,7 +6,7 @@ import "./App.css";
 //import signupForm from "./components/SignupForm/signupForm";
 import { Provider } from "react-redux";
 import store from "./store";
-import Navbar from "./components/NavBar/navBar";
+import Navbar from "./components/navBar/navBar";
 import Home from "./components/LandingPage/home";
 import UserProfile from "./components/UserProfile/UserProfile";
 // import Home from "./components/LandingPage/home";
