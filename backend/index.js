@@ -68,13 +68,6 @@ mongoConnection();
 
 app.use(cors());
 
-
-const community = require("./routes/community_routes");
-
-//const comment = require("./routes/comment_routes");
-const message = require("./routes/message_routes");
-
-
 // User Routes
 app.use("/api/user", user);
 app.use("/api/chat", chat);
