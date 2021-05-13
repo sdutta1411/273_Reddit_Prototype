@@ -37,7 +37,7 @@ const createnewcommunity = async(req, res) => {
 };
 
 // Get all Community details - Community Home Page
-const getAllCommunityDetails = async(req, res) => {  
+const getCommunityDetails = async(req, res) => {  
       console.log("In Get all Community details API");
       Community.findOne({ communityName: req.body.communityName }).then(community => {
         if(!community){
@@ -119,87 +119,57 @@ const checkUserSubscribed = async(req, res) => {
   }  
 };
 
-const approveUsers = async(req, res) => {  
-  /* console.log("Approve User request API"+req.body.email+","+req.body.communityName);
+ 
+const searchCommunity = async (req, res, next) => {
   const comm = await Community.findOne({ communityName: req.body.communityName });
-  const user = await UserProfile.findOne({email:req.body.email});
-  console.log("community exists: "+comm);
-  console.log("user exists: "+user);
-  if(comm){
-    comm.subscribedBy = comm.subscribedBy.filter(
-      (s) => s.toString() !== user._id.toString()
-    );
-    await comm.save();
-    user.subscribedCommunities = user.subscribedCommunities.filter(
-      (s) => s.toString() !== comm._id.toString()
-    );
-    await user.save();
-    return res.status(200).json("You left community");
-  }   */
-};
-const removeUsers = async(req, res) => {  
-  /* console.log("Leave Community API"+req.body.email+","+req.body.communityName);
-  const comm = await Community.findOne({ communityName: req.body.communityName });
-  const user = await UserProfile.findOne({email:req.body.email});
-  console.log("community exists: "+comm);
-  console.log("user exists: "+user);
-  if(comm){
-    comm.subscribedBy = comm.subscribedBy.filter(
-      (s) => s.toString() !== user._id.toString()
-    );
-    await comm.save();
-    user.subscribedCommunities = user.subscribedCommunities.filter(
-      (s) => s.toString() !== comm._id.toString()
-    );
-    await user.save();
-    return res.status(200).json("You left community");
-  }   */
-};
 
-/* 
-const removeUsers = async(req, callback) => {
-    let search = {
-        "_id": req.list_id
-    }
-    let update = {
-        $pull: {
-            "list": req.user_id
-        }
-    }
-    ListModel.findOneAndUpdate(search, update , {safe: true, new: true, useFindAndModify: false}, function(err, result){
-    if(err) {
-        callback(null,{
-            success: false,
-            msg: "Something went wrong",
-            payload: err
-        })
-    } else {
-        callback(null,{
-            success: true,
-            msg: "Successfully removed the user" ,
-            payload: result
-        }) 
-    }
+  if (!comm) {
+    return next({
+      message: "Please enter community name",
+      statusCode: 400,
     });
-} */
+  }
 
-const searchCommunity = async(req, res) => {  
-  /* console.log("Leave Community API"+req.body.email+","+req.body.communityName);
+  let communityNames = [];
+
+  if (comm) {
+    communityNames = communityNames.concat([await Community.find({ communityName: req.body.communityName})]);
+  }
+
+  res.status(200).json({ success: true, data: communityNames });
+
+};
+
+// sort communities
+const sortCommunity = async (req, res, next) => {
   const comm = await Community.findOne({ communityName: req.body.communityName });
-  const user = await UserProfile.findOne({email:req.body.email});
-  console.log("community exists: "+comm);
-  console.log("user exists: "+user);
-  if(comm){
-    comm.subscribedBy = comm.subscribedBy.filter(
-      (s) => s.toString() !== user._id.toString()
-    );
-    await comm.save();
-    user.subscribedCommunities = user.subscribedCommunities.filter(
-      (s) => s.toString() !== comm._id.toString()
-    );
-    await user.save();
-    return res.status(200).json("You left community");
-  }   */
+  const sortBy = req.query.sortby;
+
+  if (!comm) {
+    return next({
+      message: "Please enter community name",
+      statusCode: 400,
+    });
+  }
+
+  let sortQuery;
+  switch (sortBy) {
+    case 'new':
+      sortQuery = { createdAt: -1 };
+      break;
+    case 'top':
+      sortQuery = { pointsCount: -1 };
+      break;
+    case 'best':
+      sortQuery = { voteRatio: -1 };
+      break;
+      case 'best':
+        sortQuery = { voteRatio: -1 };
+        break;
+    default:
+      sortQuery = {};
+  }
+     
 };
 // Fetch communities that the user is owner of
 const getOwnerCommunities = async(req, res) => {  
@@ -227,6 +197,7 @@ const getOwnerCommunities = async(req, res) => {
   }
 };
 
+<<<<<<< HEAD
 const getAnalyticsData = async (req,res)=>{
   console.log("Get Owner communities API"+JSON.stringify(req.body.email));
   const usercomms = await UserProfile.find({email:req.body.email});
@@ -283,16 +254,23 @@ const getAnalyticsData = async (req,res)=>{
   }
 }
 
+=======
+>>>>>>> c1f6dbffbc867ed93de08e1283e44dd2e595e282
 module.exports = {
   createnewcommunity,
-  getAllCommunityDetails,
+  getCommunityDetails,
   joinCommunity,
   leaveCommunity,
   getUserCommunities,
   checkUserSubscribed,
+<<<<<<< HEAD
   approveUsers,
   removeUsers,
   searchCommunity,
   getOwnerCommunities,
   getAnalyticsData
+=======
+  searchCommunity,
+  sortCommunity
+>>>>>>> c1f6dbffbc867ed93de08e1283e44dd2e595e282
 };

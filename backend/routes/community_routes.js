@@ -7,7 +7,7 @@ const { checkAuth } = require("../config/passport");
 router.post("/createnewcommunity", checkAuth, communityController.createnewcommunity);
 
 //get all community details - community home page
-router.get("/getCommunityDetails", checkAuth, communityController.getAllCommunityDetails);
+router.post("/getCommunityDetails", checkAuth, communityController.getCommunityDetails);
 
 //join a community - community home page
 router.post("/joinCommunity", checkAuth, communityController.joinCommunity);
@@ -21,6 +21,7 @@ router.post("/getUserCommunities", checkAuth, communityController.getUserCommuni
 //Check if user is a member of community - community home page
 router.post("/checkUserSubscribed", checkAuth, communityController.checkUserSubscribed);
 
+<<<<<<< HEAD
 // Fetch the communities that the user is an owner of
 router.post("/ownerCommunities", communityController.getOwnerCommunities);
 
@@ -32,11 +33,14 @@ router.post("/approveUsers", checkAuth, communityController.approveUsers);
 
 //remove users from the moderation page
 router.post("/removeUsers", checkAuth, communityController.removeUsers);
+=======
+>>>>>>> c1f6dbffbc867ed93de08e1283e44dd2e595e282
 
 //search communities
 router.get("/searchCommunity", checkAuth, communityController.searchCommunity);
 
- */
+//search communities
+router.get("/sortCommunity", checkAuth, communityController.sortCommunity); 
 
 
 module.exports = router;
