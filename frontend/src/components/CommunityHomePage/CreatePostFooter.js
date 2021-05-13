@@ -46,7 +46,7 @@ export default function CreatePostFooter({postType,title,text,imgvidurls,link}) 
         }
         const body = {
             'email':userLocalStorage.email,
-            'communityName':'Avengers',
+            'communityName':'Team11',
             'title':title,
             'postType':postType,
             'textSubmission':text,

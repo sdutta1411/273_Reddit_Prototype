@@ -1,5 +1,3 @@
-import postService from '../services/posts';
-
 const searchReducer = (state = null, action) => {
   switch (action.type) {
     case 'SET_SEARCH_RESULTS':
@@ -11,7 +9,7 @@ const searchReducer = (state = null, action) => {
           r.id !== action.payload.id ? r : { ...r, ...action.payload.data }
         ),
       };
-    case 'LOAD_SEARCH_POSTS':
+    case 'LOAD_SEARCH_Communities':
       return {
         ...action.payload,
         results: [...state.results, ...action.payload.results],
@@ -23,7 +21,7 @@ const searchReducer = (state = null, action) => {
 
 export const setSearchResults = (query) => {
   return async (dispatch) => {
-    const results = await postService.getSearchResults(query, 10, 1);
+    const results = await communityService.getSearchResults(query, 10, 1);
 
     dispatch({
       type: 'SET_SEARCH_RESULTS',
@@ -34,10 +32,10 @@ export const setSearchResults = (query) => {
 
 export const loadSearchPosts = (query, page) => {
   return async (dispatch) => {
-    const results = await postService.getSearchResults(query, 10, page);
+    const results = await communityService.getSearchResults(query, 10, page);
 
     dispatch({
-      type: 'LOAD_SEARCH_POSTS',
+      type: 'LOAD_SEARCH_Community',
       payload: results,
     });
   };
@@ -55,7 +53,7 @@ export const toggleUpvote = (id, upvotedBy, downvotedBy) => {
       payload: { id, data: { upvotedBy, pointsCount, downvotedBy } },
     });
 
-    await postService.upvotePost(id);
+    await communityService.upvotePost(id);
   };
 };
 
@@ -71,7 +69,7 @@ export const toggleDownvote = (id, downvotedBy, upvotedBy) => {
       payload: { id, data: { upvotedBy, pointsCount, downvotedBy } },
     });
 
-    await postService.downvotePost(id);
+    await communityService.downvotePost(id);
   };
 };
 

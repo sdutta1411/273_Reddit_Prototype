@@ -19,6 +19,11 @@ import LinkIcon from '@material-ui/icons/Link';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import CommentIcon from '@material-ui/icons/Comment';
 import TimeAgo from 'timeago-react';
+import { trimLink, prettifyLink, fixUrl } from '../../utils/formatUrl';
+import getEditedThumbail from '../../utils/cloudinaryTransform';
+import AboutCommunity from './AboutCommunity';
+import Rules from './Rules';
+
 
 import {
     Paper,
@@ -28,8 +33,9 @@ import {
     Link,
     Button,
   } from '@material-ui/core';
+import PostWithComments from './PostWithComments';
 
-export default function CommunityHomePage() {
+export default function CommunityHomePage({communityName}) {
 
     const classes = useCardStyles();
 
@@ -39,10 +45,19 @@ export default function CommunityHomePage() {
     const[user, setUser] = useState("");
     const[isUpvoted, setIsUpvoted] = useState(false);
     const[isDownvoted, setIsDownvoted] = useState(false);
+    //community details
+    const[commDetails, setCommDetails] = useState("");
+    const[commName, setCommName] = useState("");
+    const[commDesc, setCommDesc] = useState("");
+    const[commSubs, setCommSubs] = useState("");
+    const[commCreatedAt, setCommCreatedAt] = useState("");
+    const[commRules, setCommRules] = useState([]);
 
+
+    const[commHomePage, setCommHomePage] = useState(true);
     var userLocalStorage = JSON.parse(localStorage.getItem("user"));
     const token = userLocalStorage.token;
-    var communityName = 'Avengers';
+    var communityName = 'Team11';
 
     const requestOptions = {
         method: 'GET',
@@ -80,7 +95,6 @@ export default function CommunityHomePage() {
                 method: 'GET',
                headers: { 'Content-Type': 'application/json' ,'Authorization': token},
               }
-            // axios.get(`${baseUrl}/getPosts/?communityName=${communityName}&sortby=${sortBy}&limit=${limit}&page=${page}`,requestOptions)
             axios.get(`${baseUrl}/getPosts/?communityName=${communityName}`,requestOptions)
             .then(response=>{
                 console.log("Get Posts Response: "+JSON.stringify(response.data));
@@ -114,33 +128,51 @@ export default function CommunityHomePage() {
                     console.log("Get User details: "+JSON.stringify(res.data));
                     setUser(res.data);
                 }
+            // get community details
+            const commDetails = await axios.post('http://localhost:3001/api/community/getCommunityDetails',body,{
+              headers: headers
+            });
+            if(commDetails.status===200){
+
+              console.log("Get Community details response: "+JSON.stringify(commDetails.data));
+              console.log("Community name: "+commDetails.data.communityName);
+              console.log("comm desc: "+commDetails.data.description);
+              console.log("no of ppl: "+commDetails.data.subscriberCount);
+              setCommDetails(commDetails.data);
+              setCommName(commDetails.data.communityName);
+              setCommDesc(commDetails.data.description);
+              setCommSubs(commDetails.data.subscriberCount);
+              setCommCreatedAt(commDetails.data.created_at);
+              setCommRules(commDetails.data.rules);
+            }
         }
         onLoadCommunityHomePage();
-        // const onLoadCommunityHomePage = () =>{
-        //     const requestOptions = {
-        //         method: 'GET',
-        //        headers: { 'Content-Type': 'application/json' ,'Authorization': token},
-        //       }
-        //     axios.get("http://localhost:3001/api/community/getCommunityDetails",requestOptions)
-        //     .then(response=>{
-        //         console.log("Response: "+response.data)
-        //     }).catch(err=>{
-        //     console.log(err);
-        //     });
-        // }
-        // onLoadCommunityHomePage();
     },[]);
+    // const linkToShow =
+    // postType === 'Link'
+    //   ? linkSubmission
+    //   : postType === 'Image'
+    //   ? imageSubmission.imageLink
+    //   : '';
+    // const formattedLink = trimLink(prettifyLink(linkToShow), 30);
+
+  
     return (
         <>
-        <Container>
-        <CommunityCover communityName={communityName} isUserSub={isUserSub}/>
+    <CommunityCover communityName={communityName} isUserSub={isUserSub}/>
         {/* <PostList /> */}
 
     {/* <Paper className={classes.root} variant="outlined"> */}
+    <div style={{display:"flex"}}>
+    <Card style={{marginLeft:"20px",width:"1100px",borderRadius:"5px",marginBottom:"10px"}}>
     {posts.map(post=>
-      <Paper>
+      <RouterLink
+      style={{ textDecoration: 'none' }} 
+      to={{pathanme:`/comments/${post.comments}`, state:{postTitle:`${post.title}`}}}>
+      <Paper className={classes.root} variant="outlined">
       {/* upvote and downvote */}
       {/* <span>{post.title}</span> */}
+      <div className={classes.votesWrapper}>
         <Checkbox
         // checked={posts.upvotedBy.includes(user._id)}
         icon={<ArrowUpwardRoundedIcon style={{ color: '#b2b2b2' }} />}
@@ -168,96 +200,67 @@ export default function CommunityHomePage() {
             onChange={handleDownvoteToggle}
             size={'small'}
             />
-
-
-        {post.postType === 'Text' ? (
-          <RouterLink to={'/comments'}>
-          <Card>
-            <Paper elevation={0} square className={classes.thumbnail}>
-              <MessageIcon
-                fontSize="inherit"
-                className={classes.thumbnailIcon}
-                style={{ color: '#787878' }}
-              />
-            </Paper>
-            <Paper style={{marginLeft:"100px"}}elevation={0} className={classes.title}>{post.textSubmission}</Paper>
-            </Card> 
-          </RouterLink>
-        ) : post.postType === 'Link' ? (
-          <a href={post.linkSubmission} target="_noblank">
-            <Paper elevation={0} square className={classes.thumbnail}>
-              <LinkIcon
-                fontSize="inherit"
-                className={classes.thumbnailIcon}
-                style={{ color: '#787878' }}
-              />
-              <h3>{post.linkSubmission}</h3>
-            </Paper>
-          </a>
-        ) 
-        : (
-          <Paper elevation={0} square className={classes.thumbnail}>
-            {/* <CardMedia
-              className={classes.thumbnail}
-              image={post.imageSubmission}
-              title={post.ArrowUpwardRoundedIcontitle}
-              component="a"
-              href={post.imageSubmission}
-              target="_noblank"
-            /> */}
-          </Paper>
-        )}
-
-
-      {/* <Typography variant="h6" className={classes.title}>
+      </div>
+      <div className={classes.postInfoWrapper}>
+        <Typography variant="h6" className={classes.title}>
           {post.title}{' '}
           <Typography variant="caption" color="primary" className={classes.url}>
             <Link
               href={
                 post.postType === 'Link'
-                  ? post.linkSubmission
+                  ? fixUrl(post.linkSubmission)
                   : post.postType === 'Image'
                   ? post.imageSubmission
                   : ''
               }
-            > */}
+            >
               {/* {formattedLink} */}
-              {/* {post.postType === 'Text' ? null : (
+              {post.postType === 'Text' ? null : (
                 <OpenInNewIcon fontSize="inherit" />
               )}
             </Link>
           </Typography>
         </Typography>
-        <Typography variant="subtitle2"> */}
+        <Typography variant="subtitle2">
           {/* <Link component={RouterLink} to={`/r/${subreddit.subredditName}`}>
             r/{subreddit.subredditName}
           </Link> */}
-          {/* <Typography variant="caption" className={classes.userAndDate}>
+          <Typography variant="caption" className={classes.userAndDate}>
             Posted by{' '}
-            <Link component={RouterLink} to={`/u/${post.author}`}>
-              u/{post.author}
+            <Link component={RouterLink} to={`/u/${post.author.username}`}>
+              u/{post.author.username}
             </Link>{' '}
-            • <TimeAgo datetime={new Date(post.createdAt)} />
-            {post.createdAt !== post.updatedAt && '*'}
+            • <TimeAgo datetime={new Date(post.created_at)} />
+            {post.created_at !== post.updated_at && '*'}
           </Typography>
         </Typography>
         <div className={classes.bottomBtns}>
+
+        {/* comments count */}
           <Button
             startIcon={<CommentIcon />}
             className={classes.commentsBtn}
-            component={RouterLink} */}
-             {/* to={`/comments/${id}`} */}
-          {/* > */}
-            {/* {commentCount}  */}
-            {/* comments
+            component={RouterLink}
+            to={`/comments/${post.comments}`}
+          >          
+            {post.comments.length} comments
           </Button>
-        </div> */}
+        </div>
+      </div>
         
         </Paper>
-        
+        </RouterLink>
         )}
-
-        </Container>
+        </Card>
+        <Card style={{marginRight:"8px",marginLeft:"30px",width:"300px",height:"300px"}}>
+            <AboutCommunity isUserSub={isUserSub} commName={commName}  commDesc={commDesc} commSubs={commSubs} commCreatedAt={commCreatedAt}/>
+        </Card>
+        <br/>
+        <Card style={{marginTop:"350px",marginLeft:"-300px",width:"300px",height:"300px"}}>
+            <Rules commRules={commRules}/>
+        </Card>
+        </div>
+        {/* </Paper> */}
         </>
     )
 }
