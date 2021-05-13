@@ -39,9 +39,20 @@ const signup = (req, res) => {
         message: "User already registered",
       });
     } else {
+      const newUser = new UserProfile({
+        name: req.body.name,
+        email: req.body.email,
+      });
+
+      newUser.save((err) => {
+        if (err) {
+          res.status(500).send({ message: err });
+        }
+      });
+
       res.status(200).json({
         status: true,
-        data: results,
+        data: newUser,
         message: "User Registered Sucessfully",
       });
     }
@@ -79,8 +90,8 @@ const login = (req, res) => {
               });
               res.status(200).send({
                 username: results[0].name,
-                email: results[0].email,                            
-                token: 'Bearer '+ token,
+                email: results[0].email,
+                token: "Bearer " + token,
               });
             } else {
               res.json({
@@ -95,7 +106,7 @@ const login = (req, res) => {
       } else {
         res.json({
           status: false,
-          message: "User Doesnot Exits",
+          message: "User not found",
         });
       }
     }
@@ -108,55 +119,55 @@ const login = (req, res) => {
 const signupuser = (req, res) => {
   console.log("In Sign Up Mongo user API");
   // router.post('/signup', (req, res) => {
-  UserProfile.findOne({ email: req.body.email })
-    .then((user) => {
-      // validation
-      if (user) {
-        //errors.email = 'Email already exists';
-        return res.status(400).json("Email already exists");
-      } else {
-        console.log("Creating a new user");
+  UserProfile.findOne({ email: req.body.email }).then((user) => {
+    // validation
+    if (user) {
+      //errors.email = 'Email already exists';
+      return res.status(400).json("Email already exists");
+    } else {
+      console.log("Creating a new user");
 
-        const newUser = new UserProfile({
-          username: req.body.username,
-          email: req.body.email,
-        });
-            var token = jwt.sign({ id: newUser.id }, secret, {
-              expiresIn: 86400, // 24 hours
-            });
-            newUser.save((err) => {
-              if (err) {
-                res.status(500).send({ message: err });
-              }
+      const newUser = new UserProfile({
+        username: req.body.username,
+        email: req.body.email,
+      });
+      var token = jwt.sign({ id: newUser.id }, secret, {
+        expiresIn: 86400, // 24 hours
+      });
+      newUser
+        .save((err) => {
+          if (err) {
+            res.status(500).send({ message: err });
+          }
 
-              res.json({
-                userId: newUser._id,
-                username: newUser.username,
-                email: newUser.email,
-                token: "Bearer " + token,
-              });
-
-            }).catch(function (err) {
+          res.json({
+            userId: newUser._id,
+            username: newUser.username,
+            email: newUser.email,
+            token: "Bearer " + token,
+          });
+        })
+        .catch(function (err) {
           res.status(400).json(err);
         });
-      }
-    });
+    }
+  });
 };
 
 const test = (req, res) => {
   res.send("hello hello");
 };
 
-const getUserDetails = async(req,res) =>{
-console.log("In get user details api");
-const user = await UserProfile.findOne({email:req.body.email});
-console.log("User:: "+user);
-res.status(200).json(user);
-}
+const getUserDetails = async (req, res) => {
+  console.log("In get user details api");
+  const user = await UserProfile.findOne({ email: req.body.email });
+  console.log("User:: " + user);
+  res.status(200).json(user);
+};
 module.exports = {
   test,
   signup,
   signupuser,
   login,
-  getUserDetails
+  getUserDetails,
 };

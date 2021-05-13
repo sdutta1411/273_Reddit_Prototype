@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -15,10 +15,10 @@ import Container from "@material-ui/core/Container";
 import Modal from "@material-ui/core/Modal";
 import Paper from "@material-ui/core/Paper";
 import img from "../../images/Reddit.png";
-import SignIn from "../LoginForm/loginForm";
+import SignIn from "../loginForm/loginForm";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { userSignup } from "../../actions/signUpAction"
+import { userSignup } from "../../actions/signUpAction";
 import { Redirect } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
@@ -71,24 +71,27 @@ const Signup = (props) => {
 
   const handleInputChange = (event) => {
     event.persist();
-    setInputs(inputs => ({...inputs, [event.target.name]: event.target.value}));
-  } 
+    setInputs((inputs) => ({
+      ...inputs,
+      [event.target.name]: event.target.value,
+    }));
+  };
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = (e) => {
     e.preventDefault();
     console.log(inputs);
     props.userSignup(inputs);
-    console.log(props.user)
-    if(props.user.status === true){
+    console.log(props.user);
+    if (props.user.status === true) {
       console.log("redirect");
       redirectVar = <Redirect to="/communityhome" />;
     }
-  }
+  };
 
   return (
     <div>
-    {redirectVar}
-    <Button color="inherit" onClick={handleOpen}>
+      {redirectVar}
+      <Button color="inherit" onClick={handleOpen}>
         Signup
       </Button>
       <Modal
@@ -97,90 +100,113 @@ const Signup = (props) => {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-      <Container style={{height:"50%", width:"60%"}}>
-        <Grid container component="main" className={classes.root}>
-          <CssBaseline />
-          <Grid item xs={false} sm={3} md={5} className={classes.image}>
-          </Grid>
-          <Grid item xs={12} sm={8} md={7} component={Paper} elevation={6} square>
-            <div className={classes.paper}>
-              <Avatar className={classes.avatar}>
-                <RedditIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Sign up
-              </Typography>
-              <form className={classes.form} onSubmit={handleSubmit} noValidate>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="name"
-                  label="Name"
-                  name="name"
-                  autoFocus
-                  onChange={handleInputChange} value={inputs.name}
-                />
-                <br/> <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                onChange={handleInputChange} value={inputs.email}
-              />
-              <br/>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  onChange={handleInputChange} value={inputs.password}
-                /><br/>
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                /><br/>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
+        <Container style={{ height: "50%", width: "60%" }}>
+          <Grid container component="main" className={classes.root}>
+            <CssBaseline />
+            <Grid
+              item
+              xs={false}
+              sm={3}
+              md={5}
+              className={classes.image}
+            ></Grid>
+            <Grid
+              item
+              xs={12}
+              sm={8}
+              md={7}
+              component={Paper}
+              elevation={6}
+              square
+            >
+              <div className={classes.paper}>
+                <Avatar className={classes.avatar}>
+                  <RedditIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                  Sign up
+                </Typography>
+                <form
+                  className={classes.form}
+                  onSubmit={handleSubmit}
+                  noValidate
                 >
-                  Sign Up
-                </Button>
-                <Grid container>
-                  <Grid item xs>
-                    <Link href="#" variant="body2">
-                      Forgot password?
-                    </Link>
-                  </Grid>
-                  <Grid item>
-                    <Link variant="body2" >
-                      Already a redditor? <SignIn ></SignIn>
-                    </Link>
-                  </Grid>
-                  <Box mt={5}></Box>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="name"
+                    label="Name"
+                    name="name"
+                    autoFocus
+                    onChange={handleInputChange}
+                    value={inputs.name}
+                  />
+                  <br />{" "}
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    onChange={handleInputChange}
+                    value={inputs.email}
+                  />
+                  <br />
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    onChange={handleInputChange}
+                    value={inputs.password}
+                  />
+                  <br />
+                  <FormControlLabel
+                    control={<Checkbox value="remember" color="primary" />}
+                    label="Remember me"
+                  />
+                  <br />
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                  >
+                    Sign Up
+                  </Button>
+                  <Grid container>
+                    <Grid item xs>
+                      <Link href="#" variant="body2">
+                        Forgot password?
+                      </Link>
+                    </Grid>
+                    <Grid item>
+                      <Link variant="body2">
+                        Already a redditor? <SignIn></SignIn>
+                      </Link>
+                    </Grid>
+                    <Box mt={5}></Box>
                   </Grid>
                 </form>
               </div>
-              </Grid>
+            </Grid>
           </Grid>
         </Container>
       </Modal>
     </div>
   );
-}
+};
 
 Signup.propTypes = {
   userSignup: PropTypes.func.isRequired,
@@ -193,4 +219,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps,{ userSignup })(Signup);
+export default connect(mapStateToProps, { userSignup })(Signup);
