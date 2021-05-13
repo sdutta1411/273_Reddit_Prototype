@@ -40,7 +40,7 @@ const signup = (req, res) => {
       });
     } else {
       const newUser = new UserProfile({
-        name: req.body.name,
+        username: req.body.name,
         email: req.body.email,
       });
 
