@@ -121,7 +121,7 @@ const SignIn = (props) => {
               label="Email Address"
               name="email"
               autoComplete="email"
-              onChange={handleInputChange} value={inputs.email}
+              onChange={handleInputChange} value={inputs.email}              
             />
                 <br/>
                 <TextField

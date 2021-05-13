@@ -21,6 +21,12 @@ router.post("/getUserCommunities", checkAuth, communityController.getUserCommuni
 //Check if user is a member of community - community home page
 router.post("/checkUserSubscribed", checkAuth, communityController.checkUserSubscribed);
 
+// Fetch the communities that the user is an owner of
+router.post("/ownerCommunities", communityController.getOwnerCommunities);
+
+// Fetch data for Community Analytics 
+router.post("/fetchAnalyticsData", communityController.getAnalyticsData);
+
 /* //approve users their request to join
 router.post("/approveUsers", checkAuth, communityController.approveUsers);
 

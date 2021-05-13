@@ -164,10 +164,17 @@ const getUserDetails = async (req, res) => {
   console.log("User:: " + user);
   res.status(200).json(user);
 };
+
+const getAllUsers = async (req, res) => {
+  const user = await UserProfile.find({ "email": { $ne: req.body.email } });
+  res.status(200).json(user);
+};
+
 module.exports = {
   test,
   signup,
   signupuser,
   login,
   getUserDetails,
+  getAllUsers
 };
