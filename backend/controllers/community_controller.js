@@ -37,7 +37,7 @@ const createnewcommunity = async(req, res) => {
 };
 
 // Get all Community details - Community Home Page
-const getAllCommunityDetails = async(req, res) => {  
+const getCommunityDetails = async(req, res) => {  
       console.log("In Get all Community details API");
       Community.findOne({ communityName: req.body.communityName }).then(community => {
         if(!community){
@@ -121,7 +121,7 @@ const checkUserSubscribed = async(req, res) => {
 
 module.exports = {
   createnewcommunity,
-  getAllCommunityDetails,
+  getCommunityDetails,
   joinCommunity,
   leaveCommunity,
   getUserCommunities,
