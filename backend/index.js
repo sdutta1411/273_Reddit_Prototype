@@ -7,7 +7,10 @@ var mysqlConfig = require("./config/mysql_config");
 const mongoConfig = require("./config/util").mongoURI;
 const chat = require("./routes/chat");
 const user = require("./routes/user_routes");
+const comment = require("./routes/comment_routes");
 const post = require("./routes/post_routes");
+const message = require("./routes/message_routes");
+const community = require("./routes/community_routes");
 const bodyParser = require("body-parser");
 var InitiateMongoServer = require("./config/mongo_config");
 
@@ -64,14 +67,6 @@ const mongoConnection = async () => {
 mongoConnection();
 
 app.use(cors());
-app.listen(3001, (req, res) => {
-  console.log("server running on port 3001....");
-});
-
-const community = require("./routes/community_routes");
-
-//const comment = require("./routes/comment_routes");
-const message = require("./routes/message_routes");
 
 // User Routes
 app.use("/api/user", user);
@@ -81,9 +76,11 @@ app.use("/api/community", community);
 //Post Routes
 app.use("/api/posts", post);
 //Comment Routescls
-//app.use("/api/comment", comment);
-// app.listen(3001, (req, res) => {
-//   console.log("server running on port 3001....");
-// });
+app.use("/api/comment", comment);
 //Message Routes
 app.use("/api/message", message);
+
+app.listen(3001, (req, res) => {
+  console.log("server running on port 3001....");
+});
+

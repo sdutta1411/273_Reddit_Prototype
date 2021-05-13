@@ -15,14 +15,20 @@ const CommunitySchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    rules:[{
-      title:{
-        type: String,
-      },
-      description:{
-        type: String,
-      }
-  }],
+    rules:
+  //   [{
+  //     title:{
+  //       type: String,
+  //     },
+  //     description:{
+  //       type: String,
+  //     }
+  // }]
+  [
+    {
+      type:String
+    }
+  ],
     posts: [
       {
         type: mongoose.Schema.Types.ObjectId,

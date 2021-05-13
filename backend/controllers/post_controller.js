@@ -101,6 +101,7 @@ const paginateResults = require("../utils/paginateResults");
         //     sortQuery = {};
         // }      
         const postsCount = await Post.countDocuments();
+        console.log("Post.countDocuments(): "+postsCount);
         //const paginated = paginateResults(page, limit, postsCount);
         const com = await Community.findOne({communityName:req.query.communityName});
         //console.log("com: "+com);
@@ -113,7 +114,9 @@ const paginateResults = require("../utils/paginateResults");
         //   .populate('community', 'communityName');
 
         const postsByComm = await Post.find({community:com._id});
-        console.log("postsByComm:: "+postsByComm);
+        postsByComm.forEach(upvote=>{
+          console.log("upvote:: "+upvote.upvotedBy);
+        })
         // console.log("all posts::"+allPosts);
         // const paginatedPosts = {
         //   previous: paginated.results.previous,

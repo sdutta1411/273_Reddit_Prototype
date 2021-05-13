@@ -7,7 +7,7 @@ const { checkAuth } = require("../config/passport");
 router.post("/createnewcommunity", checkAuth, communityController.createnewcommunity);
 
 //get all community details - community home page
-router.get("/getCommunityDetails", checkAuth, communityController.getAllCommunityDetails);
+router.post("/getCommunityDetails", checkAuth, communityController.getCommunityDetails);
 
 //join a community - community home page
 router.post("/joinCommunity", checkAuth, communityController.joinCommunity);
