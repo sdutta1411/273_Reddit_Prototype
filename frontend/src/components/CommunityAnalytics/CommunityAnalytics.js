@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import GraphCard from "./DataCard";
 import TextCard from "./TextCard";
-
+import ApiRequest from "../../backendRequestApi";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,12 +19,12 @@ const useStyles = makeStyles((theme) => ({
   },
   formRow: {
     // marginLeft: "1%",
-    overflowX: 'auto'
+    overflowX: "auto",
   },
 }));
 
 export default function CommunityAnalytics() {
-  const data = [
+  const xdata = [
     {
       name: "page 1",
       UserCount: 3960,
@@ -90,98 +91,114 @@ export default function CommunityAnalytics() {
     },
   ];
   const userTableData = [
-      {
-          name:'page 1',
-          ActiveUser: "Ujjwal",
-          UserPostCount: 19
-      },
-      {
-          name:'page 2',
-          ActiveUser: "Ujjwal",
-          UserPostCount: 19
-      },
-      {
-          name:'page 3',
-          ActiveUser: "Ujjwal",
-          UserPostCount: 19
-      },
-      {
-          name:'page 4',
-          ActiveUser: "Ujjwal",
-          UserPostCount: 19
-      },
-      {
-          name:'page 5',
-          ActiveUser: "Ujjwal",
-          UserPostCount: 19
-      },
-      {
-          name:'page 6',
-          ActiveUser: "Ujjwal",
-          UserPostCount: 19
-      },
-      {
-          name:'page 7',
-          ActiveUser: "Ujjwal",
-          UserPostCount: 19
-      },
-      {
-          name:'page 8',
-          ActiveUser: "Ujjwal",
-          UserPostCount: 19
-      },
-  ]
+    {
+      name: "page 1",
+      ActiveUser: "Ujjwal",
+      UserPostCount: 19,
+    },
+    {
+      name: "page 2",
+      ActiveUser: "Ujjwal",
+      UserPostCount: 19,
+    },
+    {
+      name: "page 3",
+      ActiveUser: "Ujjwal",
+      UserPostCount: 19,
+    },
+    {
+      name: "page 4",
+      ActiveUser: "Ujjwal",
+      UserPostCount: 19,
+    },
+    {
+      name: "page 5",
+      ActiveUser: "Ujjwal",
+      UserPostCount: 19,
+    },
+    {
+      name: "page 6",
+      ActiveUser: "Ujjwal",
+      UserPostCount: 19,
+    },
+    {
+      name: "page 7",
+      ActiveUser: "Ujjwal",
+      UserPostCount: 19,
+    },
+    {
+      name: "page 8",
+      ActiveUser: "Ujjwal",
+      UserPostCount: 19,
+    },
+  ];
 
-  const communityTableData = [
-      {
-          name: 'page 1',
-          title: 'Demo',
-          Author: 'Ujjwal',
-          Votes: 1
-      },
-      {
-          name: 'page 2',
-          title: 'Demo2',
-          Author: 'Ujjwal',
-          Votes: 312
-      },
-      {
-          name: 'page 3',
-          title: 'Demo3',
-          Author: 'Ujjwal',
-          Votes: 101
-      },
-      {
-          name: 'page 4',
-          title: 'Demo4',
-          Author: 'Ujjwal',
-          Votes: 10
-      },
-      {
-          name: 'page 5',
-          title: 'Demo5',
-          Author: 'Ujjwal',
-          Votes: 12
-      },
-      {
-          name: 'page 6',
-          title: 'Demo6',
-          Author: 'Ujjwal',
-          Votes: 112
-      },
-      {
-          name: 'page 7',
-          title: 'Demo7',
-          Author: 'Ujjwal',
-          Votes: 102
-      },
-      {
-          name: 'page 8',
-          title: 'Demo8',
-          Author: 'Ujjwal',
-          Votes: 101
-      },
-  ]
+  const communityTableDatax = [
+    {
+      name: "page 1",
+      title: "Demo",
+      Author: "Ujjwal",
+      Votes: 1,
+    },
+    {
+      name: "page 2",
+      title: "Demo2",
+      Author: "Ujjwal",
+      Votes: 312,
+    },
+    {
+      name: "page 3",
+      title: "Demo3",
+      Author: "Ujjwal",
+      Votes: 101,
+    },
+    {
+      name: "page 4",
+      title: "Demo4",
+      Author: "Ujjwal",
+      Votes: 10,
+    },
+    {
+      name: "page 5",
+      title: "Demo5",
+      Author: "Ujjwal",
+      Votes: 12,
+    },
+    {
+      name: "page 6",
+      title: "Demo6",
+      Author: "Ujjwal",
+      Votes: 112,
+    },
+    {
+      name: "page 7",
+      title: "Demo7",
+      Author: "Ujjwal",
+      Votes: 102,
+    },
+    {
+      name: "page 8",
+      title: "Demo8",
+      Author: "Ujjwal",
+      Votes: 101,
+    },
+  ];
+  const [data, setData] = useState()
+  const [communityTableData, setCommunityTableData] = useState([])
+  const getData = async () => {
+    await axios
+      .post(`${ApiRequest}/api/community/fetchAnalyticsData`, {
+        email: "bhagi@gmail.com",
+      })
+      .then((response) => {
+        console.log(response)
+        setData(response.data.data);
+        setCommunityTableData(response.data.communityTableData)
+      });
+  };
+  useEffect(() => {
+    getData();
+  },[]);
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -225,7 +242,7 @@ export default function CommunityAnalytics() {
           <TextCard
             text="Most Active User Per Community"
             data={userTableData}
-            tableHead={['Community', 'User', 'Number Of Posts']}
+            tableHead={["Community", "User", "Number Of Posts"]}
             bar_color="#82ca9d"
           />
         </Grid>
@@ -233,7 +250,7 @@ export default function CommunityAnalytics() {
           <TextCard
             text="Most Popular Post Per Community"
             data={communityTableData}
-            tableHead={['Community', 'Post Title', 'Author', 'Votes']}
+            tableHead={["Community", "Post Title", "Author", "Votes"]}
             bar_color="#c882ca"
           />
         </Grid>

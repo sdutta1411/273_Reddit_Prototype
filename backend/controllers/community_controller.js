@@ -171,7 +171,91 @@ const sortCommunity = async (req, res, next) => {
   }
      
 };
+// Fetch communities that the user is owner of
+const getOwnerCommunities = async(req, res) => {  
+  console.log("Get Owner communities API"+JSON.stringify(req.body.email));
+  const usercomms = await UserProfile.find({email:req.body.email});
+  if (usercomms[0]){
+    const ownerId = usercomms[0]._id
+    const ownerComms = await Community.find({admin:ownerId})
+    if(ownerComms.length>0){
+      let objToSend = []
+      ownerComms.forEach(element=>{
+        let item = {
+          name:element.communityName,
+          CommunityID: element._id,
+          CommunityOwner: element.admin
+        }
+        objToSend.push(item)
+      })
+      return res.status(200).json(objToSend);
+    }else{
+      return res.status(201).json({message:'This User is not an admin in any community'});
+    }
+  }else{
+    return res.status(201).json({message:'This User does not exist'});
+  }
+};
 
+<<<<<<< HEAD
+const getAnalyticsData = async (req,res)=>{
+  console.log("Get Owner communities API"+JSON.stringify(req.body.email));
+  const usercomms = await UserProfile.find({email:req.body.email});
+  if (usercomms[0]){
+    const ownerId = usercomms[0]._id
+    const ownerComms = await Community.find({admin:ownerId})
+    if(ownerComms.length>0){
+      let data = []
+      let communityTableData = []
+      let userTableData = []
+      for (let i = 0; i < ownerComms.length; i++){
+        commPosts = await Post.find({community:ownerComms[i]._id})
+        NumOfPost = commPosts.length
+        numOfUsers = ownerComms[i].subscriberCount
+        commPosts.sort(function(a, b) {
+          var keyA = a.pointsCount,
+            keyB = b.pointsCount;
+          // Compare the 2 dates
+          if (keyA > keyB) return -1;
+          if (keyA < keyB) return 1;
+          return 0;
+        });
+        let counts = {}
+        for (let j=0; j<commPosts.length;j++){
+          counts[commPosts[i].author.username] = (counts[commPosts[i].author.username] || 0) +1; 
+        }
+        console.log(counts)
+        console.log(commPosts[0].author)
+        let x = commPosts[0].author
+        console.log(x)
+        console.log('///////////////////')
+        // console.log(commPosts)
+        let mostUpvotedPost = {
+          name:ownerComms[i].communityName,
+          title:commPosts[0].title ,
+          Author: commPosts[0].author.email,
+          Votes: commPosts[0].pointsCount
+        }
+        let item = {
+          name: ownerComms[i].communityName,
+          UserCount: numOfUsers,
+          PostCount: NumOfPost
+        }
+        communityTableData.push(mostUpvotedPost)
+        data.push(item)
+      }
+      console.log(data)
+      return res.status(200).json({communityTableData:communityTableData, data:data});
+    }else{
+      return res.status(201).json({message:'This User is not an admin in any community'});
+    }
+  }else{
+    return res.status(201).json({message:'This User does not exist'});
+  }
+}
+
+=======
+>>>>>>> c1f6dbffbc867ed93de08e1283e44dd2e595e282
 module.exports = {
   createnewcommunity,
   getCommunityDetails,
@@ -179,6 +263,14 @@ module.exports = {
   leaveCommunity,
   getUserCommunities,
   checkUserSubscribed,
+<<<<<<< HEAD
+  approveUsers,
+  removeUsers,
+  searchCommunity,
+  getOwnerCommunities,
+  getAnalyticsData
+=======
   searchCommunity,
   sortCommunity
+>>>>>>> c1f6dbffbc867ed93de08e1283e44dd2e595e282
 };
