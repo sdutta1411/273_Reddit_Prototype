@@ -2,7 +2,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Switch,Route } from "react-router-dom";
 import "./App.css";
 
-import LoginForm from "./components/LoginForm/LoginForm";
+import LoginForm from "./components/LoginForm/loginForm";
 import signupForm from "./components/SignupForm/signupForm";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -17,6 +17,8 @@ import Post from "./components/CommunityHomePage/Post";
 import ImageAndVideo from "./components/CommunityHomePage/ImageAndVideo";
 import LinkPostType from "./components/CommunityHomePage/LinkPostType";
 import DashboardPage from "./components/DasboardPage/DashboardPage";
+import ChatsPage from "./components/Chats/ChatsPage";
+import ChatList from "./components/Chats/ChatList";
 /* import ModerationPage from "./components/CommunityModeration/ModerationPage" */
 const theme = createMuiTheme({
   palette: {
@@ -26,7 +28,7 @@ const theme = createMuiTheme({
       dark: "#ff4500",
       contrastText: "#fff",
     },
-    seconnpdary: {
+    secondary: {
       light: "#fafafa",
       main: "#f5f5f5",
       dark: "#e0e0e0",
@@ -58,7 +60,8 @@ const App = () => {
            
           <Route path="/dashboard" exact component={DashboardPage} />
 
-
+          <Route path="/chats/:chatid/:username" exact component={ChatsPage} />
+          <Route path="/chatList" exact component={ChatList} />
           <Route path="/" exact component={Home} />
 
           {/* <Route path="/" exact component={Home} /> */}

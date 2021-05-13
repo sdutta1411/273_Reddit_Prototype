@@ -7,6 +7,10 @@ const ChatSchema = mongoose.Schema({
   chat: {
     type: String,
   },
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const UserSchema = mongoose.Schema({
@@ -19,11 +23,6 @@ const MessageSchema = mongoose.Schema({
   users: [UserSchema],
 
   chats: [ChatSchema],
-
-  created_at: {
-    type: Date,
-    default: Date.now,
-  },
 });
 
 module.exports = mongoose.model("messages", MessageSchema);
