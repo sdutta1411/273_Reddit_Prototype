@@ -1,52 +1,55 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const UserProfileSchema = new mongoose.Schema(
   {
-    username:{
-        type: String,
-        required: true
+    name: {
+      type: String,
+      required: true,
     },
-    email:{
-        type: String,
-        required: true,
-        unique: true 
+    email: {
+      type: String,
+      required: true,
+      unique: true,
     },
     // password:{
     //     type: String,
     //     required: true
     // },
-    avatar:{
-        type:String
+    avatar: {
+      type: String,
     },
-    topics: [{
-        type: String
-    }],
+    topics: [
+      {
+        type: String,
+      },
+    ],
     gender: {
-        type:String
+      type: String,
     },
     location: {
-        type:String
+      type: String,
     },
     description: {
-        type:String
+      type: String,
     },
     posts: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'Post',
-        },
-      ],
-    subscribedCommunities: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'Community',
-        },
-      ],
-    totalComments: {
-        type: Number,
-        default: 0,
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
       },
-  },{timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }});
+    ],
+    subscribedCommunities: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Community",
+      },
+    ],
+    totalComments: {
+      type: Number,
+      default: 0,
+    },
+  },
+  { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
+);
 
-
-module.exports = mongoose.model('UserProfile', UserProfileSchema);
+module.exports = mongoose.model("UserProfile", UserProfileSchema);
