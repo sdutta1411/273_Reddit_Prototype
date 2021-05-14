@@ -12,6 +12,9 @@ import ReplyActions from "./ReplyActions";
 import axios from "axios";
 import ShowCommentBox from "./ShowCommentBox";
 import ApiRequest from "../../backendRequestApi";
+import ReplyRoundedIcon from '@material-ui/icons/ReplyRounded';
+import AddComment from './AddComment';
+import AddReplyToComment from './AddReplyToComment';
 
 const ShowComments = ({ postId }) => {
   console.log("post id: " + postId);
@@ -107,6 +110,7 @@ const ShowComments = ({ postId }) => {
         userId={userId}
       ></ShowCommentBox>
     );
+    start.push( <AddReplyToComment commentId={c} postId={postId} />)
     if (c.replies.length > 0) {
       c.replies.map((c1) =>
         createShowCommentBox(

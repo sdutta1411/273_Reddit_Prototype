@@ -1,84 +1,6 @@
-/* import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import CommentIcon from '@material-ui/icons/Comment';
-import ShareIcon from '@material-ui/icons/Share';
-import ArrowDownwardTwoToneIcon from '@material-ui/icons/ArrowDownwardTwoTone';
-import ArrowUpwardTwoToneIcon from '@material-ui/icons/ArrowUpwardTwoTone';
-import NavBarAfterLogin from '../navBar/NavBarAfterLogin'
-
-const SearchList = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    maxWidth: 3600,
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
-
-export default function CheckboxList() {
-  const classes = SearchList();
-  const [checked, setChecked] = React.useState([0]);
-
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
-  };
-
-  return (
-      
-    <List className={classes.root}>
-      {[0, 1, 2, 3,4,5,6].map((value) => {
-        const labelId = `checkbox-list-label-${value}`;
-        return (
-          <ListItem key={value} role={undefined} dense button onClick={handleToggle(value)}>
-            <ListItemIcon>
-              {<Checkbox
-                edge="start"
-                checked={checked.indexOf(value) !== -1}
-                tabIndex={-1}
-                disableRipple
-                inputProps={{ 'aria-labelledby': labelId }}
-              />}
-            </ListItemIcon>
-            <ListItemText id={labelId} primary={`Community ${value + 1}`} />
-            <ListItemSecondaryAction>
-              <IconButton edge="start" aria-label="comments">
-                <CommentIcon />
-              </IconButton>
-              <IconButton edge="end" aria-label="share">
-                <ShareIcon/>
-              </IconButton>
-              <IconButton edge="start" aria-label="ArrowUpwardTwoTone">
-                <ArrowUpwardTwoToneIcon />
-              </IconButton>
-              <IconButton edge="start" aria-label="ArrowDownwardTwoTone">
-                <ArrowDownwardTwoToneIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-        );
-      })}
-    </List>
-  );
-}
- */
-
-import React, { useState, useEffect }from "react";
+import React from "react";
 import clsx from "clsx";
+import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -98,13 +20,11 @@ import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { Checkbox, Container, Typography } from "@material-ui/core";
 import MessageIcon from "@material-ui/icons/Message";
 import LinkIcon from "@material-ui/icons/Link";
-import SearchBar from "./searchbar";
-import Apirequest from "../../backendRequestApi";
-import axios from "axios";
-import Sort from "./Sort"
-export default function SearchList() {
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 
-   
+export default function UserCommunities() {
+
+  // taken from dashboard.js
  const useCardStyles = makeStyles(
   (theme) => ({
     root: {
@@ -178,74 +98,37 @@ export default function SearchList() {
 
   const classes = useCardStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  const [communities, setCommunities] = useState([]);
-  const [sort, setSort] = useState(10);
-  const [sorted , setSorted] = useState(false)
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(2);
 
-  const myCommunities = [
+  const UserCommunities = [
     {
       title: "Comm1",
-      Type: "Text",
-      textSubmission: "Friends Reunion",
-      linkSubmission: "",
-      imageSubmission: "",
+      userrequest:"",
       community: "TestCommunity1",
-      upvotedBy: 1,
-      downvotedBy: 1,
+      upvotedBy: 19,
+      downvotedBy: 10,
     },
     {
       title: "Comm2",
-      postType: "Text",
-      textSubmission: "Reddit",
-      linkSubmission: "",
-      imageSubmission: "",
+      userrequest:"",
       community: "TestCommunity2",
-      upvotedBy: 1,
-      downvotedBy: 1,
+      upvotedBy: 12,
+      downvotedBy:9,
     },
   ];
-
-  useEffect(() => {
-    getallCommunities();
-  }, [sort, sorted]);
-
-  const getallCommunities = () => {
-    // const email = localStorage.getItem("email");
-    const email = { email: "bhagi@gmail.com", sorted: sorted , type: sort };
-
-    axios.defaults.withCredentials = true;
-    axios
-      .post(`${Apirequest}/api/community/getAllOwnerCommunities`, email)
-      .then(({ data }) => {
-        console.log(data);
-        setCommunities(data);
-      })
-      .catch((error) => {
-        console.log("error occured while connecting to backend:", error);
-      });
-  };
-
-  return (
-    <div>
-      {/* <searchbar></searchbar> */}
-
-      <SearchBar communityName={"comm1"}/>
-     {/*  <Sort/> */}
-    <Paper className={classes.root} variant="outlined">
     
+  return (
+    <Paper className={classes.root} variant="outlined">
       <Container maxWidth="lg" className={classes.container}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8} lg={9}>
             <Paper className={fixedHeightPaper}>
-        
+              <h1>Mod tools</h1>
             </Paper>
           </Grid>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
               <CardContent>
-                {myCommunities.map((value) => {
+                {UserCommunities.map((value) => {
                   return (
                     <List className={classes.root}>
                       <ListItem>
@@ -302,7 +185,7 @@ export default function SearchList() {
                                   />
                                 </Paper>
                               </Link>
-                            ) : value.postType === "Link" ? (
+                            ) : value.postType === "LinkText" ? (
                               <a href={value.linkSubmission} target="_noblank">
                                 <Paper
                                   elevation={0}
@@ -350,6 +233,10 @@ export default function SearchList() {
                           component={Link}
                         
                         />
+                        <Button variant="contained">Details</Button>
+                        <Grid item xs={8}>
+                         <DeleteOutlinedIcon />  
+                         </Grid>
                       </ListItem>
                       <Divider />
                     </List>
@@ -361,8 +248,5 @@ export default function SearchList() {
         </Grid>
       </Container>
     </Paper>
-    </div>
   );
 }
-
-
