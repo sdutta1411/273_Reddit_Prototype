@@ -53,7 +53,7 @@ export default function CommunityHomePage({communityName}) {
 
     const[commHomePage, setCommHomePage] = useState(true);
     var userLocalStorage = JSON.parse(localStorage.getItem("user"));
-    const token = userLocalStorage?userLocalStorage.token:'';
+    const token = localStorage.getItem('token');
     var communityName = 'Team11';
 
       
