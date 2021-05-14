@@ -66,10 +66,10 @@ const PostSchema = new mongoose.Schema({
 
   comments :[
     {
-    // comment:{
+    comment:{
            type: mongoose.Schema.Types.ObjectId,
            ref: 'Comment'
-      //  }
+       }
    }
   ],
 },{timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }});

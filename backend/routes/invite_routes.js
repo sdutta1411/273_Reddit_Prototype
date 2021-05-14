@@ -5,4 +5,7 @@ const { checkAuth } = require("../config/passport");
 
 
 // create a send invite as owner
-router.post("/createnewcommunity", checkAuth, communityController.createnewcommunity);
+router.post("/invite_user",  inviteController.sendInvite);
+
+
+module.exports = router;

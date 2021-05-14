@@ -18,12 +18,14 @@ import Post from "./components/CommunityHomePage/Post";
 import ImageAndVideo from "./components/CommunityHomePage/ImageAndVideo";
 import LinkPostType from "./components/CommunityHomePage/LinkPostType";
 import DashboardPage from "./components/DasboardPage/DashboardPage";
+import PostWithComments from "./components/CommunityHomePage/PostWithComments";
 import { MyCommunity } from "./components/MyCommunity/MyCommunity";
 import ChatsPage from "./components/Chats/ChatsPage";
 import ChatList from "./components/Chats/ChatList";
 import CommununityAnalytics from "./components/CommunityAnalytics/CommunityAnalytics";
 import CommunityInvitePage from "./components/CommunityInvitePage/CommunityInvitePage";
 import NavBarAfterLogin from "./components/navBar/NavBarAfterLogin";
+import { useState, useEffect } from "react";
 /* import ModerationPage from "./components/CommunityModeration/ModerationPage" */
 const theme = createMuiTheme({
   palette: {
@@ -42,21 +44,47 @@ const theme = createMuiTheme({
   },
 });
 
+
 const App = () => {
+  const [isLogin, setLogin] = useState(false);
+  const isLoggedIn = () => {
+    if (localStorage.getItem("user")) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  if (!isLogin) {
+    setInterval(()=>{
+      setLogin(isLoggedIn())
+    }, 500)
+  }
   return (
     <Provider store={store}>
       <div>
         <ThemeProvider theme={theme}>
-          <Navbar />
+          {isLogin ? <NavBarAfterLogin /> : <Navbar />}
           <Switch>
             <Route path="/communityhome" exact component={CommunityHomePage} />
             <Route path="/" exact component={Home} />
+            
+            {/* <Route path="/login" exact component={LoginForm} />
+          <Route path="/signup" exact component={SignUp} />  */}
+          <Route path="/communityhome" exact component={CommunityHomePage} />
+          <Route path="/createpost" exact component={CreatePost} />
+          <Route path="/createpost/post" exact component={Post} />
+          <Route path="/createpost/imageandvideo" exact component={ImageAndVideo}/>
+          <Route path="/createpost/link" exact component={LinkPostType} />
+          <Route path="/comments" exact component={PostWithComments} />
 
-         
             {/* <Route path="/ModerationPage" exact component={ModerationPage} />  */}
 
-          <Route path="/chats/:chatid/:username" exact component={ChatsPage} />
-          <Route path="/chatList" exact component={ChatList} />
+            <Route
+              path="/chats/:chatid/:username"
+              exact
+              component={ChatsPage}
+            />
+            <Route path="/chatList" exact component={ChatList} />
 
             <Route path="/login" exact component={LoginForm} />
             <Route path="/signup" exact component={signupForm} />
@@ -69,7 +97,11 @@ const App = () => {
               component={ImageAndVideo}
             />
             <Route path="/createpost/link" exact component={LinkPostType} />
-            <Route path="/mycommunities/analytics" exact component={CommununityAnalytics} />
+            <Route
+              path="/mycommunities/analytics"
+              exact
+              component={CommununityAnalytics}
+            />
             <Route path="/invites" exact component={CommunityInvitePage} />
             {/*  <Route path="/ModerationPage" exact component={ModerationPage} /> */}
 

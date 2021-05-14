@@ -7,21 +7,17 @@ const CommentSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'UserProfile',
     },
-    commentedCommunity:{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Community',
-    },
     commentBody: {
       type: String,
       trim: true,
     },
     // replies: [replySchema],
-    comments: [
-      {
+    comments: [{
+      comment: {
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "Comment"
+        ref: 'Comment'
       }
-    ],
+    }],
     upvotedBy: [
       {
         type: mongoose.Schema.Types.ObjectId,

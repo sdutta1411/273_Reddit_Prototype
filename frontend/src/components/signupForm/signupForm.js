@@ -87,7 +87,7 @@ const Signup = (props) => {
     }
     console.log(inputs);
     props.userSignup(inputs);
-    console.log("Hey",props.user);
+    console.log("Hey", props.user);
     console.log(props.user);
 
     if (props.user.email === "Invalid Email")
@@ -107,7 +107,12 @@ const Signup = (props) => {
 
     if (props.user.status === true) {
       console.log("redirect");
-      redirectVar = <Redirect to="/communityhome" />;
+      swal("Sucess", "User Created Sucessfully", "Login to Continue");
+      redirectVar = <Redirect to="/" />;
+    } else {
+      swal("Error", "User Already registered ", "error", {
+        dangerMode: true,
+      });
     }
   };
 
@@ -144,7 +149,7 @@ const Signup = (props) => {
             >
               <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
-                  <RedditIcon />
+                  <RedditIcon style={{ color: "black" }} />
                 </Avatar>
                 <Typography component="h1" variant="h5">
                   Sign up

@@ -33,7 +33,6 @@ export default function CommunityAnalytics() {
   var userLocalStorage = JSON.parse(localStorage.getItem("user"));
   const token = userLocalStorage ? userLocalStorage.token : "";
   const email = userLocalStorage ? userLocalStorage.email : "bhagi@gmail.com";
-  
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: token },

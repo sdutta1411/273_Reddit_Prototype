@@ -34,7 +34,7 @@ const signup = (req, res) => {
   connection.query(sqlQuery, values, function (error, results, fields) {
     if (error) {
       console.log(error);
-      res.status(400).json({
+      res.status(400).send({
         status: false,
         message: "User already registered",
       });
@@ -114,48 +114,6 @@ const login = (req, res) => {
   );
 };
 
-// @route   POST api/users/signup
-// @desc    Tests signup route
-// @access  Public
-const signupuser = (req, res) => {
-  console.log("In Sign Up Mongo user API");
-  // router.post('/signup', (req, res) => {
-  UserProfile.findOne({ email: req.body.email }).then((user) => {
-    // validation
-    if (user) {
-      //errors.email = 'Email already exists';
-      return res.status(400).json("Email already exists");
-    } else {
-      console.log("Creating a new user");
-
-      const newUser = new UserProfile({
-        username: req.body.username,
-        email: req.body.email,
-      });
-      var token = jwt.sign({ id: newUser.id }, secret, {
-        expiresIn: 86400, // 24 hours
-      });
-      newUser
-        .save((err) => {
-          if (err) {
-            res.status(500).send({ message: err });
-          }
-
-          res.json({
-            userId: newUser._id,
-            username: newUser.username,
-            email: newUser.email,
-            token: "Bearer " + token,
-            status: true,
-          });
-        })
-        .catch(function (err) {
-          res.status(400).json(err);
-        });
-    }
-  });
-};
-
 const test = (req, res) => {
   res.send("hello hello");
 };
@@ -175,7 +133,7 @@ const getAllUsers = async (req, res) => {
 module.exports = {
   test,
   signup,
-  signupuser,
+
   login,
   getUserDetails,
   getAllUsers,
