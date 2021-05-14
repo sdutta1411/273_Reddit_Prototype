@@ -11,7 +11,7 @@ import Home from "./components/LandingPage/home";
 import UserProfile from "./components/UserProfile/UserProfile";
 // import Home from "./components/LandingPage/home";
 import SearchBar from "./components/CommunitySearch/searchbar.js";
-/* import SearchResults from "./components/CommunitySearch/SearchResults"; */
+import SearchList from "./components/CommunitySearch/SearchList";
 import CommunityHomePage from "./components/CommunityHomePage/CommunityHomePage";
 import CreatePost from "./components/CommunityHomePage/CreatePost";
 import Post from "./components/CommunityHomePage/Post";
@@ -73,7 +73,7 @@ const App = () => {
             <Route path="/invites" exact component={CommunityInvitePage} />
             <Route path="/ModerationPage" exact component={Moderation} />
             <Route path="/searchbar" exact component={SearchBar} />
-            {/* <Route path="/SearchResults" exact component={SearchResults} /> */}
+            {<Route path="/SearchList" exact component={SearchList} />}
 
             <Route path="/dashboard" exact component={DashboardPage} />
             <Route path="/mycommunity" exact component={MyCommunity} />

@@ -62,7 +62,7 @@ const SearchBar = (props) => {
 
   
   return (
-    <>
+    
       <AppBar position="static">
         <Toolbar>
           <div className={classes.searchContainer}>
@@ -78,8 +78,8 @@ const SearchBar = (props) => {
       </AppBar>
     
       
-      )
-    </>
+      
+    
   );
 };
 
