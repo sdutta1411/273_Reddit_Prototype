@@ -50,8 +50,8 @@ const ShowComments = ({ postId }) => {
           console.log("Response from get post: "+JSON.stringify(response.data));
           setComments(response.data);
           //setReplies(response.data[0].replies[0].replies);
-          console.log("Replies: "+JSON.stringify(response.data[0].replies[0].replies));
-          setParentComment(response.data[0].comment);
+          //console.log("Replies: "+JSON.stringify(response.data[0].replies[0].replies));
+          //setParentComment(response.data[0].comment);
         }
     }
     onLoadShowComments();
