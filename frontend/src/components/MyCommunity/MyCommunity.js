@@ -19,6 +19,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { CreateCommunity } from "./CreateCommunity";
 import Switch from '@material-ui/core/Switch';
 import TablePagination from "@material-ui/core/TablePagination";
+import { EditCommunity } from "./EditCommunity";
 
 
 
@@ -80,8 +81,8 @@ export const MyCommunity = () => {
 
   const deletecommunity = (communityID) => {
     // const email = localStorage.getItem("email");
-    const deleteCommunity = { communityID: communityID};
-
+    const deleteCommunity = { CommunityID: communityID};
+console.log("Community id",deleteCommunity)
     axios.defaults.withCredentials = true;
     axios
       .post(`${Apirequest}/api/community/deleteCommunity`, deleteCommunity)
@@ -136,8 +137,10 @@ export const MyCommunity = () => {
      </Grid>
       <br/>
       {communities.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((community) => (
+        
         <Grid
         container
+        key= {community._id}
         // spacing={2}
         direction="row"
         justify="center"
@@ -169,14 +172,12 @@ export const MyCommunity = () => {
               </Typography>
             </CardContent>
           </CardActionArea>
-          <CardActions>
-            <Button size="small" color="primary">
-              Edit
-            </Button>
-            <Button size="small" color="primary" onClick={deletecommunity(community._id)}>
+          <CardActions> 
+          <EditCommunity communityID={community._id}/>
+            <Button size="small" color="primary" onClick={()=>deletecommunity(community._id)}>
               Delete
             </Button>
-          </CardActions>
+            </CardActions>
         </Card>
         </Grid>
       ))}

@@ -5,7 +5,6 @@ import Box from "@material-ui/core/Box";
 import RedditIcon from "@material-ui/icons/Reddit";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
-import AddIcon from '@material-ui/icons/Add';
 import Container from "@material-ui/core/Container";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
@@ -38,11 +37,38 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-export const CreateCommunity = () => {
+export const EditCommunity = (communityID) => {
+    console.log("Child",communityID)
     const classes = useStyles();
     const [inputs, setInputs] = useState({});
     const [open, setOpen] = useState(false);
     const [files, setFiles] = useState([]);
+  
+// let rule = []
+    const [fields, setFields] = useState([{  }]);
+   
+  
+    function handleAdd() {
+      const values = [...fields];
+      values.push({ });
+      setFields(values);
+    }
+  
+    function handleRemove(i) {
+      const values = [...fields];
+      values.splice(i, 1);
+      setFields(values);
+    }
+ 
+
+      function handleInputChange1(e, index) {
+        const {name, value} = e.target;
+        const list = [...fields];
+        list[index][name] = value;
+        setFields(list);
+        
+      }
+    
 
     const handleOpen = () => {
         setOpen(true);
@@ -54,12 +80,15 @@ export const CreateCommunity = () => {
 
       const handleInputChange = (event) => {
         event.persist();
+
         setInputs((inputs) => ({
-          ...inputs,
-          [event.target.name]: event.target.value,
-        }));
+            ...inputs,
+            [event.target.name]: event.target.value,
+          }));
+      
       };
       
+    
       const fileSelectedHandler = (e) => {
         setFiles({ files: [...files, ...e.target.files] })
       }
@@ -68,19 +97,17 @@ export const CreateCommunity = () => {
         e.preventDefault();
         axios.defaults.withCredentials = true;
         console.log(inputs)
+        console.log(fields)
         setInputs((inputs) => ({
             ...inputs,
-            admin:"bhagi@gmail.com",
+            rules:files,
+            communityID: communityID,
           }));
           console.log(inputs)
     axios
-      .post(`${Apirequest}/api/community/createnewcommunity`, inputs)
+      .post(`${Apirequest}/api/community/editCommunity`, inputs)
       .then(( response ) => {
         console.log(response);
-        if(response.status === 200){
-            alert("Community created successfully")
-            
-        }
       })
       .catch((error) => {
         console.log("error occured while connecting to backend:", error);
@@ -91,13 +118,14 @@ export const CreateCommunity = () => {
     return (
         <div>
             
-<Button color="inherit" onClick={handleOpen}>
-<AddIcon/> Create Community
+<Button size="small" color="primary" onClick={handleOpen}>
+ Edit
 </Button>
 <Modal
 open={open}
 onClose={handleClose}
 aria-labelledby="simple-modal-title"
+style={{ overflow: 'scroll' }}
 aria-describedby="simple-modal-description"
 >
 <Container>
@@ -117,25 +145,13 @@ aria-describedby="simple-modal-description"
           <RedditIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-        Create Community
+        Edit Community
         </Typography>
         <form
           className={classes.form}
           onSubmit={handleSubmit}
           noValidate
         >
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="communityName"
-            label="Community Name"
-            name="communityName"
-            autoComplete="communityName"
-            onChange={handleInputChange}
-           
-          />
           <br />
           <TextField
           id="outlined-multiline-flexible"
@@ -147,11 +163,57 @@ aria-describedby="simple-modal-description"
             fullWidth
             name="description"
             onChange={handleInputChange} 
-           
           />
           <br /><br />
           <input type="file" multiple onChange={fileSelectedHandler} />
           <br /><br />
+         
+    
+          <Button type="button" onClick={() => handleAdd()}>
+            +
+          </Button>
+          <Grid
+          container
+          spacing={2}
+          direction="row"
+          justify="center"
+          alignItems="center"
+          className={classes.formRow}
+        >
+          {fields.map((field, idx) => {
+            return (
+              <div key={`${field}-${idx}`}>
+              <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              onChange={e=> handleInputChange1(e,idx)}
+              id="RuleTitle"
+              label="Rule Title"
+              name="RuleTitle"
+              autoComplete="RuleTitle"
+             
+                />
+                &nbsp;
+                &nbsp;
+                <TextField
+                id="outlined-multiline-flexible"
+                label="description"
+                multiline
+                rows={4}
+                variant="outlined"
+                  required
+                  name="Ruledescription"
+                  onChange={e=> handleInputChange1(e,idx)}
+                />
+                <Button type="button" onClick={() => handleRemove(idx)}>
+                  X
+                </Button>
+              </div>
+            );
+          })}
+          </Grid>
+   <br/><br/>
           <Button
             type="submit"
             fullWidth
@@ -159,7 +221,7 @@ aria-describedby="simple-modal-description"
             color="primary"
             className={classes.submit}
           >
-            Create
+            Update
           </Button>
 
           <Box mt={5}></Box>
@@ -169,7 +231,7 @@ aria-describedby="simple-modal-description"
   </Grid>
   </Container>
 </Modal>
-        </div>
+</div>
     )
 }
 
