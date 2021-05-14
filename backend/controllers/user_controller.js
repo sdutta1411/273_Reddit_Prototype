@@ -88,13 +88,12 @@ const login = (req, res) => {
               const token = jwt.sign(payload, secret, {
                 expiresIn: 1008000,
               });
-          
+
               res.status(200).send({
                 username: results[0].name,
                 email: results[0].email,
                 token: "Bearer " + token,
                 status: true,
-                
               });
             } else {
               res.json({
@@ -132,11 +131,64 @@ const getAllUsers = async (req, res) => {
   res.status(200).json(user);
 };
 
+//Update user details
+const updateUserDetails = (req, res) => {
+  const { userId, username, gender, location, description } = req.body;
+  console.log(req.body);
+
+  const updateUser = {
+    username: username,
+    gender: gender,
+    location: location,
+    description: description,
+  };
+
+  UserProfile.updateOne(
+    { _id: userId },
+    { $set: updateUser },
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Updated User : ", docs);
+        res.json({
+          status: true,
+          data: docs,
+          message: "User Details Updated Sucessfully",
+        });
+      }
+    }
+  );
+};
+
+//Update Topic lists
+const updateTopicLists = (req, res) => {
+  const { userId, topics } = req.body;
+  console.log(req.body);
+
+  UserProfile.updateOne(
+    { _id: userId },
+    { $set: { topics: topics } },
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Updated User : ", docs);
+        res.json({
+          status: true,
+          message: "User Topics Updated Sucessfully",
+        });
+      }
+    }
+  );
+};
+
 module.exports = {
   test,
   signup,
-
   login,
   getUserDetails,
   getAllUsers,
+  updateUserDetails,
+  updateTopicLists,
 };

@@ -16,12 +16,10 @@ const createnewcommunity = async (req, res) => {
   const admin_user = await UserProfile.findOne({ email: admin });
 
   if (comm) {
-    return res
-      .status(400)
-      .json({
-        message:
-          "Community with same name already exists.Please choose a different name",
-      });
+    return res.status(400).json({
+      message:
+        "Community with same name already exists.Please choose a different name",
+    });
   } else {
     console.log("creating a new community");
     const newCommunity = new Community({
@@ -256,7 +254,7 @@ const getOwnerCommunities = async (req, res) => {
 };
 const getAllOwnerCommunities = async (req, res) => {
   console.log("Get Owner communities API" + JSON.stringify(req.body.email));
-  console.log(req.body)
+  console.log(req.body);
   const usercomms = await UserProfile.find({ email: req.body.email });
   if (usercomms[0]) {
     const ownerId = usercomms[0]._id;
@@ -306,8 +304,10 @@ const getAllOwnerCommunities = async (req, res) => {
         break;
 
       case 30:
-        if(req.body.sorted === true){
-          const ownerComms = await Community.find({ admin: ownerId }).sort({subscribedBy: 1});
+        if (req.body.sorted === true) {
+          const ownerComms = await Community.find({ admin: ownerId }).sort({
+            subscribedBy: 1,
+          });
           if (ownerComms.length > 0) {
             return res.status(200).json(ownerComms);
           } else {
@@ -315,8 +315,10 @@ const getAllOwnerCommunities = async (req, res) => {
               .status(201)
               .json({ message: "This User is not an admin in any community" });
           }
-        }  else if(req.body.sorted === false){
-          const ownerComms = await Community.find({ admin: ownerId }).sort({subscribedBy: -1});
+        } else if (req.body.sorted === false) {
+          const ownerComms = await Community.find({ admin: ownerId }).sort({
+            subscribedBy: -1,
+          });
           if (ownerComms.length > 0) {
             return res.status(200).json(ownerComms);
           } else {
@@ -334,17 +336,16 @@ const getAllOwnerCommunities = async (req, res) => {
   else {
     return res.status(201).json({ message: "This User does not exist" });
   }
-
-
 };
-
 
 const getAllCommunities_dashboard = async (req, res) => {
   console.log("Get Owner communities API" + JSON.stringify(req.body.email));
   const usercomms = await UserProfile.find({ email: req.body.email });
   if (usercomms[0]) {
     const ownerId = usercomms[0]._id;
-    const ownerComms = await Community.find({ admin: ownerId }).populate('posts');
+    const ownerComms = await Community.find({ admin: ownerId }).populate(
+      "posts"
+    );
     if (ownerComms.length > 0) {
       return res.status(200).json(ownerComms);
     } else {
@@ -362,55 +363,84 @@ const getAnalyticsData = async (req, res) => {
   const usercomms = await UserProfile.find({ email: req.body.email });
   if (usercomms[0]) {
     const ownerId = usercomms[0]._id;
+    // console.log(ownerId);
     const ownerComms = await Community.find({ admin: ownerId });
+    // console.log(ownerComms)
     if (ownerComms.length > 0) {
       let data = [];
       let communityTableData = [];
       let userTableData = [];
       for (let i = 0; i < ownerComms.length; i++) {
+        //console.log(ownerComms[i]._id);
         commPosts = await Post.find({ community: ownerComms[i]._id });
         NumOfPost = ownerComms[i].posts.length;
         numOfUsers = ownerComms[i].subscribedBy.length;
-        commPosts.sort(function (a, b) {
-          var keyA = a.pointsCount,
-            keyB = b.pointsCount;
-          // Compare the 2 dates
-          if (keyA > keyB) return -1;
-          if (keyA < keyB) return 1;
-          return 0;
-        });
-        let counts = {};
-        for (let j = 0; j < commPosts.length; j++) {
-          counts[commPosts[i].author.email] =
-            (counts[commPosts[i].author.email] || 0) + 1;
+        //console.log(commPosts);
+        if (commPosts.length > 0) {
+          commPosts.sort(function (a, b) {
+            var keyA = a.pointsCount,
+              keyB = b.pointsCount;
+            // Compare the 2 dates
+            if (keyA > keyB) return -1;
+            if (keyA < keyB) return 1;
+            return 0;
+          });
+          let counts = {};
+          for (let j = 0; j < commPosts.length; j++) {
+            counts[commPosts[i].author.email] =
+              (counts[commPosts[i].author.email] || 0) + 1;
+          }
+          const sortable = Object.fromEntries(
+            Object.entries(counts).sort(([, a], [, b]) => b - a)
+          );
+          console.log(sortable);
+          let userItem = {
+            name: ownerComms[i].communityName,
+            ActiveUser: Object.entries(sortable)[0][0],
+            UserPostCount: Object.entries(sortable)[0][1],
+          };
+          // console.log(commPosts)
+          let mostUpvotedPost = {
+            name: ownerComms[i].communityName,
+            title: commPosts[0].title,
+            Author: commPosts[0].author.email,
+            Votes: commPosts[0].pointsCount,
+          };
+          let item = {
+            name: ownerComms[i].communityName,
+            UserCount: numOfUsers,
+            PostCount: NumOfPost,
+          };
+          userTableData.push(userItem);
+          communityTableData.push(mostUpvotedPost);
+          data.push(item);
+        } else {
+          let item = {
+            name: ownerComms[i].communityName,
+            UserCount: 1,
+            PostCount: 0,
+          };
+          let mostUpvotedPost = {
+            name: ownerComms[i].communityName,
+            title: "No Posts",
+            Author: "Not available",
+            Votes: "Not available",
+          };
+          let userItem = {
+            name: ownerComms[i].communityName,
+            ActiveUser: "Not Available",
+            UserPostCount: "Not Available",
+          };
+          userTableData.push(userItem);
+          communityTableData.push(mostUpvotedPost);
+          data.push(item);
         }
-        const sortable = Object.fromEntries(
-          Object.entries(counts).sort(([, a], [, b]) => b - a)
-        );
-        let userItem = {
-          name: ownerComms[i].communityName,
-          ActiveUser: Object.entries(sortable)[0][0],
-          UserPostCount: Object.entries(sortable)[0][1]
-        }
-        // console.log(commPosts)
-        let mostUpvotedPost = {
-          name: ownerComms[i].communityName,
-          title: commPosts[0].title,
-          Author: commPosts[0].author.email,
-          Votes: commPosts[0].pointsCount,
-        };
-        let item = {
-          name: ownerComms[i].communityName,
-          UserCount: numOfUsers,
-          PostCount: NumOfPost,
-        };
-        userTableData.push(userItem);
-        communityTableData.push(mostUpvotedPost);
-        data.push(item);
       }
-      return res
-        .status(200)
-        .json({ communityTableData: communityTableData, data: data, userTableData: userTableData });
+      return res.status(200).json({
+        communityTableData: communityTableData,
+        data: data,
+        userTableData: userTableData,
+      });
     } else {
       return res
         .status(201)
@@ -421,36 +451,49 @@ const getAnalyticsData = async (req, res) => {
   }
 };
 
-const deleteCommunity =  (req, res) => {
-  console.log("Delete Community",req.body)
-  Community.deleteOne({
-    _id: req.body.CommunityID,
-  },(err,com)=>{
-    if(err){
-      console.log(err)
-    }else{
-      Post.deleteMany({community: req.body.CommunityID},(error,result)=>{
-        if(error){
-          console.log("Error in Post deletion",error)
-        }else{
-          res.send(result)
-        }
-      })
+const deleteCommunity = (req, res) => {
+  console.log("Delete Community", req.body);
+  Community.deleteOne(
+    {
+      _id: req.body.CommunityID,
+    },
+    (err, com) => {
+      if (err) {
+        console.log(err);
+      } else {
+        Post.deleteMany(
+          { community: req.body.CommunityID },
+          (error, result) => {
+            if (error) {
+              console.log("Error in Post deletion", error);
+            } else {
+              res.send(result);
+            }
+          }
+        );
+      }
     }
-  });
+  );
 };
 
-const editCommunity =  (req, res) => {
-  console.log("Edit Community",req.body)
-  Community.updateOne({
-    _id: req.body.CommunityID,
-  },{$set: {description: req.body.description}, $push:{rules: req.body.rules.Ruledescription}},(err,com)=>{
-    if(err){
-      console.log(err)
-    }else{
-          res.send(com)
+const editCommunity = (req, res) => {
+  console.log("Edit Community", req.body);
+  Community.updateOne(
+    {
+      _id: req.body.CommunityID,
+    },
+    {
+      $set: { description: req.body.description },
+      $push: { rules: req.body.rules.Ruledescription },
+    },
+    (err, com) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(com);
+      }
     }
-  });
+  );
 };
 
 module.exports = {

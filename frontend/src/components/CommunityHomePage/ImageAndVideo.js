@@ -13,8 +13,8 @@ import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 
 export default function ImageAndVideo() {
     const[title,setTitle] = useState("");
-    const[imgvid, setImgAndVid] = useState([]);
-    const[imgvidurls,setImgAndVidUrls] = useState([]);
+    const[imgvid, setImgAndVid] = useState("");
+    const[imgvidurls,setImgAndVidUrls] = useState("");
     const[noOfImg, setNoOfImg] = useState(0);
     const postType="Image";
 
@@ -31,8 +31,8 @@ export default function ImageAndVideo() {
             console.log(JSON.stringify(response.data));
             var strRes = JSON.stringify(response.data);
             var data = JSON.parse(strRes);
-            setImgAndVidUrls(oldArray => [...oldArray, data.secure_url])
-            console.log("imgvidurls::::"+imgvidurls);
+            setImgAndVidUrls(data.secure_url)
+            console.log("data::::"+data.secure_url);
         });
     }
 

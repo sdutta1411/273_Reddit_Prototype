@@ -1,5 +1,6 @@
 import React from "react";
 import clsx from "clsx";
+import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -19,12 +20,11 @@ import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { Checkbox, Container, Typography } from "@material-ui/core";
 import MessageIcon from "@material-ui/icons/Message";
 import LinkIcon from "@material-ui/icons/Link";
-
-
+import UserList from "./UserList"
 
 export default function Moderation() {
 
-   
+  // taken from dashboard.js
  const useCardStyles = makeStyles(
   (theme) => ({
     root: {
@@ -102,26 +102,21 @@ export default function Moderation() {
   const myCommunities = [
     {
       title: "Comm1",
-      Type: "Text",
-      textSubmission: "Friends Reunion",
-      linkSubmission: "",
-      imageSubmission: "",
+      userrequest:"",
       community: "TestCommunity1",
-      upvotedBy: 1,
-      downvotedBy: 1,
+      upvotedBy: 19,
+      downvotedBy: 10,
     },
     {
       title: "Comm2",
-      postType: "Text",
-      textSubmission: "Reddit",
-      linkSubmission: "",
-      imageSubmission: "",
+      userrequest:"",
       community: "TestCommunity2",
-      upvotedBy: 2,
-      downvotedBy: 3,
+      upvotedBy: 12,
+      downvotedBy:9,
     },
   ];
 
+  
   return (
     <Paper className={classes.root} variant="outlined">
       <Container maxWidth="lg" className={classes.container}>
@@ -239,6 +234,9 @@ export default function Moderation() {
                           component={Link}
                         
                         />
+                        <Button component={ Link } to="/UserList"  variant="contained" size="small" >Details</Button>
+                        
+                      
                       </ListItem>
                       <Divider />
                     </List>

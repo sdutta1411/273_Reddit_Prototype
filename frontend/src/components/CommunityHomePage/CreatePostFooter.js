@@ -10,7 +10,7 @@ import {useEffect ,useState,setState} from 'react'
 
 export default function CreatePostFooter({postType,title,text,imgvidurls,link}) {
     var userLocalStorage = JSON.parse(localStorage.getItem("user"));
-    var token = userLocalStorage.token;
+    const token = localStorage.getItem('token');
     const[openPostSnack, setOpenPostSnack] = useState(false);    
     console.log("Post type:: "+postType);
     console.log("Title & text in Create post FOOTER" +title+ ","+text);

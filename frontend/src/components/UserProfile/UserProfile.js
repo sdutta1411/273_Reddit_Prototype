@@ -22,6 +22,7 @@ import { Image } from "cloudinary-react";
 import Axios from "axios";
 import RedditIcon from "@material-ui/icons/Reddit";
 import CreateIcon from "@material-ui/icons/Create";
+import swal from "sweetalert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,6 +64,8 @@ const UserProfile = () => {
   const [description, setDescription] = useState(user.description);
   const [imageSelected, setImageSelected] = useState("");
   const [publicurl, setPublicurl] = useState(localStorage.getItem("publicurl"));
+  const [inputFields, setInputFields] = React.useState([{ topics: "" }]);
+  const [userTopics, setTopics] = useState([]);
 
   debugger;
   const uploadImage = (e) => {
@@ -79,6 +82,64 @@ const UserProfile = () => {
       console.log(publicurl);
     });
   };
+
+  const update = (e) => {
+    debugger;
+    e.preventDefault();
+    Axios.post(" http://localhost:3001/api/user/updateUser", {
+      gender: gender,
+      location: location,
+      description: description,
+      username: name,
+    }).then((response) => {
+      if (response.status === 200) {
+        swal("Success", "User Updated Succesfully", "success");
+        localStorage.setItem(user.username, name);
+        localStorage.setItem(user.gender, gender);
+        localStorage.setItem(user.location, location);
+        localStorage.setItem(user.description, description);
+      }
+    });
+  };
+
+  const updatetopics = (e) => {
+    debugger;
+    e.preventDefault();
+    let topics = userTopics.split(",");
+
+    Axios.post(" http://localhost:3001/api/user/updateTopicLists", {
+      userId: user._id,
+      topics: topics,
+    })
+      .then((response) => {
+        if (response.data.status == true) {
+          swal(response.data.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleChangeInput = (event, index) => {
+    const { name, value } = event.target;
+    const list = [...inputFields];
+    list[index][name] = value;
+    setInputFields(list);
+  };
+
+  const handleAddFields = () => {
+    setInputFields([...inputFields, { email: "" }]);
+  };
+
+  const handleRemoveFields = (index) => {
+    const list = [...inputFields];
+    list.splice(index, 1);
+    setInputFields(list);
+  };
+
+  // user;
+  // topics = ["cr", "jj"];
 
   const doNothing = (e) => {};
 
@@ -109,10 +170,15 @@ const UserProfile = () => {
                         label="Name"
                         variant="outlined"
                         defaultValue={name}
+                        onChange={(event) => {
+                          event.preventDefault();
+                          setName(event.target.value);
+                        }}
                       />
                       <Button
                         className={classes.logo}
                         color="primary"
+                        onClick={update}
                         startIcon={
                           <CreateIcon
                             fontSize="large"
@@ -130,10 +196,15 @@ const UserProfile = () => {
                         label="Gender"
                         variant="outlined"
                         defaultValue={gender}
+                        onChange={(event) => {
+                          event.preventDefault();
+                          setGender(event.target.value);
+                        }}
                       />
                       <Button
                         className={classes.logo}
                         color="primary"
+                        onClick={update}
                         startIcon={
                           <CreateIcon
                             fontSize="large"
@@ -155,6 +226,7 @@ const UserProfile = () => {
                       <Button
                         className={classes.logo}
                         color="primary"
+                        onClick={update}
                         startIcon={
                           <CreateIcon
                             fontSize="large"
@@ -172,10 +244,15 @@ const UserProfile = () => {
                         label="Description"
                         variant="outlined"
                         defaultValue={description}
+                        onChange={(event) => {
+                          event.preventDefault();
+                          setDescription(event.target.value);
+                        }}
                       />
                       <Button
                         className={classes.logo}
                         color="primary"
+                        onClick={update}
                         startIcon={
                           <CreateIcon
                             fontSize="large"
@@ -197,6 +274,7 @@ const UserProfile = () => {
                       <Button
                         className={classes.logo}
                         color="primary"
+                        onClick={update}
                         startIcon={
                           <CreateIcon
                             fontSize="large"
@@ -272,42 +350,10 @@ const UserProfile = () => {
                   id="outlined-basic"
                   label="Topic"
                   variant="outlined"
-                />
-              </AccordionDetails>
-            </Accordion>
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel2a-content"
-                id="panel2a-header"
-              >
-                <Typography className={classes.heading}>
-                  Topic List 2
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <TextField
-                  id="outlined-basic"
-                  label="Topic"
-                  variant="outlined"
-                />
-              </AccordionDetails>
-            </Accordion>
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel2a-content"
-                id="panel2a-header"
-              >
-                <Typography className={classes.heading}>
-                  Topic List 3
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <TextField
-                  id="outlined-basic"
-                  label="Topic"
-                  variant="outlined"
+                  onChange={(event) => {
+                    event.preventDefault();
+                    setTopics(event.target.value);
+                  }}
                 />
               </AccordionDetails>
             </Accordion>
@@ -315,6 +361,7 @@ const UserProfile = () => {
 
           <CardActions>
             <Button
+              onClick={updatetopics}
               size="small"
               color="primary"
               style={{

@@ -8,7 +8,7 @@ const commentController = require("../controllers/comment_controller");
 // create a post
 router.post("/createnewpost",  checkAuth ,postController.createnewpost);
 //get posts
-router.get("/getPosts",  checkAuth ,postController.getPosts);
+router.post("/getPosts",  checkAuth ,postController.getPosts);
 //get post
 router.post("/getPost",  checkAuth ,postController.getPost);
 //upvote post

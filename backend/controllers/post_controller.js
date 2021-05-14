@@ -80,53 +80,72 @@ const paginateResults = require("../utils/paginateResults");
 
     // Get Posts
     const getPosts = async (req, res) => {
-        const communityName = req.query.communityName;
-        //const page = Number(req.query.page);
-        //const limit = Number(req.query.limit);
-        //const sortBy = req.query.sortby;
-        // let sortQuery;
-        // switch (sortBy) {
-        //   case 'new':
-        //     sortQuery = { createdAt: -1 };
-        //     break;
-        //   case 'top':
-        //     sortQuery = { pointsCount: -1 };
-        //     break;
-        //   case 'best':
-        //     sortQuery = { voteRatio: -1 };
-        //     break;
-        //   case 'old':
-        //     sortQuery = { createdAt: 1 };
-        //     break;
-        //   default:
-        //     sortQuery = {};
-        // }      
+        console.log("in get posts API: "+req.body.type);
+        const communityName = req.body.communityName;
         const postsCount = await Post.countDocuments();
-        console.log("Post.countDocuments(): "+postsCount);
-        //const paginated = paginateResults(page, limit, postsCount);
-        const com = await Community.findOne({communityName:req.query.communityName});
-        //console.log("com: "+com);
-        // const allPosts = await Post.findOne({community:com._id})
-        //   .sort(sortQuery)
-        //   .select('-comments')
-        //   .limit(limit)
-        //   .skip(paginated.startIndex)
-        //   .populate('author', 'username')
-        //   .populate('community', 'communityName');
+        //console.log("Post.countDocuments(): "+postsCount);
+        const com = await Community.findOne({communityName:communityName});
+        switch (req.body.type) {
+        // created at
+        case 10:
+        console.log("in case 10");
+        if(req.body.sorted === true){
+          const postsByComm = await Post.find({community:com._id}).sort({created_at : 1});
+          if (postsByComm.length > 0) {
+            console.log("sorted postcmms: "+postsByComm);
+            return res.status(200).json(postsByComm);
+          }
+        }  else if(req.body.sorted === false){
+          const postsByComm = await Post.find({community:com._id}).sort({created_at : -1});
+          if (postsByComm.length > 0) {
+            return res.status(200).json(postsByComm);
+          }
+        }
+        break;
+      //most popular
+      case 20:
+        console.log("in case 20");
+        if(req.body.sorted === true){
+          const postsByComm = await Post.find({community:com._id}).sort({noOfUpvotes : 1});
+          if (postsByComm.length > 0) {
+            return res.status(200).json(postsByComm);
+          }
+        }  else if(req.body.sorted === false){
+          const postsByComm = await Post.find({community:com._id}).sort({noOfUpvotes : -1});
+          if (postsByComm.length > 0) {
+            return res.status(200).json(postsByComm);
+          }
+        }
+        break;
 
-        const postsByComm = await Post.find({community:com._id});
-        postsByComm.forEach(upvote=>{
-          console.log("upvote:: "+upvote.upvotedBy);
-        })
-        // console.log("all posts::"+allPosts);
-        // const paginatedPosts = {
-        //   previous: paginated.results.previous,
-        //   results: allPosts,
-        //   next: paginated.results.next,
-        // };      
-        // res.status(200).json(paginatedPosts);
-        res.status(200).json(postsByComm)
-      };
+      case 30:
+        console.log("in case 30");
+        if(req.body.sorted === true){
+          const postsByComm = await Post.find({community:com._id}).sort({noOfDownvotes : 1});
+          if (postsByComm.length > 0) {
+            return res.status(200).json(postsByComm);
+          }
+        }  else if(req.body.sorted === false){
+          const postsByComm = await Post.find({community:com._id}).sort({noOfDownvotes : -1});
+          if (postsByComm.length > 0) {
+            return res.status(200).json(postsByComm);
+          }
+        }
+        break;
+    
+      default:
+        console.log("this is default case");
+        break;
+      }
+        // const com = await Community.findOne({communityName:req.body.communityName});
+        // const postsByComm = await Post.find({community:com._id});
+        // postsByComm.forEach(upvote=>{
+        //   console.log("upvote:: "+upvote.upvotedBy);
+        // })
+        // res.status(200).json(postsByComm)
+        }
+
+        
 
       const getPost = async(req,res) =>{
         console.log("In Get Post API");
@@ -148,13 +167,20 @@ const paginateResults = require("../utils/paginateResults");
           post.upvotedBy = post.upvotedBy.filter(
             (u) => u.toString() !== user._id.toString()
           );
-      
         } else {
           post.upvotedBy = post.upvotedBy.concat(user._id);
           post.downvotedBy = post.downvotedBy.filter(
             (d) => d.toString() !== user._id.toString()
           );
         }
+        const points = post.upvotedBy.length - post.downvotedBy.length;
+        if (post.points <= 0) {
+          post.pointsCount = 0;
+        } else {
+          post.pointsCount = points;
+        }
+        post.noOfUpvotes = post.upvotedBy.length;
+        post.noOfDownvotes = post.downvotedBy.length;
         await post.save();
         res.status(200).end();
       }
@@ -177,6 +203,14 @@ const paginateResults = require("../utils/paginateResults");
             (d) => d.toString() !== user._id.toString()
           );
         }
+        const points = post.upvotedBy.length - post.downvotedBy.length;
+        if (post.points <= 0) {
+          post.pointsCount = 0;
+        } else {
+          post.pointsCount = points;
+        }
+        post.noOfUpvotes = post.upvotedBy.length;
+        post.noOfDownvotes = post.downvotedBy.length;
         await post.save();
         res.status(200).end();
       }
