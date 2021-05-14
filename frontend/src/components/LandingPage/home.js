@@ -27,14 +27,16 @@ const Home = (props) => {
   const classes = useStyles();
   var items = [
     {
-      name: "Random Name #1",
-      description: "Probably the most random thing you have ever seen!",
-      image: {image1},
+      name: "Reddit Clone",
+      description: "First page of the Internet",
+      image:
+        "https://res.cloudinary.com/dikqsaz3t/image/upload/v1620971286/oalqzzw2ydpoccahgkir.jpg",
     },
     {
-      name: "Random Name #2",
-      description: "Hello World!",
-      image: './reddit-img2.png',
+      name: "Reddit Prototype",
+      description: "Home page of the Internet",
+      image:
+        "https://res.cloudinary.com/dikqsaz3t/image/upload/v1620971279/skdbkwvlrchyiyob3i0i.jpg",
     },
   ];
 
@@ -42,25 +44,27 @@ const Home = (props) => {
     <Carousel>
       {items.map((item, i) => (
         <Grid container justify="center">
-        
-        <Card className={classes.root}>
-          <CardActionArea>
-            <CardMedia
-              className={classes.media}
-              image={item.image}
-              title={item.name}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                {item.name}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {item.description}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-        </Grid>   
+          <Card
+            className={classes.root}
+            style={{ minWidth: "400px", height: "400px" }}
+          >
+            <CardActionArea>
+              <CardMedia
+                className={classes.media}
+                image={item.image}
+                title={item.name}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {item.name}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  {item.description}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Grid>
       ))}
     </Carousel>
   );
@@ -69,8 +73,7 @@ const Home = (props) => {
 // function Item(props) {
 //   const classes = useStyles();
 //   return (
-    
-//   );
 
+//   );
 
 export default Home;
