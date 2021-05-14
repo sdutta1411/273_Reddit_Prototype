@@ -425,6 +425,7 @@ export const usePostCommentsStyles = makeStyles(
       [theme.breakpoints.down('xs')]: {
         marginLeft: '0.3em',
       },
+      height: '150%'
     },
     divider: {
       marginBottom: '1em',
