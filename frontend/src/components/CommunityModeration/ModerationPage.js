@@ -115,7 +115,8 @@ export default function Moderation() {
       downvotedBy:9,
     },
   ];
-    
+
+  
   return (
     <Paper className={classes.root} variant="outlined">
       <Container maxWidth="lg" className={classes.container}>
@@ -233,7 +234,7 @@ export default function Moderation() {
                           component={Link}
                         
                         />
-                        <Button variant="contained">Details</Button>
+                        <Button component={ Link } to="/UserList"  variant="contained" size="small" >Details</Button>
                         
                       
                       </ListItem>

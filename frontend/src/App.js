@@ -30,6 +30,7 @@ import { useState, useEffect } from "react";
 import User from "./components/UserProfile/user";
 import Moderation from "./components/CommunityModeration/ModerationPage";
 import UserList from "./components/CommunityModeration/UserList";
+import UserCommunities from "./components/CommunityModeration/UserCommunities";
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -119,6 +120,7 @@ const App = () => {
             <Route path="/profile" exact component={UserProfile} />
             <Route path="/navbar" exact component={NavBarAfterLogin} />
             <Route path="/UserList" exact component={UserList} />
+            <Route path="/UserCommunities" exact component={UserCommunities} />
 
             {/* <Route path="/" exact component={Home} /> */}
           </Switch>

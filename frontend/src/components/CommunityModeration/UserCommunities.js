@@ -20,7 +20,7 @@ import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { Checkbox, Container, Typography } from "@material-ui/core";
 import MessageIcon from "@material-ui/icons/Message";
 import LinkIcon from "@material-ui/icons/Link";
-import UserList from "./UserList"
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 
 export default function UserCommunities() {
 
@@ -99,7 +99,7 @@ export default function UserCommunities() {
   const classes = useCardStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
-  const myCommunities = [
+  const UserCommunities = [
     {
       title: "Comm1",
       userrequest:"",
@@ -128,7 +128,7 @@ export default function UserCommunities() {
           <Grid item xs={12}>
             <Paper className={classes.paper}>
               <CardContent>
-                {myCommunities.map((value) => {
+                {UserCommunities.map((value) => {
                   return (
                     <List className={classes.root}>
                       <ListItem>
@@ -234,8 +234,9 @@ export default function UserCommunities() {
                         
                         />
                         <Button variant="contained">Details</Button>
-                        
-                      
+                        <Grid item xs={8}>
+                         <DeleteOutlinedIcon />  
+                         </Grid>
                       </ListItem>
                       <Divider />
                     </List>
