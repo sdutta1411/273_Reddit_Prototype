@@ -85,6 +85,7 @@ export default function MenuAppBar() {
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
+            onClick={()=>{history.push('/dashboard')}}
           >
             <Image
               style={{ width: "90px", height: "30px" }}
@@ -168,10 +169,6 @@ export default function MenuAppBar() {
           )}
         </Toolbar>
       </AppBar>
-
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-      </main>
     </div>
   );
 }
