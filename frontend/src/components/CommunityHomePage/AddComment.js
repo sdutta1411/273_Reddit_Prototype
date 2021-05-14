@@ -31,7 +31,7 @@ const AddComment = ({ user, postId }) => {
   }
       const body = {
         'email':userLocalStorage.email,
-        'username':user,
+        'username':userLocalStorage.username,
         'postId':postId,
         'comment':comment
      }
