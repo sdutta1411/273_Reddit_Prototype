@@ -14,5 +14,9 @@ router.post("/test", checkAuth, userController.test);
 router.post("/getUserDetails", userController.getUserDetails);
 // get all user details
 router.post("/allUsers", userController.getAllUsers);
+// update user details
+router.post("/updateUser", userController.updateUserDetails);
+// update topic lists
+router.post("/updateTopicLists", userController.updateTopicLists);
 
 module.exports = router;
