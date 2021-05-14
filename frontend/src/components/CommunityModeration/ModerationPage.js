@@ -24,7 +24,7 @@ import LinkIcon from "@material-ui/icons/Link";
 
 export default function Moderation() {
 
-   
+  // taken from dashboard.js
  const useCardStyles = makeStyles(
   (theme) => ({
     root: {
@@ -102,23 +102,17 @@ export default function Moderation() {
   const myCommunities = [
     {
       title: "Comm1",
-      Type: "Text",
-      textSubmission: "Friends Reunion",
-      linkSubmission: "",
-      imageSubmission: "",
+      userrequest:"",
       community: "TestCommunity1",
-      upvotedBy: 1,
-      downvotedBy: 1,
+      upvotedBy: 19,
+      downvotedBy: 10,
     },
     {
       title: "Comm2",
-      postType: "Text",
-      textSubmission: "Reddit",
-      linkSubmission: "",
-      imageSubmission: "",
+      userrequest:"",
       community: "TestCommunity2",
-      upvotedBy: 2,
-      downvotedBy: 3,
+      upvotedBy: 12,
+      downvotedBy:9,
     },
   ];
 
@@ -239,6 +233,7 @@ export default function Moderation() {
                           component={Link}
                         
                         />
+                      
                       </ListItem>
                       <Divider />
                     </List>
