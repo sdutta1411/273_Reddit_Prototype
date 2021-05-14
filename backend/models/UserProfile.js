@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const UserProfileSchema = new mongoose.Schema(
   {
-    name: {
+    username: {
       type: String,
       required: true,
     },
@@ -48,6 +48,16 @@ const UserProfileSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    communityStatus: [
+      {
+        communityID: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Community",
+        },
+        status: { type: String },
+        ts: {type: Date, default:Date.now()},
+      },
+    ],
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );

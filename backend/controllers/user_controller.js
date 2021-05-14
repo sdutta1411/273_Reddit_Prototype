@@ -40,7 +40,7 @@ const signup = (req, res) => {
       });
     } else {
       const newUser = new UserProfile({
-        name: req.body.name,
+        username: req.body.name,
         email: req.body.email,
       });
 
@@ -92,6 +92,7 @@ const login = (req, res) => {
                 username: results[0].name,
                 email: results[0].email,
                 token: "Bearer " + token,
+                status: true,
               });
             } else {
               res.json({
@@ -145,6 +146,7 @@ const signupuser = (req, res) => {
             username: newUser.username,
             email: newUser.email,
             token: "Bearer " + token,
+            status: true,
           });
         })
         .catch(function (err) {
@@ -164,10 +166,17 @@ const getUserDetails = async (req, res) => {
   console.log("User:: " + user);
   res.status(200).json(user);
 };
+
+const getAllUsers = async (req, res) => {
+  const user = await UserProfile.find({ email: { $ne: req.body.email } });
+  res.status(200).json(user);
+};
+
 module.exports = {
   test,
   signup,
   signupuser,
   login,
   getUserDetails,
+  getAllUsers,
 };

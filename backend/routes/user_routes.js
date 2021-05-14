@@ -4,7 +4,7 @@ const { checkAuth } = require("../config/passport");
 const userController = require("../controllers/user_controller");
 
 // sign-up User
-router.post("/register", checkAuth, userController.signup);
+router.post("/register", userController.signup);
 // router.post("/registeruser", userController.signupuser);
 // login User
 router.post("/login", userController.login);
@@ -12,5 +12,7 @@ router.post("/login", userController.login);
 router.post("/test", checkAuth, userController.test);
 //get user details from mongo
 router.post("/getUserDetails", checkAuth, userController.getUserDetails);
+// get all user details
+router.post("/allUsers", userController.getAllUsers);
 
 module.exports = router;
