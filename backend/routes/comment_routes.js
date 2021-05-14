@@ -21,4 +21,6 @@ router.post("/getComments", checkAuth, commentController.getComments);
 router.post("/createnewcomment", checkAuth, commentController.createnewcomment);
 //add reply to comment
 router.post("/addReplyToComment", checkAuth, commentController.addReplyToComment);
+// Handle upvote and downvote
+router.post("/handleVote", checkAuth, commentController.handleVote);
 module.exports = router;

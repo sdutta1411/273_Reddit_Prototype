@@ -151,10 +151,25 @@ export default function MenuAppBar() {
                 <MenuItem
                   style={{ textDecoration: "none", fontSize: "17px" }}
                   component={Link}
+                  to="analytics"
+                >
+                  Analytics
+                </MenuItem>
+                <MenuItem
+                  style={{ textDecoration: "none", fontSize: "17px" }}
+                  component={Link}
                   to="/chatList"
                   onClick={handleClose}
                 >
                   Messages
+                </MenuItem>
+                <MenuItem
+                  style={{ textDecoration: "none", fontSize: "17px" }}
+                  component={Link}
+                  to="invites"
+                  onClick={handleClose}
+                >
+                  Invites
                 </MenuItem>
                 <MenuItem
                   style={{ textDecoration: "none", fontSize: "17px" }}

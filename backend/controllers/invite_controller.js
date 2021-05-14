@@ -145,7 +145,6 @@ const getMyInvites = async (req, res) => {
 };
 
 // Request to Join Community is in Community Controller
-
 const getMyRequests = async (req, res) => {
   let currentCommunity = await Community.findOne({
     communityName: req.body.communityName,

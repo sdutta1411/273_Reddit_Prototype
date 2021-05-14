@@ -103,7 +103,7 @@ const App = () => {
             />
             <Route path="/createpost/link" exact component={LinkPostType} />
             <Route
-              path="/mycommunities/analytics"
+              path="/analytics"
               exact
               component={CommununityAnalytics}
             />

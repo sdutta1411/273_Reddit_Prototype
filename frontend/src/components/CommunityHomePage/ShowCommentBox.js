@@ -20,30 +20,40 @@ const ShowCommentBox = (props) => {
   const [voteCount, setVoteCount] = useState(getVoteCount(props.c.comment.upvotedBy, props.c.comment.downvotedBy))
   const [checkedUp, setCheckUp] = useState(props.c.comment.upvotedBy.includes(props.userId));
   const [checkedDown, setCheckDown] = useState(props.c.comment.downvotedBy.includes(props.userId));
-  const handleCommentVote = (event, commentId, voteType) => {
+  const handleCommentVote = async(event, commentId, voteType) => {
     if (voteType === -1 && !checkedDown) {
-      props.handleCommentVote(commentId, -1)
-      setVoteCount(voteCount-1);
-      setCheckDown(true)
-      setCheckUp(false)
+      props.handleCommentVote(commentId, -1).then(()=>{
+        
+          setVoteCount(voteCount-1);
+          setCheckDown(true)
+          setCheckUp(false)
+        
+      })
+      
     }
     if (voteType === -1 && checkedDown) {
-      props.handleCommentVote(commentId, 0)
-      setVoteCount(voteCount+1);
-      setCheckDown(false)
-      setCheckUp(false)
+      props.handleCommentVote(commentId, 0).then(()=>{
+        setVoteCount(voteCount+1);
+        setCheckDown(false)
+        setCheckUp(false)
+      })
     }
     if (voteType === 1 && !checkedUp) {
-      props.handleCommentVote(commentId, 1)
-      setVoteCount(voteCount+1);
-      setCheckUp(true)
-      setCheckDown(false)
+      props.handleCommentVote(commentId, 1).then(()=>{
+        console.log('abcdef')
+        setVoteCount(voteCount+1);
+        setCheckUp(true)
+        setCheckDown(false)
+      })
+      
     }
     if (voteType === 1 && checkedUp) {
-      props.handleCommentVote(commentId, 0)
-      setVoteCount(voteCount-1);
-      setCheckUp(false)
-      setCheckDown(false)
+       props.handleCommentVote(commentId, 0).then(()=>{
+        setVoteCount(voteCount-1);
+        setCheckUp(false)
+        setCheckDown(false)
+      })
+      
     }
   }
   return (
