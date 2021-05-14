@@ -11,6 +11,9 @@ import CommentActions from './CommentActions';
 import ReplyActions from './ReplyActions';
 import axios from 'axios';
 import ShowCommentBox from './ShowCommentBox';
+import ReplyRoundedIcon from '@material-ui/icons/ReplyRounded';
+import AddComment from './AddComment';
+import AddReplyToComment from './AddReplyToComment';
 
 const ShowComments = ({ postId }) => {
   console.log("post id: "+postId);
@@ -70,9 +73,11 @@ const ShowComments = ({ postId }) => {
 
   let start = [];
   const createShowCommentBox = (classes, isDownvoted, isUpvoted, c, count) => {
+    console.log("c:::::::: "+JSON.stringify(c));
       start.push(<ShowCommentBox classes={classes} isDownvoted={isDownvoted}
          isUpvoted={isUpvoted} c={c} indentationVal={count}
          handleCommentVote={handleCommentVote} userId={userId}></ShowCommentBox>)
+      start.push( <AddReplyToComment commentId={c} postId={postId} />)
       if (c.replies.length>0) {
         c.replies.map((c1) => (
             createShowCommentBox(classes, c1.isDownvoted, c1.isUpvoted, c1, count+1)
