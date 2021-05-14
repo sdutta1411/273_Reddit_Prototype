@@ -25,6 +25,7 @@ import ChatList from "./components/Chats/ChatList";
 import CommununityAnalytics from "./components/CommunityAnalytics/CommunityAnalytics";
 import CommunityInvitePage from "./components/CommunityInvitePage/CommunityInvitePage";
 import NavBarAfterLogin from "./components/navBar/NavBarAfterLogin";
+import { useState, useEffect } from "react";
 /* import ModerationPage from "./components/CommunityModeration/ModerationPage" */
 const theme = createMuiTheme({
   palette: {
@@ -43,7 +44,9 @@ const theme = createMuiTheme({
   },
 });
 
+
 const App = () => {
+  const [isLogin, setLogin] = useState(false);
   const isLoggedIn = () => {
     if (localStorage.getItem("user")) {
       return true;
@@ -51,11 +54,16 @@ const App = () => {
       return false;
     }
   };
+  if (!isLogin) {
+    setInterval(()=>{
+      setLogin(isLoggedIn())
+    }, 500)
+  }
   return (
     <Provider store={store}>
       <div>
         <ThemeProvider theme={theme}>
-          {isLoggedIn() ? <NavBarAfterLogin /> : <Navbar />}
+          {isLogin ? <NavBarAfterLogin /> : <Navbar />}
           <Switch>
             <Route path="/communityhome" exact component={CommunityHomePage} />
             <Route path="/" exact component={Home} />

@@ -79,7 +79,6 @@ const SignIn = (props) => {
     }));
   };
   const handleSubmit = (e) => {
-    debugger;
     e.preventDefault();
     if (inputs.email === "" || inputs.password === "") {
       swal("Error", "Enter Details to Login", "error", {
