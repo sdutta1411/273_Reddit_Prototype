@@ -230,21 +230,88 @@ const getOwnerCommunities = async (req, res) => {
 };
 const getAllOwnerCommunities = async (req, res) => {
   console.log("Get Owner communities API" + JSON.stringify(req.body.email));
+  console.log(req.body)
   const usercomms = await UserProfile.find({ email: req.body.email });
   if (usercomms[0]) {
     const ownerId = usercomms[0]._id;
-    const ownerComms = await Community.find({ admin: ownerId });
-    if (ownerComms.length > 0) {
-      return res.status(200).json(ownerComms);
-    } else {
-      return res
-        .status(201)
-        .json({ message: "This User is not an admin in any community" });
+    switch (req.body.type) {
+      case 10:
+        if(req.body.sorted === true){
+          const ownerComms = await Community.find({ admin: ownerId }).sort({created_at : 1});
+          if (ownerComms.length > 0) {
+            return res.status(200).json(ownerComms);
+          } else {
+            return res
+              .status(201)
+              .json({ message: "This User is not an admin in any community" });
+          }
+        }  else if(req.body.sorted === false){
+          const ownerComms = await Community.find({ admin: ownerId }).sort({created_at : -1});
+          if (ownerComms.length > 0) {
+            return res.status(200).json(ownerComms);
+          } else {
+            return res
+              .status(201)
+              .json({ message: "This User is not an admin in any community" });
+          }
+        }
+        break;
+
+      case 20:
+        if(req.body.sorted === true){
+          const ownerComms = await Community.find({ admin: ownerId }).sort({posts: 1});
+          if (ownerComms.length > 0) {
+            return res.status(200).json(ownerComms);
+          } else {
+            return res
+              .status(201)
+              .json({ message: "This User is not an admin in any community" });
+          }
+        }  else if(req.body.sorted === false){
+          const ownerComms = await Community.find({ admin: ownerId }).sort({posts : -1});
+          if (ownerComms.length > 0) {
+            return res.status(200).json(ownerComms);
+          } else {
+            return res
+              .status(201)
+              .json({ message: "This User is not an admin in any community" });
+          }
+        }
+        break;
+
+      case 30:
+        if(req.body.sorted === true){
+          const ownerComms = await Community.find({ admin: ownerId }).sort({'subscribedBy.length' : 1});
+          if (ownerComms.length > 0) {
+            return res.status(200).json(ownerComms);
+          } else {
+            return res
+              .status(201)
+              .json({ message: "This User is not an admin in any community" });
+          }
+        }  else if(req.body.sorted === false){
+          const ownerComms = await Community.find({ admin: ownerId }).sort({'subscribedBy.length' : -1});
+          if (ownerComms.length > 0) {
+            return res.status(200).json(ownerComms);
+          } else {
+            return res
+              .status(201)
+              .json({ message: "This User is not an admin in any community" });
+          }
+        }
+        break;
+    
+      default:
+        break;
     }
-  } else {
+  }
+   else {
     return res.status(201).json({ message: "This User does not exist" });
   }
+
+
 };
+
 
 const getAnalyticsData = async (req, res) => {
   console.log("Get Owner communities API" + JSON.stringify(req.body.email));
@@ -310,6 +377,14 @@ const getAnalyticsData = async (req, res) => {
   }
 };
 
+const deleteCommunity = async (req, res, next) => {
+  const comm = await Community.findOne({
+    _id: req.body.CommunityID,
+  });
+
+  
+};
+
 module.exports = {
   createnewcommunity,
   getCommunityDetails,
@@ -322,4 +397,5 @@ module.exports = {
   getAnalyticsData,
   getOwnerCommunities,
   getAllOwnerCommunities,
+  deleteCommunity,
 };
