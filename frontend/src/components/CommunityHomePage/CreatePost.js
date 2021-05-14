@@ -8,7 +8,7 @@ import {
   Col,
   Image,
 } from "react-bootstrap";
-import Navbar from "../navBar/navBar";
+import Navbar from "../NavBar/navBar";
 import Divider from "@material-ui/core/Divider";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";

@@ -2,6 +2,7 @@ const Messages = require("../models/message-model");
 
 //Initiate Chat
 const getChats = (req, res) => {
+  console.log(req.params);
   const { users } = req.body;
   console.log(req.body);
 

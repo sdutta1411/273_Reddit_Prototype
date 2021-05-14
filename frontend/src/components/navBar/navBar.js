@@ -6,13 +6,8 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
-<<<<<<< HEAD
 import Signin from "../LoginForm/loginForm";
 import Signup from "../SignupForm/signupForm";
-=======
-import Signin from "../loginForm/loginForm";
-import Signup from "../signupForm/signupForm";
->>>>>>> c1f6dbffbc867ed93de08e1283e44dd2e595e282
 import { Link } from "react-router-dom";
 
 import RedditIcon from "@material-ui/icons/Reddit";

@@ -67,17 +67,14 @@ app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 // mongoConnection();
 
 //app.use(cors());
-<<<<<<< HEAD
-app.listen(3001, (req, res) => {
-  console.log("server running on port 3001....");
-});
+// app.listen(3001, (req, res) => {
+//   console.log("server running on port 3001....");
+// });
 
-const community = require("./routes/community_routes");
+//const community = require("./routes/community_routes");
 
 //const comment = require("./routes/comment_routes");
-const message = require("./routes/message_routes");
-=======
->>>>>>> c1f6dbffbc867ed93de08e1283e44dd2e595e282
+//const message = require("./routes/message_routes");
 
 // User Routes
 app.use("/api/user", user);

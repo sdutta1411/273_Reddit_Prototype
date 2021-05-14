@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
@@ -16,6 +16,9 @@ import {
   Divider,
   Avatar,
 } from "@material-ui/core";
+import axios from "axios";
+import swal from "sweetalert";
+import backendUrl from "../../backendUrl";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +46,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ChatList() {
   const classes = useStyles();
+
+  useEffect(() => {
+    getAllChats();
+  }, []);
+
+  const getAllChats = () => {
+    debugger;
+    axios
+      .post(`${backendUrl}/api/message/initiatechat`, {
+        users: "pavan@gmail.com",
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const users = [
     {

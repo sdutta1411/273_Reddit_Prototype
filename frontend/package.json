@@ -11,11 +11,8 @@
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.1",
-<<<<<<< HEAD
     "chat-engine": "^0.9.21",
-=======
     "cloudinary-react": "^1.7.0",
->>>>>>> c1f6dbffbc867ed93de08e1283e44dd2e595e282
     "material-ui-image": "^3.3.2",
     "multer": "^1.4.2",
     "react": "^17.0.2",
