@@ -1,14 +1,16 @@
-import React from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { Button, Paper } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import InviteComponent from "./InviteComponent";
-import Icon from "@material-ui/core/Icon";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import Divider from "@material-ui/core/Divider";
+import { useState } from "react";
+import ErrorDialog from "./ErrorDialog";
+import axios from "axios";
+import ApiRequest from "../../backendRequestApi";
 
 //////////////////////////////////
 // This Page Needs 4 APIs
@@ -16,7 +18,7 @@ import Icon from "@material-ui/core/Icon";
 // 2. Get All users
 // 3. Send Invites
 // 4. View Invite Status + Time it was accepted
-// 5. Notification for user on pending invites?? 
+// 5. Notification for user on pending invites??
 //////////////////////////////////
 // If implementing notification then we need to create an invites page for user OR display invites on this page itself.
 // Notification???
@@ -46,52 +48,22 @@ const useStyles = makeStyles((theme) => ({
   selectInput: {
     width: "200px",
   },
+  button: {
+    marginTop: 20,
+  },
+  subtitle: {
+    paddingTop: "2%",
+  },
+  inviteLists: {
+    fontSize: "18px",
+  },
+  inviteButton: {
+    float: "right",
+    marginRight: "10%",
+  },
 }));
 
 export default function CommunityInvitePage() {
-  const UserData = [
-    {
-      name: "User 1",
-      UserName: "user1@gmail.com",
-      UserID: "240",
-    },
-    {
-      name: "User 2",
-      UserName: "user2@gmail.com",
-      UserID: "138",
-    },
-    {
-      name: "User 3",
-      UserName: "user3@gmail.com",
-      UserID: "800",
-    },
-    {
-      name: "User 4",
-      UserName: "user4@gmail.com",
-      UserID: "908",
-    },
-    {
-      name: "User 5",
-      UserName: "user5@gmail.com",
-      UserID: "540",
-    },
-    {
-      name: "User 6",
-      UserName: "user6@gmail.com",
-      UserID: "380",
-    },
-    {
-      name: "User 7",
-      UserName: "user7@gmail.com",
-      UserID: "430",
-    },
-    {
-      name: "User 8",
-      UserName: "user8@gmail.com",
-      UserID: "40",
-    },
-  ];
-
   const CommunityData = [
     {
       name: "page 1",
@@ -113,93 +85,173 @@ export default function CommunityInvitePage() {
       CommunityID: "Demo4",
       CommunityOwner: "Ujjwal",
     },
-    {
-      name: "page 5",
-      CommunityID: "Demo5",
-      CommunityOwner: "Ujjwal",
-    },
-    {
-      name: "page 6",
-      CommunityID: "Demo6",
-      CommunityOwner: "Ujjwal",
-    },
-    {
-      name: "page 7",
-      CommunityID: "Demo7",
-      CommunityOwner: "Ujjwal",
-    },
-    {
-      name: "page 8",
-      CommunityID: "Demo8",
-      CommunityOwner: "Ujjwal",
-    },
   ];
 
-  const handleUserChange = (e) => {
-    let id = e.target.value;
-    if (id.length > 0) {
-      console.log(UserData[id].UserID);
-      console.log(e.target.value);
-    }
-  };
-
-  const handleCommunityChange = (e) => {
-    let id = e.target.value;
-    if (id.length > 0) {
-      console.log(CommunityData[id].CommunityID);
-      console.log(e.target.value);
-    }
-  };
-
+  const inviteInfo = [
+    {
+      name: "Ujjwal Jain",
+      inviteStatus: "0",
+    },
+    {
+      name: "Abc Xyz",
+      inviteStatus: "1",
+    },
+    {
+      name: "Qwerty Asdfg",
+      inviteStatus: "2",
+    },
+    {
+      name: "Qwerty Uiop",
+      inviteStatus: "0",
+    },
+    {
+      name: "Qwedjkhdas jsklad",
+      inviteStatus: "2",
+    },
+    {
+      name: "dsja m,asdn",
+      inviteStatus: "1",
+    },
+  ];
   const classes = useStyles();
+  const [newData, setNewData] = useState([]);
+  const [communityData, setCommunityData] = useState([])
+  const [userValue, setUserValue] = useState();
+  const [communityValue, setCommunityValue] = useState("");
+  const [inviteError, setInviteError] = useState(false);
+  const GetUserData = async () => {
+    await axios.post(`${ApiRequest}/api/user/allUsers`,{email:'reddit@gmail.com'}).then((response) => {
+      setNewData(response.data);
+    });
+  };
+  const GetCommunityData = async () => {
+    await axios.post(`${ApiRequest}/api/community/ownerCommunities`,{email:'bhagi@gmail.com'}).then((response) => {
+      if(response.status===200){
+        setCommunityData(response.data);
+      }else{
+        setCommunityData(null)
+      }
+    });
+  };
+
+  useEffect(() => {
+    GetUserData();
+    GetCommunityData()
+    console.log(newData);
+  }, []);
+
+  const handleInvites = () => {
+    if (communityValue && userValue.length > 0) {
+      // Backend call to send invite to the users returned in userValue.
+      setInviteError(false);
+      console.log(userValue);
+      console.log(communityValue);
+    } else {
+      //Error condition
+      setInviteError(true);
+    }
+  };
+
+  const handleClose = () => {
+    setInviteError(false);
+  };
+
+  
   return (
     <div className={classes.root}>
-      <Typography variant="h5" component="h2" className={classes.pageTitle}>
-        Community Invite
-      </Typography>
-      <Paper className={classes.body} elevation={0}>
-        <Typography variant="h5" component="h2" className={classes.title}>
-          Send Invite
+      <Paper>
+        <Typography variant="h5" component="h2" className={classes.pageTitle}>
+          Invites
         </Typography>
-        <Grid
-          container
-          // spacing={2}
-          direction="row"
-          justify="flex-start"
-          alignItems="flex-start"
-          className={classes.formRow}
-        >
-          <Grid item xs={3}>
-            <InviteComponent
-              type="User"
-              data={UserData}
-              classes={classes}
-              changeHandler={handleUserChange}
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <InviteComponent
-              type="Community"
-              data={CommunityData}
-              classes={classes}
-              changeHandler={handleCommunityChange}
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-            >
-              Send Invites
-            </Button>
-          </Grid>
-        </Grid>
-        <Grid item>
+      </Paper>
+      {inviteError && (
+        <ErrorDialog open={inviteError} handleClose={handleClose} />
+      )}
+      {communityData && (
+        <Paper className={classes.body} elevation={0}>
           <Typography variant="h5" component="h2" className={classes.subtitle}>
-            Active Invites
+            Send Invite
           </Typography>
-        </Grid>
+          <Divider />
+          <Grid
+            container
+            // spacing={2}
+            direction="row"
+            justify="center"
+            alignItems="flex-start"
+            className={classes.formRow}
+          >
+            <Grid item xs>
+              <Autocomplete
+                multiple
+                id="UserSelection"
+                options={newData}
+                getOptionSelected={(option, value) =>
+                  option.username === value.username
+                }
+                onChange={(event, newInputValue) => {
+                  setUserValue(newInputValue);
+                }}
+                getOptionLabel={(option) => option.username}
+                style={{ width: "80%", paddingTop: 10 }}
+                renderInput={(params) => (
+                  <TextField {...params} label="User" variant="outlined" />
+                )}
+              />
+            </Grid>
+            <Grid item xs>
+              <Autocomplete
+                id="CommunitySelection"
+                options={communityData}
+                getOptionSelected={(option, value) =>
+                  option.name === value.name
+                }
+                onChange={(event, newInputValue) => {
+                  setCommunityValue(newInputValue);
+                }}
+                getOptionLabel={(option) => option.name}
+                style={{ width: "80%", paddingTop: 10 }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Community" variant="outlined" />
+                )}
+              />
+            </Grid>
+            <Grid item xs>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={handleInvites}
+              >
+                Send Invites
+              </Button>
+            </Grid>
+          </Grid>
+          <Typography variant="h5" component="h2" className={classes.subtitle}>
+            Invites Sent
+          </Typography>
+          <Divider />
+          <Grid container direction="column">
+            {inviteInfo.map((invite, index) => (
+              <Grid item className={classes.inviteLists} key={index}>
+                <span className={classes.invite}>{invite.name}</span>{" "}
+                <span className={classes.inviteButton}>
+                  {invite.inviteStatus === "0"
+                    ? "Pending"
+                    : invite.inviteStatus === "1"
+                    ? "Accepted"
+                    : "Rejected"}
+                </span>
+              </Grid>
+            ))}
+          </Grid>
+        </Paper>
+      )}
+      <Paper className={classes.body} elevation={0}>
+        <Typography variant="h5" component="h2" className={classes.subtitle}>
+          My pending invites
+        </Typography>
+        <Divider />
       </Paper>
     </div>
   );

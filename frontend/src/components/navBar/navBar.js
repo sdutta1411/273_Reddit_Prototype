@@ -91,7 +91,9 @@ const Navbar = () => {
           <Button
             className={classes.logo}
             color="primary"
-            startIcon={<RedditIcon fontSize="large" />}
+            startIcon={
+              <RedditIcon fontSize="large" style={{ color: "black" }} />
+            }
             size="large"
           >
             reddit

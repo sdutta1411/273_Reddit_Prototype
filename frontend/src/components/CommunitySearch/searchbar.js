@@ -29,7 +29,7 @@ const SearchBar = ({ isMobile, setSearchOpen }) => {
       <form onSubmit={handleSearch}>
         <TextField
           type="search"
-          placeholder="Search for community"
+          placeholder="Search for community name"
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           className={classes.inputField}
@@ -56,4 +56,4 @@ const SearchBar = ({ isMobile, setSearchOpen }) => {
   );
 };
 
-export default SearchBar;
+export default SearchBar

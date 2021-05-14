@@ -81,7 +81,7 @@ const Signup = (props) => {
     e.preventDefault();
     console.log(inputs);
     props.userSignup(inputs);
-    console.log(props.user);
+    console.log("Hey",props.user);
     if (props.user.status === true) {
       console.log("redirect");
       redirectVar = <Redirect to="/communityhome" />;
