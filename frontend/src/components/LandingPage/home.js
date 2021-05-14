@@ -30,7 +30,7 @@ const Home = (props) => {
       name: "Reddit Clone",
       description: "First page of the Internet",
       image:
-        "https://res.cloudinary.com/dikqsaz3t/image/upload/v1620971286/oalqzzw2ydpoccahgkir.jpg",
+        "https://res.cloudinary.com/dikqsaz3t/image/upload/v1621005628/enex68kzbjgykkr7rkur.jpg",
     },
     {
       name: "Reddit Prototype",

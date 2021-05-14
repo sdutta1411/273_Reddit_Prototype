@@ -51,7 +51,7 @@ export default function PostWithComments(props) {
     // const[commHomePage, setCommHomePage] = useState(false);
 
     var userLocalStorage = JSON.parse(localStorage.getItem("user"));
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     var communityName = 'Team11';
 
     const requestOptions = {
@@ -80,8 +80,8 @@ export default function PostWithComments(props) {
               setCreatedAt(response.data.created_at);
               setUpdatedAt(response.data.updated_at);
               setTextSubmission(response.data.textSubmission);
-              setImageSubmission(response.data.textSubmission);
-              setLinkSubmission(response.data.textSubmission);
+              setImageSubmission(response.data.imageSubmission);
+              setLinkSubmission(response.data.linkSubmission);
               setCommentCount(response.data.comments.length);
               setComments(response.data.comments);
             }
@@ -160,26 +160,26 @@ export default function PostWithComments(props) {
       </div>
 
 
-      {/* <div className={classes.postInfoWrapper}>
+      <div className={classes.postInfoWrapper}>
       <Typography variant="h6" className={classes.title}>
-          {postTitle}{' '} */}
-          {/* <Typography variant="caption" color="primary" className={classes.url}>
+          {/* {postTitle}{' '}  */}
+          <Typography variant="caption" color="primary" className={classes.url}>
             <Link
               href={
-                post.postType === 'Link'
-                  ? fixUrl(post.linkSubmission)
-                  : post.postType === 'Image'
-                  ? post.imageSubmission
+                postType === 'Link'
+                  ? fixUrl(linkSubmission)
+                  : postType === 'Image'
+                  ? imageSubmission
                   : ''
               }
             >
-              {post.postType === 'Text' ? null : (
+              {postType === 'Text' ? null : (
                 <OpenInNewIcon fontSize="inherit" />
               )}
             </Link>
-          </Typography> */}
-        {/* </Typography>
-      </div> */}
+          </Typography> 
+        </Typography>
+      </div>
 
       {/* post details */}
 
@@ -209,19 +209,19 @@ export default function PostWithComments(props) {
             {postType === 'Text' ? (
               <div style={{marginLeft:"14px"}}>{(textSubmission)}</div>
             ) : postType === 'Image' ? (
-              {/* <a
-                href={imageSubmission.imageLink}
-                alt={title}
+              <a
+                href={imageSubmission}
+                // alt={title}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={classes.imagePost}
               >
                 <img
-                  alt={title}
-                  src={imageSubmission.imageLink}
+                  // alt={title}
+                  src={imageSubmission}
                   className={classes.image}
                 />
-              </a> */}
+              </a>
             ) : (
               <Link href={fixUrl(linkSubmission)}>
                 {/* {formattedLink}  */}
