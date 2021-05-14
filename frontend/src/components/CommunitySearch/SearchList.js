@@ -77,7 +77,7 @@ export default function CheckboxList() {
 }
  */
 
-import React from "react";
+import React, { useState, useEffect }from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -99,8 +99,9 @@ import { Checkbox, Container, Typography } from "@material-ui/core";
 import MessageIcon from "@material-ui/icons/Message";
 import LinkIcon from "@material-ui/icons/Link";
 import SearchBar from "./searchbar";
-
-
+import Apirequest from "../../backendRequestApi";
+import axios from "axios";
+import Sort from "./Sort"
 export default function SearchList() {
 
    
@@ -177,6 +178,11 @@ export default function SearchList() {
 
   const classes = useCardStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  const [communities, setCommunities] = useState([]);
+  const [sort, setSort] = useState(10);
+  const [sorted , setSorted] = useState(false)
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(2);
 
   const myCommunities = [
     {
@@ -201,19 +207,39 @@ export default function SearchList() {
     },
   ];
 
+  useEffect(() => {
+    getallCommunities();
+  }, [sort, sorted]);
+
+  const getallCommunities = () => {
+    // const email = localStorage.getItem("email");
+    const email = { email: "bhagi@gmail.com", sorted: sorted , type: sort };
+
+    axios.defaults.withCredentials = true;
+    axios
+      .post(`${Apirequest}/api/community/getAllOwnerCommunities`, email)
+      .then(({ data }) => {
+        console.log(data);
+        setCommunities(data);
+      })
+      .catch((error) => {
+        console.log("error occured while connecting to backend:", error);
+      });
+  };
+
   return (
     <div>
       {/* <searchbar></searchbar> */}
 
       <SearchBar communityName={"comm1"}/>
-
+     {/*  <Sort/> */}
     <Paper className={classes.root} variant="outlined">
     
       <Container maxWidth="lg" className={classes.container}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8} lg={9}>
             <Paper className={fixedHeightPaper}>
-              <h1>Search List</h1>
+        
             </Paper>
           </Grid>
           <Grid item xs={12}>
@@ -276,7 +302,7 @@ export default function SearchList() {
                                   />
                                 </Paper>
                               </Link>
-                            ) : value.postType === "LinkText" ? (
+                            ) : value.postType === "Link" ? (
                               <a href={value.linkSubmission} target="_noblank">
                                 <Paper
                                   elevation={0}
