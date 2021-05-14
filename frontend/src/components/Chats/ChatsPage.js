@@ -58,6 +58,8 @@ export default function ChatsPage() {
   const [message, setMessage] = useState("");
   const [allChats, setallChats] = useState([]);
 
+  const userDetails = JSON.parse(localStorage.user);
+
   useEffect(() => {
     getAllChats();
   }, []);
@@ -84,7 +86,7 @@ export default function ChatsPage() {
   ];
 
   const getAllChats = () => {
-    let users = ["pavan@gmail.com", email];
+    let users = [userDetails.email, email];
     axios
       .post(`${backendUrl}/api/message/initiatechat`, {
         users: users,
@@ -104,7 +106,7 @@ export default function ChatsPage() {
     let data = {
       chatId: chatId,
       chats: {
-        username: "Pavan Bhatt",
+        username: userDetails.username,
         chat: message,
       },
     };

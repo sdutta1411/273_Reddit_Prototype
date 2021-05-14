@@ -29,6 +29,8 @@ import NavBarAfterLogin from "./components/navBar/NavBarAfterLogin";
 import { useState, useEffect } from "react";
 import User from "./components/UserProfile/user";
 import Moderation from "./components/CommunityModeration/ModerationPage";
+import UserList from "./components/CommunityModeration/UserList";
+import UserCommunities from "./components/CommunityModeration/UserCommunities";
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -108,15 +110,17 @@ const App = () => {
               component={CommununityAnalytics}
             />
             <Route path="/invites" exact component={CommunityInvitePage} />
-            {/* <Route path="/ModerationPage" exact component={Moderation} /> */}
+            {<Route path="/ModerationPage" exact component={Moderation} />}
             <Route path="/searchbar" exact component={SearchBar} />
             <Route path="/SearchList" exact component={SearchList} />
-            <Route path="/Sort" exact component={Sort} />
+            {/* <Route path="/Sort" exact component={Sort} /> */}
             <Route path="/dashboard" exact component={DashboardPage} />
             <Route path="/mycommunity" exact component={MyCommunity} />
 
             <Route path="/profile" exact component={UserProfile} />
             <Route path="/navbar" exact component={NavBarAfterLogin} />
+            <Route path="/UserList" exact component={UserList} />
+            <Route path="/UserCommunities" exact component={UserCommunities} />
 
             {/* <Route path="/" exact component={Home} /> */}
           </Switch>

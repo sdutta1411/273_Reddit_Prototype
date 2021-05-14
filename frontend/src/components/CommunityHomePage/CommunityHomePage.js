@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom';
-import { Form,FormControl,Modal,Container,Row, Col,Image} from 'react-bootstrap';
 // import NavBarAfterLogin from '../NavBar/NavBarAfterLogin';
 import Grid from '@material-ui/core/Grid';
 import CommunityCover from './CommunityCover';
@@ -21,6 +20,8 @@ import { trimLink, prettifyLink, fixUrl } from '../../utils/formatUrl';
 import getEditedThumbail from '../../utils/cloudinaryTransform';
 import AboutCommunity from './AboutCommunity';
 import Rules from './Rules';
+import TablePagination from "@material-ui/core/TablePagination";
+
 
 import {
     Paper,
@@ -29,6 +30,12 @@ import {
     CardMedia,
     Link,
     Button,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    FormControlLabel,
+    Switch,
+    Select
   } from '@material-ui/core';
 import PostWithComments from './PostWithComments';
 
@@ -56,7 +63,28 @@ export default function CommunityHomePage({communityName}) {
     const token = localStorage.getItem('token');
     var communityName = 'Team11';
 
-      
+    
+    const [sort, setSort] = useState(10);
+  const [sorted , setSorted] = useState(false)
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(2);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+  const handleChange = (event) => {
+    console.log("handleChange:" +event.target.value);
+    setSort(event.target.value);
+  };
+  const toggleChecked = () => {
+    setSorted((prev) => !prev);
+  };
+
     const handleUpvoteToggle = async(postId) => {
       console.log("post id: "+postId);
       const headers = {
@@ -101,32 +129,34 @@ export default function CommunityHomePage({communityName}) {
       };
     useEffect(() =>{
         const onLoadCommunityHomePage = async() => {
-            var sortBy = 'old';
-            var limit = 10;
-            var page = 100;
-
             //get posts of community
-            const requestOptions = {
-                method: 'GET',
-               headers: { 'Content-Type': 'application/json' ,'Authorization': token},
+            const headers = {
+              'Content-Type': 'application/json' ,
+              'Authorization': token
               }
-            axios.get(`${baseUrl}/getPosts/?communityName=${communityName}`,requestOptions)
-            .then(response=>{
-                console.log("Get Posts Response: "+JSON.stringify(response.data));
-                setPosts(response.data);
-                console.log("Posts----"+posts);
-            }).catch(err=>{
-            console.log(err);
+              const body = {
+                'email':userLocalStorage.email,
+                'communityName':communityName,
+                'sorted': sorted,
+                'type':sort
+              }
+            // const requestOptions = {
+            //     method: 'GET',
+            //    headers: { 'Content-Type': 'application/json' ,'Authorization': token},
+            //   }
+            const postres = await axios.post(`${baseUrl}/getPosts`,body,{
+              headers: headers
             });
+            if(postres.status===200){
+                console.log("Get Posts Response: "+JSON.stringify(postres.data));
+                setPosts(postres.data);
+                console.log("Posts----"+postres);
+            }
 
             // get user communities
-            const headers = {
-                'Content-Type': 'application/json' ,
-                'Authorization': token
-            }
-            const body = {
-               'email':userLocalStorage.email,'communityName':communityName
-            }
+            // const body = {
+            //    'email':userLocalStorage.email,'communityName':communityName
+            // }
             const response = await axios.post('http://localhost:3001/api/community/checkUserSubscribed',body,{
             headers: headers
             });
@@ -162,7 +192,7 @@ export default function CommunityHomePage({communityName}) {
             }
         }
         onLoadCommunityHomePage();
-    },[]);
+    },[sort, sorted]);
     // const linkToShow =
     // postType === 'Link'
     //   ? linkSubmission
@@ -178,9 +208,33 @@ export default function CommunityHomePage({communityName}) {
         {/* <PostList /> */}
 
     {/* <Paper className={classes.root} variant="outlined"> */}
+    <FormControl className={classes.formControl}>
+        <InputLabel id="demo-simple-select-helper-label">Sort</InputLabel>
+        <Select
+          labelId="demo-simple-select-helper-label"
+          id="demo-simple-select-helper"
+          value={sort}
+          onChange={handleChange}
+        >
+          <MenuItem value={10}>created at</MenuItem>
+          <MenuItem value={20}>most popular</MenuItem>
+          <MenuItem value={30}>most unpopular</MenuItem>
+        </Select>
+        <Typography component="div">
+        <Grid component="label" container alignItems="center" spacing={1}>
+          <Grid item>Descending</Grid>
+          <Grid item>
+          <FormControlLabel
+          control={<Switch checked={sorted} onChange={toggleChecked}  color="primary"/>}
+        />          </Grid>
+          <Grid item>Ascending</Grid>
+        </Grid>
+      </Typography>
+      </FormControl>
+
     <div style={{display:"flex"}}>
     <Card style={{marginLeft:"20px",width:"1100px",borderRadius:"5px",marginBottom:"10px"}}>
-    {posts.map(post=>
+    {posts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(post=>
       <RouterLink
       style={{ textDecoration: 'none' }} >
       <Paper className={classes.root} variant="outlined">
@@ -205,7 +259,7 @@ export default function CommunityHomePage({communityName}) {
             fontWeight: 600,
           }}
         >
-          {/* {pointsCount} */}
+          {post.pointsCount}
         </Typography>
             <Button
             // checked={posts.downvotedBy.includes(user.id)}
@@ -265,7 +319,18 @@ export default function CommunityHomePage({communityName}) {
         </Paper>
         </RouterLink>
         )}
+        <TablePagination
+      rowsPerPageOptions={[2, 5, 10]}
+      component="div"
+      count={posts.length}
+      rowsPerPage={rowsPerPage}
+      page={page}
+      onChangePage={handleChangePage}
+      onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
         </Card>
+      
+
         <Card style={{marginRight:"8px",marginLeft:"30px",width:"300px",height:"300px"}}>
             <AboutCommunity isUserSub={isUserSub} commName={commName}  commDesc={commDesc} commSubs={commSubs} commCreatedAt={commCreatedAt}/>
         </Card>

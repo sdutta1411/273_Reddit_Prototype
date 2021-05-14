@@ -32,8 +32,8 @@ export default function CommunityAnalytics() {
   // Check local storage token
   /////////////////////////////////////////////////
   var userLocalStorage = JSON.parse(localStorage.getItem("user"));
-  const token = userLocalStorage ? userLocalStorage.token : "";
-  const email = userLocalStorage ? userLocalStorage.email : "bhagi@gmail.com";
+  const token =  localStorage.getItem('token')
+  const email = localStorage.getItem('email');
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: token },

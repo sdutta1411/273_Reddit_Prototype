@@ -78,13 +78,14 @@ export default function MenuAppBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" boxShadow={3} style={{ background: "#ebf7f6" }}>
+      <AppBar position="static" boxshadow={3} style={{ background: "#ebf7f6" }}>
         <Toolbar>
           <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
+            onClick={()=>{history.push('/dashboard')}}
           >
             <Image
               style={{ width: "90px", height: "30px" }}
@@ -150,6 +151,14 @@ export default function MenuAppBar() {
                 <MenuItem
                   style={{ textDecoration: "none", fontSize: "17px" }}
                   component={Link}
+                  to="/chatList"
+                  onClick={handleClose}
+                >
+                  Messages
+                </MenuItem>
+                <MenuItem
+                  style={{ textDecoration: "none", fontSize: "17px" }}
+                  component={Link}
                   onClick={handleLogout}
                   to="/"
                 >
@@ -160,10 +169,6 @@ export default function MenuAppBar() {
           )}
         </Toolbar>
       </AppBar>
-
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-      </main>
     </div>
   );
 }
