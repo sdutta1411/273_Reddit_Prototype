@@ -32,7 +32,7 @@ export default function CommunityAnalytics() {
   /////////////////////////////////////////////////
   var userLocalStorage = JSON.parse(localStorage.getItem("user"));
   const token = userLocalStorage ? userLocalStorage.token : "";
-  const email = userLocalStorage ? userLocalStorage.email : "baghi@gmail.com";
+  const email = userLocalStorage ? userLocalStorage.email : "bhagi@gmail.com";
   
   const requestOptions = {
     method: "POST",
@@ -48,6 +48,7 @@ export default function CommunityAnalytics() {
         requestOptions
       )
       .then((response) => {
+        console.log(response)
         if (response.status === 200) {
           setData(response.data.data);
           setCommunityTableData(response.data.communityTableData);
@@ -66,6 +67,7 @@ export default function CommunityAnalytics() {
       <Typography variant="h5" component="h2" className={classes.title}>
         Community Analytics
       </Typography>
+      {console.log(data)}
       {data ? (
         <span>
           <Grid

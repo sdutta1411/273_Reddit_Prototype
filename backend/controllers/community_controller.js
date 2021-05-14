@@ -256,12 +256,9 @@ const getAnalyticsData = async (req, res) => {
           counts[commPosts[i].author.email] =
             (counts[commPosts[i].author.email] || 0) + 1;
         }
-        console.log(counts);
         const sortable = Object.fromEntries(
           Object.entries(counts).sort(([, a], [, b]) => b - a)
         );
-        console.log(Object.entries(sortable)[0])
-        console.log(commPosts[1].author);
         let userItem = {
           name: ownerComms[i].communityName,
           ActiveUser:  Object.entries(sortable)[0][0],
@@ -283,7 +280,6 @@ const getAnalyticsData = async (req, res) => {
         communityTableData.push(mostUpvotedPost);
         data.push(item);
       }
-      console.log(data);
       return res
         .status(200)
         .json({ communityTableData: communityTableData, data: data, userTableData: userTableData });

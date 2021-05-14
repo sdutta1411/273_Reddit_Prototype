@@ -18,8 +18,9 @@ import Post from "./components/CommunityHomePage/Post";
 import ImageAndVideo from "./components/CommunityHomePage/ImageAndVideo";
 import LinkPostType from "./components/CommunityHomePage/LinkPostType";
 import DashboardPage from "./components/DasboardPage/DashboardPage";
-import CommununityAnalytics from "./components/CommunityAnalytics/CommunityAnalytics"
-import CommunityInvitePage from "./components/CommunityInvitePage/CommunityInvitePage"
+import CommununityAnalytics from "./components/CommunityAnalytics/CommunityAnalytics";
+import CommunityInvitePage from "./components/CommunityInvitePage/CommunityInvitePage";
+import NavBarAfterLogin from "./components/navBar/NavBarAfterLogin";
 /* import ModerationPage from "./components/CommunityModeration/ModerationPage" */
 const theme = createMuiTheme({
   palette: {
@@ -66,6 +67,7 @@ const App = () => {
             <Route path="/dashboard" exact component={DashboardPage} />
 
             <Route path="/profile" exact component={UserProfile} />
+            <Route path="/navbar" exact component={NavBarAfterLogin} />
 
             {/* <Route path="/" exact component={Home} /> */}
           </Switch>
