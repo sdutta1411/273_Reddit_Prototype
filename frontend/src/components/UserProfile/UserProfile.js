@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -18,6 +18,10 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { Image } from "cloudinary-react";
+import Axios from "axios";
+import RedditIcon from "@material-ui/icons/Reddit";
+import CreateIcon from "@material-ui/icons/Create";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,6 +54,30 @@ const useStyles = makeStyles((theme) => ({
 
 const UserProfile = () => {
   const classes = useStyles();
+
+  const [imageSelected, setImageSelected] = useState("");
+  const [publicurl, setPublicurl] = useState(localStorage.getItem("publicurl"));
+
+  debugger;
+  const uploadImage = (e) => {
+    const formData = new FormData();
+    formData.append("file", imageSelected);
+    formData.append("upload_preset", "i9dmdl7y");
+
+    Axios.post(
+      "https://api.cloudinary.com/v1_1/dikqsaz3t/image/upload",
+      formData
+    ).then((response) => {
+      setPublicurl(response.data.secure_url);
+      localStorage.setItem("publicurl", response.data.secure_url);
+      console.log(publicurl);
+    });
+  };
+
+  const doNothing = (e) => {};
+
+  const reddit_text = "         Your Profile";
+
   return (
     <div>
       <Grid
@@ -66,7 +94,8 @@ const UserProfile = () => {
                   {" "}
                   <Grid container direction={"column"} spacing={5}>
                     <Typography variant="h5" component="h2">
-                      Profile Details
+                      <RedditIcon />
+                      {reddit_text}
                     </Typography>
                     <Grid item>
                       <TextField
@@ -74,6 +103,19 @@ const UserProfile = () => {
                         label="Name"
                         variant="outlined"
                       />
+                      <Button
+                        className={classes.logo}
+                        color="primary"
+                        startIcon={
+                          <CreateIcon
+                            fontSize="large"
+                            style={{ color: "black" }}
+                          />
+                        }
+                        size="large"
+                      ></Button>
+                      <br />
+                      <br />
                     </Grid>
                     <Grid item>
                       <TextField
@@ -81,6 +123,19 @@ const UserProfile = () => {
                         label="Gender"
                         variant="outlined"
                       />
+                      <Button
+                        className={classes.logo}
+                        color="primary"
+                        startIcon={
+                          <CreateIcon
+                            fontSize="large"
+                            style={{ color: "black" }}
+                          />
+                        }
+                        size="large"
+                      ></Button>
+                      <br />
+                      <br />
                     </Grid>
                     <Grid item>
                       <TextField
@@ -88,6 +143,19 @@ const UserProfile = () => {
                         label="Location"
                         variant="outlined"
                       />
+                      <Button
+                        className={classes.logo}
+                        color="primary"
+                        startIcon={
+                          <CreateIcon
+                            fontSize="large"
+                            style={{ color: "black" }}
+                          />
+                        }
+                        size="large"
+                      ></Button>
+                      <br />
+                      <br />
                     </Grid>
                     <Grid item>
                       <TextField
@@ -95,50 +163,71 @@ const UserProfile = () => {
                         label="Description"
                         variant="outlined"
                       />
+                      <Button
+                        className={classes.logo}
+                        color="primary"
+                        startIcon={
+                          <CreateIcon
+                            fontSize="large"
+                            style={{ color: "black" }}
+                          />
+                        }
+                        size="large"
+                      ></Button>
+                      <br />
+                      <br />
                     </Grid>
                     <Grid item>
+                      {" "}
                       <TextField
                         id="outlined-basic"
                         label="Password"
                         variant="outlined"
                       />
+                      <Button
+                        className={classes.logo}
+                        color="primary"
+                        startIcon={
+                          <CreateIcon
+                            fontSize="large"
+                            style={{ color: "black" }}
+                          />
+                        }
+                        size="large"
+                      ></Button>
+                      <br />
+                      <br />
                     </Grid>
                   </Grid>{" "}
                 </form>
               </ListItem>
             </List>
           </CardContent>
-          <CardActions>
-            <Button
-              size="small"
-              color="primary"
-              style={{
-                maxWidth: "40px",
-                backgroundColor: "orange",
-                color: "whitesmoke",
-              }}
-            >
-              Update
-            </Button>
-          </CardActions>
+          <CardActions></CardActions>
         </Card>
         <Card className={classes.root}>
-          <CardMedia
-            component="img"
-            alt="Profile Pic"
-            height="140"
-            image="/static/images/cards/contemplative-reptile.jpg"
-            title="Profile Pic"
-          />
+          <CardMedia>
+            <Image
+              style={{ width: 500, height: 200 }}
+              cloudName="dikqsaz3t"
+              publicId={publicurl}
+            />
+          </CardMedia>
           <CardContent>
             <List>
               <ListItem>
                 <form>
-                  <input type="file" />
+                  <input
+                    type="file"
+                    onChange={(event) => {
+                      setImageSelected(event.target.files[0]);
+                    }}
+                  />
                   <br />
                   <br />
 
                   <Button
+                    onClick={uploadImage}
                     size="small"
                     color="primary"
                     style={{
@@ -151,6 +240,9 @@ const UserProfile = () => {
                 </form>
               </ListItem>
             </List>
+
+            <br />
+            <br />
 
             <br />
             <br />

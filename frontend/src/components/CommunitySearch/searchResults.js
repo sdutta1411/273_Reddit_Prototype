@@ -8,7 +8,7 @@ import {
   loadSearchPosts,
 } from '../reducers/searchReducer';
 import { notify } from '../reducers/notificationReducer';
-import PostCard from './PostCard';
+import CommunityCard from './CommunityCard';
 import LoadMoreButton from './LoadMoreButton';
 import LoadingSpinner from './LoadingSpinner';
 import getErrorMsg from '../utils/getErrorMsg';
@@ -78,9 +78,9 @@ const SearchResults = () => {
         </Paper>
         {searchResults.results.length !== 0 ? (
           searchResults.results.map((s) => (
-            <PostCard
+            <CommunityCard
               key={s.id}
-              post={s}
+              communityname={s}
               toggleUpvote={toggleUpvote}
               toggleDownvote={toggleDownvote}
             />

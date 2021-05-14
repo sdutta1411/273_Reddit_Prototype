@@ -70,12 +70,5 @@ router.get("/initiatechat", (req, res) => {
 
   module.exports = router;
 
-// const messageController = require("../controllers/message_controller");
-
-// Initiate Chat
-// router.get("/initiatechat", messageController.getChats);
-
-// // Post Chat
-// router.post("/postchat", messageController.postChats);
 
 

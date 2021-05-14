@@ -8,12 +8,10 @@ var redis = redisClient(6379, "localhost", {detect_buffers : true});
 
 const initiateChat = (msg, callback) => {
   console.log("---------------",msg);
-  // const { users } = msg;
-  const users = 'user1@gmail.com'
-    
+   const { users } = msg;
+      
     try {
     redis.get(users, (err, chatResult) => {
-    //  rstream(redis, users).pipe(chatResult) {
       if (chatResult) {
         console.log("Reddis")
         let results = JSON.parse(chatResult);
@@ -29,7 +27,6 @@ const initiateChat = (msg, callback) => {
         if (err) {
          callback(null,500);
         } else {
-          // console.log("result",result);
           redis.set(users, JSON.stringify(result));
           callback(null,result)
          

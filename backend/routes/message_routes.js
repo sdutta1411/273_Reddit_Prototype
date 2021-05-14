@@ -4,7 +4,7 @@ const { checkAuth } = require("../config/passport");
 const messageController = require("../controllers/message_controller");
 
 // Initiate Chat
-router.get("/initiatechat", messageController.getChats);
+router.post("/initiatechat", messageController.getChats);
 
 // Post Chat
 router.post("/postchat", messageController.postChats);

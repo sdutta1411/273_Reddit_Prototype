@@ -34,13 +34,13 @@ const signup = (req, res) => {
   connection.query(sqlQuery, values, function (error, results, fields) {
     if (error) {
       console.log(error);
-      res.status(400).json({
+      res.status(400).send({
         status: false,
         message: "User already registered",
       });
     } else {
       const newUser = new UserProfile({
-        name: req.body.name,
+        username: req.body.name,
         email: req.body.email,
       });
 
@@ -92,6 +92,7 @@ const login = (req, res) => {
                 username: results[0].name,
                 email: results[0].email,
                 token: "Bearer " + token,
+                status: true,
               });
             } else {
               res.json({
@@ -113,47 +114,6 @@ const login = (req, res) => {
   );
 };
 
-// @route   POST api/users/signup
-// @desc    Tests signup route
-// @access  Public
-const signupuser = (req, res) => {
-  console.log("In Sign Up Mongo user API");
-  // router.post('/signup', (req, res) => {
-  UserProfile.findOne({ email: req.body.email }).then((user) => {
-    // validation
-    if (user) {
-      //errors.email = 'Email already exists';
-      return res.status(400).json("Email already exists");
-    } else {
-      console.log("Creating a new user");
-
-      const newUser = new UserProfile({
-        username: req.body.username,
-        email: req.body.email,
-      });
-      var token = jwt.sign({ id: newUser.id }, secret, {
-        expiresIn: 86400, // 24 hours
-      });
-      newUser
-        .save((err) => {
-          if (err) {
-            res.status(500).send({ message: err });
-          }
-
-          res.json({
-            userId: newUser._id,
-            username: newUser.username,
-            email: newUser.email,
-            token: "Bearer " + token,
-          });
-        })
-        .catch(function (err) {
-          res.status(400).json(err);
-        });
-    }
-  });
-};
-
 const test = (req, res) => {
   res.send("hello hello");
 };
@@ -164,10 +124,17 @@ const getUserDetails = async (req, res) => {
   console.log("User:: " + user);
   res.status(200).json(user);
 };
+
+const getAllUsers = async (req, res) => {
+  const user = await UserProfile.find({ email: { $ne: req.body.email } });
+  res.status(200).json(user);
+};
+
 module.exports = {
   test,
   signup,
-  signupuser,
+
   login,
   getUserDetails,
+  getAllUsers,
 };
