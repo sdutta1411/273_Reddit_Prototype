@@ -89,9 +89,6 @@ const getOwnerInvites = async (req, res) => {
   const owner = await UserProfile.find({email: req.body.email});
   for (let i = 0; i<usercomms.length; i++){
    for(let j =0; j< usercomms[i].communityStatus.length; j++){
-    console.log(usercomms[i].communityStatus[j])
-    console.log(owner[0]._id)
-    console.log(usercomms[i].username)
     if(true){
       let communityInformation = await Community.findById(usercomms[i].communityStatus[j].communityID)
       let item = {
@@ -101,20 +98,71 @@ const getOwnerInvites = async (req, res) => {
         communityName: communityInformation.communityName
       }
       arrToSend.push(item)
-      console.log('////////////////////')
     }
    }
   }
   if(arrToSend.length>0){
     arrToSend.sort((a, b) => (a.timeStamp < b.timeStamp) ? 1 : -1)
-    console.log(arrToSend)
     return res.status(200).json({inviteInfo:arrToSend})
   }else{
     return res.status(201).json({message:'No Invites Sent'})
   }
 };
 
+const getMyInvites = async (req,res) =>{
+    let user = await UserProfile.findOne({email:req.body.email});
+    let arrToSend = [];
+    console.log()
+    for(let i = 0; i< user.communityStatus.length; i++){
+        console.log(user.communityStatus[i])
+        if(user.communityStatus[i].status === 'Invited' || user.communityStatus[i].status === 'invite'){
+            let comm = await Community.findById(user.communityStatus[i].communityID)
+            console.log(comm.communityName)
+            let item = {
+                communityName: comm.communityName,
+                communityID: user.communityStatus[i].communityID,
+                username: user.username,
+            }
+            arrToSend.push(item);
+        }
+    }
+    if(arrToSend.length>0){
+        return res.status(200).json({myInvites:arrToSend})
+    }else{
+        return res.status(201).json({message:'No Invites Pending'})
+    }
+}
+const getMyRequests = async (req,res) =>{
+    let currentUser = await UserProfile.findOne({email: req.body.email})
+    let users = await UserProfile.find();
+    let arrToSend = [];
+    console.log()
+    for (let j = 0; j< users.length; j++ ){
+        for (let i = 0; i<users[j].communityStatus.length; i++){
+            if(users[j].communityStatus[i].invitedBy === currentUser._id){
+                let comm = await Community.findById(users[j].communityStatus[i].communityID)
+                let item = {
+                    communityID: comm._id,
+                    communityName: comm.communityName,
+                    username: users[j].username
+                }
+                arrToSend.push(item)
+            }
+        }
+    }
+    if(arrToSend.length>0){
+        console.log(arrToSend)
+        return res.status(200).json({myInvites:arrToSend})
+    }else{
+        return res.status(201).json({message:'No Invites Pending'})
+    }
+}
+
+
+
 module.exports = {
   sendInvite,
-  getOwnerInvites
+  getOwnerInvites,
+  getMyInvites,
+  getMyRequests
 };
