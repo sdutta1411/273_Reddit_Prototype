@@ -122,7 +122,7 @@ export default function UserList() {
   const classes = useCardStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
-  const myUsers = [
+  const userRequests = [
     {
       title: "Monica",
       postType: "Image",
@@ -153,7 +153,7 @@ export default function UserList() {
           <Grid item xs={12}>
             <Paper className={classes.paper}>
               <CardContent>
-                {myUsers.map((value) => {
+                {userRequests.map((value) => {
                   return (
                     <List className={classes.root}>
                       <ListItem>
@@ -215,15 +215,8 @@ export default function UserList() {
                           primary={value.author}
                           secondary={value.amount}
                         />
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          size="small"
-                          startIcon={<CommentIcon />}
-                          component={Link}
-                        
-                        />
-                        <Button component={ Link } to="/UserCommunities"  variant="contained" size="small">Details</Button>
+                        <Button component={ Link } to="/UserCommunities"  variant="contained" size="small">Accept</Button>
+                        <Button component={ Link } to="/UserCommunities"  variant="contained" size="small">Reject</Button>
                         
                       
                       </ListItem>

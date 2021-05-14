@@ -133,41 +133,6 @@ export default function Moderation() {
                   return (
                     <List className={classes.root}>
                       <ListItem>
-                        <ListItemAvatar>
-                          <div className={classes.votesWrapper}>
-                            <Checkbox
-                              icon={
-                                <ArrowUpwardIcon style={{ color: "#b2b2b2" }} />
-                              }
-                              checkedIcon={
-                                <ArrowUpwardIcon style={{ color: "#FF8b60" }} />
-                              }
-                              size="small"
-                            />
-                            <Typography
-                              variant="body1"
-                              style={{
-                                color: "#FF8b60",
-                                fontWeight: 600,
-                              }}
-                            >
-                              {value.upvotedBy - value.downvotedBy}
-                            </Typography>
-                            <Checkbox
-                              icon={
-                                <ArrowDownwardIcon
-                                  style={{ color: "#b2b2b2" }}
-                                />
-                              }
-                              checkedIcon={
-                                <ArrowDownwardIcon
-                                  style={{ color: "#9494FF" }}
-                                />
-                              }
-                              size="small"
-                            />
-                          </div>
-                          </ListItemAvatar>
                           <ListItemAvatar>
                           <div className={classes.thumbnailWrapper}>
                             {value.postType === "Text" ? (
@@ -235,6 +200,7 @@ export default function Moderation() {
                         
                         />
                         <Button component={ Link } to="/UserList"  variant="contained" size="small" >Details</Button>
+                        <Button component={ Link } to="/RequestList"  variant="contained" size="small" >UserRequests</Button>
                         
                       
                       </ListItem>
