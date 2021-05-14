@@ -363,8 +363,9 @@ const getAnalyticsData = async (req, res) => {
   const usercomms = await UserProfile.find({ email: req.body.email });
   if (usercomms[0]) {
     const ownerId = usercomms[0]._id;
-    //console.log(ownerId);
+    // console.log(ownerId);
     const ownerComms = await Community.find({ admin: ownerId });
+    // console.log(ownerComms)
     if (ownerComms.length > 0) {
       let data = [];
       let communityTableData = [];
@@ -416,7 +417,7 @@ const getAnalyticsData = async (req, res) => {
         } else {
           let item = {
             name: ownerComms[i].communityName,
-            UserCount: 0,
+            UserCount: 1,
             PostCount: 0,
           };
           let mostUpvotedPost = {
@@ -427,7 +428,7 @@ const getAnalyticsData = async (req, res) => {
           };
           let userItem = {
             name: ownerComms[i].communityName,
-            ActiveUser: "No Users",
+            ActiveUser: "Not Available",
             UserPostCount: "Not Available",
           };
           userTableData.push(userItem);
