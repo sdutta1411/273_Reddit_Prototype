@@ -19,6 +19,11 @@ router.post(
   
   communityController.deleteCommunity
 );
+router.post(
+  "/editCommunity",
+  
+  communityController.editCommunity
+);
 //get all community details - community home page
 router.post(
   "/getCommunityDetails",
@@ -37,6 +42,12 @@ router.post(
   "/getUserCommunities",
   checkAuth,
   communityController.getUserCommunities
+);
+
+router.post(
+  "/getallcommunities_dashboard",
+  
+  communityController.getAllCommunities_dashboard
 );
 
 //Check if user is a member of community - community home page
