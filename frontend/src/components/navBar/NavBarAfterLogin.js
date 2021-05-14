@@ -78,7 +78,7 @@ export default function MenuAppBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" boxShadow={3} style={{ background: "#ebf7f6" }}>
+      <AppBar position="static" boxshadow={3} style={{ background: "#ebf7f6" }}>
         <Toolbar>
           <IconButton
             edge="start"

@@ -137,6 +137,7 @@ export default function CommunityInvitePage() {
       if(response.status===200){
         console.log('response recieved')
         getMyInvites()
+        serRerender(!rerender)
       }
     })
   }
@@ -144,6 +145,7 @@ export default function CommunityInvitePage() {
     await axios.post(`${ApiRequest}/api/invites/statusChange`,{userID:email, communityID:communityID, status:"Rejected"}).then((response)=>{
       if(response.status===200){
         getMyInvites()
+        serRerender(!rerender)
       }
     })
   }
