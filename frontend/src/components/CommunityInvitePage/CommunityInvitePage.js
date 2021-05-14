@@ -118,7 +118,9 @@ export default function CommunityInvitePage() {
         }
       });
   };
+  const getSentInvites = async () =>{
 
+  }
   useEffect(() => {
     GetUserData();
     GetCommunityData();
@@ -149,7 +151,8 @@ export default function CommunityInvitePage() {
             setInviteError(false);
           } else {
             //Error on request.
-            setErrorText("Failed to send invite.");
+            console.log(response.data.message)
+            setErrorText(response.data.message);
             setInviteError(true);
           }
         });
