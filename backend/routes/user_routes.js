@@ -4,7 +4,7 @@ const { checkAuth } = require("../config/passport");
 const userController = require("../controllers/user_controller");
 
 // sign-up User
-router.post("/register", checkAuth, userController.signup);
+router.post("/register", userController.signup);
 // router.post("/registeruser", userController.signupuser);
 // login User
 router.post("/login", userController.login);

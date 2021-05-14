@@ -7,6 +7,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
+import { useHistory } from "react-router-dom";
 import Box from "@material-ui/core/Box";
 import RedditIcon from "@material-ui/icons/Reddit";
 import Typography from "@material-ui/core/Typography";
@@ -19,6 +20,7 @@ import { Redirect } from "react-router";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { userLogin } from "../../actions/loginAction";
+import swal from "sweetalert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,6 +61,7 @@ const SignIn = (props) => {
 
   const [open, setOpen] = useState(false);
   const [inputs, setInputs] = useState({});
+  const history = useHistory();
   let redirectVar = null;
   const handleOpen = () => {
     setOpen(true);
@@ -76,13 +79,21 @@ const SignIn = (props) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (inputs.email === "" || inputs.password === "") {
+      swal("Error", "Enter Details to Login", "error", {
+        dangerMode: true,
+      });
+    }
+
     console.log(inputs);
     props.userLogin(inputs);
     console.log(props.user);
-    if (props.user.status === true) {
+    if (props.user.status == true) {
       console.log("redirect");
-      redirectVar = <Redirect to="/profile" />;
+      history.push("/dashboard");
     }
+
+    handleClose();
   };
 
   // const loadSuccess = () =>{
@@ -159,10 +170,7 @@ const SignIn = (props) => {
                     value={inputs.password}
                   />
                   <br />
-                  <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
-                    label="Remember me"
-                  />
+
                   <br />
                   <Button
                     type="submit"
@@ -173,18 +181,7 @@ const SignIn = (props) => {
                   >
                     Sign In
                   </Button>
-                  <Grid container>
-                    <Grid item xs>
-                      <Link href="#" variant="body2">
-                        Forgot password?
-                      </Link>
-                    </Grid>
-                    <Grid item>
-                      <Link href="#" variant="body2">
-                        {"Don't have an account? Sign Up"}
-                      </Link>
-                    </Grid>
-                  </Grid>
+
                   <Box mt={5}></Box>
                 </form>
               </div>
