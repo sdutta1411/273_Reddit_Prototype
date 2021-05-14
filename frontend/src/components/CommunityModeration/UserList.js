@@ -20,8 +20,10 @@ import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { Checkbox, Container, Typography } from "@material-ui/core";
 import MessageIcon from "@material-ui/icons/Message";
 import LinkIcon from "@material-ui/icons/Link";
+import Apirequest from "../../backendRequestApi";
+import Axios from "axios";
 
-export default function Moderation() {
+export default function UserList() {
 
   // taken from dashboard.js
  const useCardStyles = makeStyles(
@@ -95,6 +97,28 @@ export default function Moderation() {
   { index: 1 }
 );
 
+/* const uploadImage = (e) => {
+  debugger;
+  const formData = new FormData();
+  formData.append("file", imageSelected);
+
+  formData.append("upload_preset", "i9dmdl7y");
+  Axios.defaults.withCredentials = true;
+  Axios.post(
+    "https://api.cloudinary.com/v1_1/dikqsaz3t/image/upload",
+    formData
+  )
+    .then((response) => {
+      setPublicurl(response.data.secure_url);
+      localStorage.setItem("community_image_url", response.data.secure_url);
+      console.log(publicurl);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}; */
+
+
   const classes = useCardStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
@@ -123,7 +147,7 @@ export default function Moderation() {
         <Grid container spacing={3}>
           <Grid item xs={12} md={8} lg={9}>
             <Paper className={fixedHeightPaper}>
-              <h1>Mod tools</h1>
+              <h1>User List</h1>
             </Paper>
           </Grid>
           <Grid item xs={12}>
@@ -133,41 +157,6 @@ export default function Moderation() {
                   return (
                     <List className={classes.root}>
                       <ListItem>
-                        <ListItemAvatar>
-                          <div className={classes.votesWrapper}>
-                            <Checkbox
-                              icon={
-                                <ArrowUpwardIcon style={{ color: "#b2b2b2" }} />
-                              }
-                              checkedIcon={
-                                <ArrowUpwardIcon style={{ color: "#FF8b60" }} />
-                              }
-                              size="small"
-                            />
-                            <Typography
-                              variant="body1"
-                              style={{
-                                color: "#FF8b60",
-                                fontWeight: 600,
-                              }}
-                            >
-                              {value.upvotedBy - value.downvotedBy}
-                            </Typography>
-                            <Checkbox
-                              icon={
-                                <ArrowDownwardIcon
-                                  style={{ color: "#b2b2b2" }}
-                                />
-                              }
-                              checkedIcon={
-                                <ArrowDownwardIcon
-                                  style={{ color: "#9494FF" }}
-                                />
-                              }
-                              size="small"
-                            />
-                          </div>
-                          </ListItemAvatar>
                           <ListItemAvatar>
                           <div className={classes.thumbnailWrapper}>
                             {value.postType === "Text" ? (

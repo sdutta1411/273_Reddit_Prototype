@@ -20,8 +20,9 @@ import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { Checkbox, Container, Typography } from "@material-ui/core";
 import MessageIcon from "@material-ui/icons/Message";
 import LinkIcon from "@material-ui/icons/Link";
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-
+import DeleteIcon from '@material-ui/icons/Delete';
+import Apirequest from "../../backendRequestApi";
+import axios from "axios";
 export default function UserCommunities() {
 
   // taken from dashboard.js
@@ -115,6 +116,21 @@ export default function UserCommunities() {
       downvotedBy:9,
     },
   ];
+
+  /* const deletecommunity = (communityID) => {
+    // const email = localStorage.getItem("email");
+    const deleteCommunity = { CommunityID: communityID};
+console.log("Community id",deleteCommunity)
+    axios.defaults.withCredentials = true;
+    axios
+      .post(`${Apirequest}/api/community/deleteCommunity`, deleteCommunity)
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log("error occured while connecting to backend:", error);
+      });
+  }; */
     
   return (
     <Paper className={classes.root} variant="outlined">
@@ -122,7 +138,7 @@ export default function UserCommunities() {
         <Grid container spacing={3}>
           <Grid item xs={12} md={8} lg={9}>
             <Paper className={fixedHeightPaper}>
-              <h1>Mod tools</h1>
+              <h1>User Communities</h1>
             </Paper>
           </Grid>
           <Grid item xs={12}>
@@ -132,41 +148,7 @@ export default function UserCommunities() {
                   return (
                     <List className={classes.root}>
                       <ListItem>
-                        <ListItemAvatar>
-                          <div className={classes.votesWrapper}>
-                            <Checkbox
-                              icon={
-                                <ArrowUpwardIcon style={{ color: "#b2b2b2" }} />
-                              }
-                              checkedIcon={
-                                <ArrowUpwardIcon style={{ color: "#FF8b60" }} />
-                              }
-                              size="small"
-                            />
-                            <Typography
-                              variant="body1"
-                              style={{
-                                color: "#FF8b60",
-                                fontWeight: 600,
-                              }}
-                            >
-                              {value.upvotedBy - value.downvotedBy}
-                            </Typography>
-                            <Checkbox
-                              icon={
-                                <ArrowDownwardIcon
-                                  style={{ color: "#b2b2b2" }}
-                                />
-                              }
-                              checkedIcon={
-                                <ArrowDownwardIcon
-                                  style={{ color: "#9494FF" }}
-                                />
-                              }
-                              size="small"
-                            />
-                          </div>
-                          </ListItemAvatar>
+                            
                           <ListItemAvatar>
                           <div className={classes.thumbnailWrapper}>
                             {value.postType === "Text" ? (
@@ -233,10 +215,12 @@ export default function UserCommunities() {
                           component={Link}
                         
                         />
-                        <Button variant="contained">Details</Button>
-                        <Grid item xs={8}>
-                         <DeleteOutlinedIcon />  
-                         </Grid>
+                        <Button variant="contained" size="small">Details</Button>
+
+                        <Button size="small" color="primary" /* onClick={()=>deletecommunity(community._id) }*/>
+              Delete
+            </Button> 
+                        
                       </ListItem>
                       <Divider />
                     </List>
