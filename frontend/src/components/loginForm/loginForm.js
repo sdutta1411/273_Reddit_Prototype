@@ -78,8 +78,7 @@ const SignIn = (props) => {
       [event.target.name]: event.target.value,
     }));
   };
-  const handleSubmit = (e) => {
-    debugger;
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (inputs.email === "" || inputs.password === "") {
       swal("Error", "Enter Details to Login", "error", {
@@ -93,7 +92,7 @@ const SignIn = (props) => {
     if (props.user.status == true) {
       console.log("redirect");
 
-      axios
+      await axios
         .post("http://localhost:3001/api/user/getUserDetails", {
           email: inputs.email,
         })
@@ -103,6 +102,7 @@ const SignIn = (props) => {
           localStorage.setItem("token", props.token);
         });
 
+      handleClose();
       history.push("/dashboard");
     }
 
@@ -111,8 +111,6 @@ const SignIn = (props) => {
         dangerMode: true,
       });
     }
-
-    handleClose();
   };
 
   // const loadSuccess = () =>{
