@@ -53,8 +53,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const UserProfile = () => {
+  var user = JSON.parse(localStorage.getItem("user"));
   const classes = useStyles();
+  const [email, setEmail] = useState(localStorage.getItem("email"));
+  const [name, setName] = useState(user.username);
 
+  const [gender, setGender] = useState(user.gender);
+  const [location, setLocation] = useState(user.location);
+  const [description, setDescription] = useState(user.description);
   const [imageSelected, setImageSelected] = useState("");
   const [publicurl, setPublicurl] = useState(localStorage.getItem("publicurl"));
 
@@ -102,6 +108,7 @@ const UserProfile = () => {
                         id="outlined-basic"
                         label="Name"
                         variant="outlined"
+                        defaultValue={name}
                       />
                       <Button
                         className={classes.logo}
@@ -122,6 +129,7 @@ const UserProfile = () => {
                         id="outlined-basic"
                         label="Gender"
                         variant="outlined"
+                        defaultValue={gender}
                       />
                       <Button
                         className={classes.logo}
@@ -142,6 +150,7 @@ const UserProfile = () => {
                         id="outlined-basic"
                         label="Location"
                         variant="outlined"
+                        defaultValue={location}
                       />
                       <Button
                         className={classes.logo}
@@ -162,6 +171,7 @@ const UserProfile = () => {
                         id="outlined-basic"
                         label="Description"
                         variant="outlined"
+                        defaultValue={description}
                       />
                       <Button
                         className={classes.logo}

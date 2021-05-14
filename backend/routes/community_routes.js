@@ -44,6 +44,12 @@ router.post(
   communityController.getUserCommunities
 );
 
+router.post(
+  "/getallcommunities_dashboard",
+  
+  communityController.getAllCommunities_dashboard
+);
+
 //Check if user is a member of community - community home page
 router.post("/checkUserSubscribed", checkAuth, communityController.checkUserSubscribed);
 

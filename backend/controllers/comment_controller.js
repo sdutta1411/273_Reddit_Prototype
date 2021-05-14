@@ -11,7 +11,8 @@ const createnewcomment = async(req, res) => {
     comment.commentedBy = mongoose.Types.ObjectId(req.body.userid);
     comment.commentBody = req.body.comment;
     comment.upvotedBy = [];
-    comment.upvotedBy.push(mongoose.Types.ObjectId(req.body.userid));
+    const user = await UserProfile.findOne({username:req.body.username});
+    comment.upvotedBy.push(mongoose.Types.ObjectId(user._id));
     console.log("New comment "+ JSON.stringify(comment));
     console.log("Post Id "+req.body.postId);
     comment.save();
