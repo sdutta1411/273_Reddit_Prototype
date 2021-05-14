@@ -6,13 +6,18 @@ const { checkAuth } = require("../config/passport");
 // create a community
 router.post(
   "/createnewcommunity",
-  checkAuth,
   communityController.createnewcommunity
 );
 router.post(
   "/getAllOwnerCommunities",
   
   communityController.getAllOwnerCommunities
+);
+
+router.post(
+  "/deleteCommunity",
+  
+  communityController.deleteCommunity
 );
 //get all community details - community home page
 router.post(

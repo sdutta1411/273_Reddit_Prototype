@@ -51,7 +51,7 @@ export default function PostWithComments(props) {
     // const[commHomePage, setCommHomePage] = useState(false);
 
     var userLocalStorage = JSON.parse(localStorage.getItem("user"));
-    const token = userLocalStorage.token;
+    const token = localStorage.getItem("token");
     var communityName = 'Team11';
 
     const requestOptions = {
@@ -127,8 +127,8 @@ export default function PostWithComments(props) {
         <>
         <br/><br/>
         <div style={{display:"flex"}}>
-        <Card style={{marginLeft:"50px",width:"1000px",height:"1000px"}}>
-        <Paper style={{display:"flex",height:"1000px"}}>
+        <Card style={{marginLeft:"50px",width:"1000px"}}>
+        <Paper style={{display:"flex"}}>
         <div className={classes.votesWrapper}>
         <Checkbox
         // checked={posts.upvotedBy.includes(user._id)}

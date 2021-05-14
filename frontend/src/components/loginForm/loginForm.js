@@ -25,7 +25,7 @@ import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
+    marginTop:'10%'
   },
   image: {
     backgroundImage: `url(${img})`,
@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
         : theme.palette.grey[900],
     backgroundSize: "cover",
     backgroundPosition: "center",
+    width:'80%'
   },
   paper: {
     margin: theme.spacing(8, 4),
@@ -99,9 +100,8 @@ const SignIn = (props) => {
         .then((response) => {
           localStorage.setItem("email", response.data.email);
           localStorage.setItem("user", JSON.stringify(response.data));
-          localStorage.setItem("token", props.token);
+          localStorage.setItem("token", props.user.token);
         });
-
       handleClose();
       history.push("/dashboard");
     }

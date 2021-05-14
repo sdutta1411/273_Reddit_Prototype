@@ -27,7 +27,7 @@ import CommununityAnalytics from "./components/CommunityAnalytics/CommunityAnaly
 import CommunityInvitePage from "./components/CommunityInvitePage/CommunityInvitePage";
 import NavBarAfterLogin from "./components/navBar/NavBarAfterLogin";
 import { useState, useEffect } from "react";
-/* import ModerationPage from "./components/CommunityModeration/ModerationPage" */
+import Moderation from "./components/CommunityModeration/ModerationPage";
 const theme = createMuiTheme({
   palette: {
     primary: {

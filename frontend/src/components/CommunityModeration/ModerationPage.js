@@ -78,7 +78,7 @@ export const Moderation = () => {
   
     return (
         <div>
-            <NavBarAfterLogin></NavBarAfterLogin>
+          
             <h3>Community Moderation</h3>
 
             {communities.map((community) =>(

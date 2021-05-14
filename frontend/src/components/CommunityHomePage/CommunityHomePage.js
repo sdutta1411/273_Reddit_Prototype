@@ -8,8 +8,6 @@ import CreatePost from './CreatePost';
 import {useEffect ,useState,setState} from 'react'
 import axios from 'axios';
 import backendUrl from '../../backendUrl';
-import { UpvoteButton, DownvoteButton } from './VoteButtons';
-import PostList from './PostList';
 import { useCardStyles } from '../../styles/muiStyles';
 import { Card, Checkbox } from '@material-ui/core';
 import ArrowUpwardRoundedIcon from '@material-ui/icons/ArrowUpwardRounded';
@@ -23,7 +21,6 @@ import { trimLink, prettifyLink, fixUrl } from '../../utils/formatUrl';
 import getEditedThumbail from '../../utils/cloudinaryTransform';
 import AboutCommunity from './AboutCommunity';
 import Rules from './Rules';
-
 
 import {
     Paper,
@@ -56,17 +53,25 @@ export default function CommunityHomePage({communityName}) {
 
     const[commHomePage, setCommHomePage] = useState(true);
     var userLocalStorage = JSON.parse(localStorage.getItem("user"));
-    const token = userLocalStorage?userLocalStorage.token:'';
+    const token = localStorage.getItem('token');
     var communityName = 'Team11';
 
-    const requestOptions = {
-        method: 'GET',
-       headers: { 'Content-Type': 'application/json' ,'Authorization': token},
-      }
-    const handleUpvoteToggle = async () => {
+      
+    const handleUpvoteToggle = async(postId) => {
+      console.log("post id: "+postId);
+      const headers = {
+        'Content-Type': 'application/json' ,
+        'Authorization': token
+        }
+        const body = {
+       'email':userLocalStorage.email,'postId':postId
+        }
         try {
-          const response = await axios.post("http://localhost:3001/api/posts/upvote",requestOptions);
+          const response = await axios.post("http://localhost:3001/api/posts/upvote",body,{
+            headers: headers
+          });
           if(response.status===200){
+            console.log("you upvoted post");
             setIsUpvoted(true);
           }
         } catch (err) {
@@ -74,10 +79,20 @@ export default function CommunityHomePage({communityName}) {
         }
       };
     
-      const handleDownvoteToggle = async (e) => {
+      const handleDownvoteToggle = async(postId) => {
+        const headers = {
+          'Content-Type': 'application/json' ,
+          'Authorization': token
+          }
+          const body = {
+         'email':userLocalStorage.email,'postId':postId
+          }
         try {
-          const response = await axios.post("http://localhost:3001/api/posts/downvote",requestOptions);
+          const response = await axios.post("http://localhost:3001/api/posts/downvote",body,{
+            headers: headers
+          });
           if(response.status===200){
+            console.log("you downvoted post");
             setIsDownvoted(true);
           }
         } catch (err) {
@@ -85,7 +100,7 @@ export default function CommunityHomePage({communityName}) {
         }
       };
     useEffect(() =>{
-        const onLoadCommunityHomePage = async() =>{
+        const onLoadCommunityHomePage = async() => {
             var sortBy = 'old';
             var limit = 10;
             var page = 100;
@@ -167,18 +182,16 @@ export default function CommunityHomePage({communityName}) {
     <Card style={{marginLeft:"20px",width:"1100px",borderRadius:"5px",marginBottom:"10px"}}>
     {posts.map(post=>
       <RouterLink
-      style={{ textDecoration: 'none' }} 
-      to={{pathname: `/comments` ,
-                state:`${post._id},${communityName},${user.username}`}}>
+      style={{ textDecoration: 'none' }} >
       <Paper className={classes.root} variant="outlined">
       {/* upvote and downvote */}
       {/* <span>{post.title}</span> */}
       <div className={classes.votesWrapper}>
-        <Checkbox
+        <Button
         // checked={posts.upvotedBy.includes(user._id)}
-        icon={<ArrowUpwardRoundedIcon style={{ color: '#b2b2b2' }} />}
-        checkedIcon={<ArrowUpwardRoundedIcon style={{ color: '#FF8b60' }} />}
-        onChange={handleUpvoteToggle}
+        startIcon={<ArrowUpwardRoundedIcon style={{ color: '#b2b2b2' }} />}
+        // startIcon={<ArrowUpwardRoundedIcon style={{ color: '#FF8b60' }} />}
+        onClick={()=>handleUpvoteToggle(post._id)}
         size={'small'}
         />
         <Typography
@@ -194,11 +207,10 @@ export default function CommunityHomePage({communityName}) {
         >
           {/* {pointsCount} */}
         </Typography>
-            <Checkbox
+            <Button
             // checked={posts.downvotedBy.includes(user.id)}
-            icon={<ArrowDownwardRoundedIcon style={{ color: '#b2b2b2' }} />}
-            checkedIcon={<ArrowDownwardRoundedIcon style={{ color: '#9494FF' }} />}
-            onChange={handleDownvoteToggle}
+            startIcon={<ArrowDownwardRoundedIcon style={{ color: '#b2b2b2' }} />}
+            onClick={()=>handleDownvoteToggle(post._id)}
             size={'small'}
             />
       </div>
@@ -242,7 +254,8 @@ export default function CommunityHomePage({communityName}) {
             startIcon={<CommentIcon />}
             className={classes.commentsBtn}
             component={RouterLink}
-            to={`/comments/${post.comments}`}
+            to={{pathname: `/comments` ,
+                state:`${post._id},${communityName},${user.username}`}}
           >          
             {post.comments.length} comments
           </Button>

@@ -56,15 +56,22 @@ const useStyles = makeStyles((theme) => ({
   },
   inviteLists: {
     fontSize: "18px",
+    position: 'relative'
   },
   inviteButton: {
     float: "right",
     marginRight: "10%",
   },
+  inviteCommunity: {
+    position:'absolute',
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%,-50%)'
+  }
 }));
 
 export default function CommunityInvitePage() {
-  const inviteInfo = [
+  const inviteInfos = [
     {
       name: "Ujjwal Jain",
       inviteStatus: "0",
@@ -94,13 +101,18 @@ export default function CommunityInvitePage() {
   const [newData, setNewData] = useState([]);
   const [communityData, setCommunityData] = useState([]);
   const [userValue, setUserValue] = useState();
+  const [inviteInfo, setInviteInfo] = useState([]);
   const [communityValue, setCommunityValue] = useState("");
   const [valueState, setValueState] = useState("");
   const [inviteError, setInviteError] = useState(false);
   const [errorText, setErrorText] = useState("");
+  const [rerender, serRerender] = useState(false)
+  const email = localStorage.getItem('email')
+  const token = localStorage.getItem('token')
+  console.log(email)
   const GetUserData = async () => {
     await axios
-      .post(`${ApiRequest}/api/user/allUsers`, { email: "reddit@gmail.com" })
+      .post(`${ApiRequest}/api/user/allUsers`, { email: email })
       .then((response) => {
         setNewData(response.data);
       });
@@ -108,7 +120,7 @@ export default function CommunityInvitePage() {
   const GetCommunityData = async () => {
     await axios
       .post(`${ApiRequest}/api/community/ownerCommunities`, {
-        email: "bhagi@gmail.com",
+        email: email,
       })
       .then((response) => {
         if (response.status === 200) {
@@ -118,12 +130,27 @@ export default function CommunityInvitePage() {
         }
       });
   };
-
-  useEffect(() => {
-    GetUserData();
-    GetCommunityData();
-    console.log(newData);
-  }, []);
+  const getSentInvites = async () => {
+    await axios.post(`${ApiRequest}/api/invites/getSentInvites`, {
+      email: email,
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log(response.data)
+          setInviteInfo(response.data.inviteInfo)
+        } else {
+          console.log(communityData)
+          console.log(response)
+        }
+      });
+  }
+  const getMyInvites = async () => {
+    await axios.post(`${ApiRequest}/api/invites/getMyInvites`, {email:'test-6@gmail.com'}).then((response)=>{
+      if(response.status === 200) {
+        console.log(response.data)
+      }
+    })
+  }
 
   const handleInvites = async () => {
     if (communityValue && userValue.length > 0) {
@@ -132,7 +159,7 @@ export default function CommunityInvitePage() {
         .post(`${ApiRequest}/api/invites/invite_user`, {
           users: userValue,
           community: communityValue,
-          status:"invite"
+          status: "Invited"
         })
         .then((response) => {
           if (response.status === 200) {
@@ -147,10 +174,13 @@ export default function CommunityInvitePage() {
             close.click();
             close2.click();
             setInviteError(false);
+            serRerender(!rerender)
           } else {
             //Error on request.
-            setErrorText("Failed to send invite.");
+            console.log(response.data.message)
+            setErrorText(response.data.message);
             setInviteError(true);
+            serRerender(!rerender)
           }
         });
     } else {
@@ -163,7 +193,13 @@ export default function CommunityInvitePage() {
   const handleClose = () => {
     setInviteError(false);
   };
-
+  useEffect(() => {
+    GetUserData();
+    GetCommunityData();
+    getSentInvites();
+    getMyInvites();
+    console.log(newData);
+  }, [rerender]);
   return (
     <div className={classes.root}>
       <Paper>
@@ -197,10 +233,9 @@ export default function CommunityInvitePage() {
                 multiple
                 id="UserSelection"
                 options={newData}
-                inputValue={valueState}
-                // getOptionSelected={(option, value) =>
-                //   option.username === value.username
-                // }
+                getOptionSelected={(option, value) =>
+                  option.username === value.username
+                }
                 onChange={(event, newInputValue) => {
                   setUserValue(newInputValue);
                 }}
@@ -248,12 +283,9 @@ export default function CommunityInvitePage() {
               <Grid item className={classes.inviteLists} key={index}>
                 <span className={classes.invite}>{invite.name}</span>{" "}
                 <span className={classes.inviteButton}>
-                  {invite.inviteStatus === "0"
-                    ? "Pending"
-                    : invite.inviteStatus === "1"
-                    ? "Accepted"
-                    : "Rejected"}
+                  {invite.inviteStatus}
                 </span>
+                <span className={classes.inviteCommunity}>{invite.communityName}</span>
               </Grid>
             ))}
           </Grid>
