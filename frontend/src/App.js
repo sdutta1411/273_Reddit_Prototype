@@ -104,7 +104,7 @@ const App = () => {
               component={CommununityAnalytics}
             />
             <Route path="/invites" exact component={CommunityInvitePage} />
-            <Route path="/ModerationPage" exact component={Moderation} />
+            {/* <Route path="/ModerationPage" exact component={Moderation} /> */}
             <Route path="/searchbar" exact component={SearchBar} />
             <Route path="/SearchList" exact component={SearchList} />
             <Route path="/Sort" exact component={Sort} />

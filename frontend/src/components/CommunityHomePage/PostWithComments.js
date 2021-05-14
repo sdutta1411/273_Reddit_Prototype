@@ -51,7 +51,7 @@ export default function PostWithComments(props) {
     // const[commHomePage, setCommHomePage] = useState(false);
 
     var userLocalStorage = JSON.parse(localStorage.getItem("user"));
-    const token = localStorage.getItem("token");
+    const token = userLocalStorage.token;
     var communityName = 'Team11';
 
     const requestOptions = {
