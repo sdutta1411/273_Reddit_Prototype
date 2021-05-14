@@ -144,7 +144,13 @@ export default function CommunityInvitePage() {
         }
       });
   }
-
+  const getMyInvites = async () => {
+    await axios.post(`${ApiRequest}/api/invites/getMyInvites`, {email:'test-6@gmail.com'}).then((response)=>{
+      if(response.status === 200) {
+        console.log(response.data)
+      }
+    })
+  }
 
   const handleInvites = async () => {
     if (communityValue && userValue.length > 0) {
@@ -191,6 +197,7 @@ export default function CommunityInvitePage() {
     GetUserData();
     GetCommunityData();
     getSentInvites();
+    getMyInvites();
     console.log(newData);
   }, [rerender]);
   return (

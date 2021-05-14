@@ -7,6 +7,8 @@ const { checkAuth } = require("../config/passport");
 // create a send invite as owner
 router.post("/invite_user",  inviteController.sendInvite);
 router.post("/getSentInvites",  inviteController.getOwnerInvites);
+router.post("/getMyInvites",  inviteController.getMyInvites);
+router.post("/getMyRequests",  inviteController.getMyRequests);
 
 
 module.exports = router;
