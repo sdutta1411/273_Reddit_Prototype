@@ -28,8 +28,8 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import ArrowUpwardRoundedIcon from '@material-ui/icons/ArrowUpwardRounded';
-import ArrowDownwardRoundedIcon from '@material-ui/icons/ArrowDownwardRounded';
+import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
+import ArrowDownwardRoundedIcon from "@material-ui/icons/ArrowDownwardRounded";
 
 export default function DashboardPage() {
   const classes = useCardStyles();
@@ -39,6 +39,7 @@ export default function DashboardPage() {
   const [userids, setuserids] = useState([]);
   const [searchUser, setsearchUser] = useState("");
   const [open, setOpen] = useState(false);
+  const [topCommunity, setTopCommunity] = useState([]);
   const [isUpvoted, setIsUpvoted] = useState(false);
   const [isDownvoted, setIsDownvoted] = useState(false);
 
@@ -100,6 +101,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     getPosts();
+    gettopCommunities();
   }, []);
 
   const userDetails = JSON.parse(localStorage.user);
@@ -115,7 +117,7 @@ export default function DashboardPage() {
   };
 
   const fetchAllUserids = () => {
-    debugger;
+    
     axios
       .post("http://localhost:3002/routes/users/")
       .then((response) => {
@@ -155,7 +157,7 @@ export default function DashboardPage() {
   ];
 
   const formatPosts = (communities) => {
-    debugger;
+    
     let myPostsArr = [];
     for (let i = 0; i < communities.length; i++) {
       for (let j = 0; j < communities[i].posts.length; j++) {
@@ -165,9 +167,13 @@ export default function DashboardPage() {
     }
     setmyPosts(myPostsArr);
   };
+  const email = {
+    email: localStorage.getItem("email"),
+  };
 
   const getPosts = () => {
-    debugger;
+    
+
     axios
       .post(`${backendUrl}/api/community/getallcommunities_dashboard`, {
         email: userDetails.email,
@@ -177,6 +183,15 @@ export default function DashboardPage() {
       })
       .catch((err) => {
         console.log(err);
+      });
+  };
+  const gettopCommunities = () => {
+   
+    axios
+      .post(`${backendUrl}/api/community/topCommunity`, email)
+      .then((response) => {
+        console.log(response)
+        setTopCommunity(response.data);
       });
   };
 
@@ -248,9 +263,10 @@ export default function DashboardPage() {
             </Dialog>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={4} lg={3}>
+        <Grid item s={10} md={4} lg={3}>
           <Paper className={fixedHeightPaper}>
             <h1>Top Communities</h1>
+           
           </Paper>
         </Grid>
         <Grid item xs={12}>

@@ -108,6 +108,10 @@ export const EditCommunity = (communityID) => {
       .post(`${Apirequest}/api/community/editCommunity`, inputs)
       .then(( response ) => {
         console.log(response);
+        if(response.status === 200){
+            alert("Updated");
+        }
+       
       })
       .catch((error) => {
         console.log("error occured while connecting to backend:", error);

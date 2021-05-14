@@ -15,6 +15,12 @@ router.post(
 );
 
 router.post(
+  "/topCommunity",
+  
+  communityController.topCommunity
+);
+
+router.post(
   "/deleteCommunity",
   
   communityController.deleteCommunity
