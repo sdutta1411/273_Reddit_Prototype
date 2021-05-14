@@ -12,7 +12,7 @@ import UserProfile from "./components/UserProfile/UserProfile";
 // import Home from "./components/LandingPage/home";
 import SearchBar from "./components/CommunitySearch/searchbar.js";
 import SearchList from "./components/CommunitySearch/SearchList";
-import SearchResults from "./components/CommunitySearch/searchResults";
+import SearchResults from "./components/CommunitySearch/SearchResults";
 import CommunityHomePage from "./components/CommunityHomePage/CommunityHomePage";
 import CreatePost from "./components/CommunityHomePage/CreatePost";
 import Post from "./components/CommunityHomePage/Post";
