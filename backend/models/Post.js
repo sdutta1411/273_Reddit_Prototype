@@ -51,6 +51,14 @@ const PostSchema = new mongoose.Schema({
     type: Number,
     default: 1,
   },
+  noOfUpvotes:{
+    type: Number,
+    default: 1,
+  },
+  noOfDownvotes:{
+    type: Number,
+    default: 0,
+  },
   
   // famousPost: {
   //   type: Number,

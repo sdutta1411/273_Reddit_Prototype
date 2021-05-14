@@ -61,11 +61,12 @@ export const MyCommunity = () => {
 
   useEffect(() => {
     getallCommunities();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sort, sorted]);
 
   const getallCommunities = () => {
-    // const email = localStorage.getItem("email");
-    const email = { email: "bhagi@gmail.com", sorted: sorted , type: sort };
+    const LocalEmail = localStorage.getItem("email");
+    const email = { email: LocalEmail, sorted: sorted , type: sort };
 
     axios.defaults.withCredentials = true;
     axios
@@ -100,7 +101,7 @@ console.log("Community id",deleteCommunity)
       
       <h3>My Communities</h3>
      <CreateCommunity/>
-      <Grid
+      {communities.length>0&&(<Grid
       container
       // spacing={2}
       direction="row"
@@ -134,9 +135,9 @@ console.log("Community id",deleteCommunity)
 
       </FormControl>
      
-     </Grid>
+     </Grid>)}
       <br/>
-      {communities.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((community) => (
+      {communities.length>0?communities.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((community) => (
         
         <Grid
         container
@@ -180,8 +181,8 @@ console.log("Community id",deleteCommunity)
             </CardActions>
         </Card>
         </Grid>
-      ))}
-      <Grid
+      )):'You are not an admin in any community. Please create a community'}
+      {communities.length>0&&(<Grid
       container
       // spacing={2}
       direction="row"
@@ -198,7 +199,7 @@ console.log("Community id",deleteCommunity)
       onChangePage={handleChangePage}
       onChangeRowsPerPage={handleChangeRowsPerPage}
     />
-    </Grid>
+    </Grid>)}
     </div>
   );
 };

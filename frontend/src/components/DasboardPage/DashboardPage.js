@@ -37,9 +37,11 @@ export default function DashboardPage() {
   const [userids, setuserids] = useState([]);
   const [searchUser, setsearchUser] = useState("");
   const [open, setOpen] = useState(false);
+  const [topCommunity, setTopCommunity] = useState([])
 
   useEffect(() => {
     getPosts();
+    gettopCommunities();
   }, []);
 
   const userDetails = JSON.parse(localStorage.user);
@@ -103,12 +105,16 @@ export default function DashboardPage() {
     }
     setmyPosts(myPostsArr);
   };
+  const email = {
+    email:localStorage.getItem("email")
+  }
 
   const getPosts = () => {
     debugger;
+   
     axios
       .post(`${backendUrl}/api/community/getallcommunities_dashboard`, {
-        email: "bhagi@gmail.com",
+        email: email,
       })
       .then((response) => {
         formatPosts(response.data);
@@ -117,6 +123,12 @@ export default function DashboardPage() {
         console.log(err);
       });
   };
+  const gettopCommunities=()=>{
+    axios.post(`${backendUrl}/api/community/topCommunity`,email)
+    .then((response)=>{
+      setTopCommunity(response);
+    })
+  }
 
   const donothing = () => {}
 
@@ -189,6 +201,7 @@ export default function DashboardPage() {
         <Grid item xs={12} md={4} lg={3}>
           <Paper className={fixedHeightPaper}>
             <h1>Top Communities</h1>
+
           </Paper>
         </Grid>
         <Grid item xs={12}>

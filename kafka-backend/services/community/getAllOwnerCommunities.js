@@ -56,7 +56,7 @@ const getAllOwnerCommunities =async(msg, callback) => {
 
       case 30:
         if(msg.sorted === true){
-          const ownerComms = await Community.find({ admin: ownerId }).sort({subscribedBy: 1});
+          const ownerComms = await Community.find({ admin: ownerId }).sort({subscribedBy:1});
           if (ownerComms.length > 0) {
             return callback(null,ownerComms);
           } else {
@@ -65,7 +65,7 @@ const getAllOwnerCommunities =async(msg, callback) => {
             //   .json({ message: "This User is not an admin in any community" });
           }
         }  else if(msg.sorted === false){
-          const ownerComms = await Community.find({ admin: ownerId }).sort({subscribedBy: -1});
+          const ownerComms = await Community.find({ admin: ownerId }).sort({subscribedBy:-1});
           if (ownerComms.length > 0) {
             return callback(null,ownerComms);
           } else {

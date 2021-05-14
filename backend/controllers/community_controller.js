@@ -88,6 +88,8 @@ const joinCommunity = async (req, res) => {
 };
 
 // Leave Community - Community Home Page
+
+
 const leaveCommunity = async (req, res) => {
   console.log(
     "Leave Community API" + req.body.email + "," + req.body.communityName
@@ -230,7 +232,6 @@ const getOwnerCommunities =  (req, res) => {
   });
 };
 
-
 const getAllOwnerCommunities =  (req, res) => {
   console.log("inside postmethod for message backend");
   console.log("req.body", req.body);
@@ -253,7 +254,9 @@ const getAllCommunities_dashboard = async (req, res) => {
   const usercomms = await UserProfile.find({ email: req.body.email });
   if (usercomms[0]) {
     const ownerId = usercomms[0]._id;
-    const ownerComms = await Community.find({ admin: ownerId }).populate('posts');
+    const ownerComms = await Community.find({ admin: ownerId }).populate(
+      "posts"
+    );
     if (ownerComms.length > 0) {
       return res.status(200).json(ownerComms);
     } else {
@@ -298,7 +301,7 @@ const deleteCommunity =  (req, res) => {
     }  else {
      res.send(result)
     }
-  });
+   } );
 };
 
 const editCommunity =  (req, res) => {
@@ -309,9 +312,7 @@ const editCommunity =  (req, res) => {
   kafka.make_request("community", msg, (err, result) => {
     console.log("editCommunity details:", result);
     if (result === 201) {
-      res.writeHead(201, {
-        "Content-Type": "text/plain",
-      });
+    
       res.status(201)
         .json({ message: "This User is not an admin in any community" });
     }  else {
@@ -319,6 +320,25 @@ const editCommunity =  (req, res) => {
     }
   });
 };
+
+
+const topCommunity = async (req,res) =>{
+  console.log("Get Owner communities API" + JSON.stringify(req.body.email));
+  const usercomms = await UserProfile.find({ email: req.body.email });
+  if (usercomms[0]) {
+    const ownerId = usercomms[0]._id;
+    const ownerComms = await Community.find({ admin: ownerId }).sort({posts:-1}).limit(10)
+    if (ownerComms.length > 0) {
+      return res.status(200).json(ownerComms);
+    } else {
+      return res
+        .status(201)
+        .json({ message: "This User is not an admin in any community" });
+    }
+  } else {
+    return res.status(201).json({ message: "This User does not exist" });
+  }
+}
 
 module.exports = {
   createnewcommunity,
@@ -335,4 +355,5 @@ module.exports = {
   getAllCommunities_dashboard,
   deleteCommunity,
   editCommunity,
+  topCommunity,
 };
