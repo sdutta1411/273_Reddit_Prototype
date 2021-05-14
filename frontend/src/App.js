@@ -2,7 +2,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Switch, Route } from "react-router-dom";
 import "./App.css";
 
-import LoginForm from "./components/loginForm/LoginForm";
+import LoginForm from "./components/loginForm/loginForm";
 import signupForm from "./components/signupForm/signupForm";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -12,7 +12,7 @@ import UserProfile from "./components/UserProfile/UserProfile";
 // import Home from "./components/LandingPage/home";
 import SearchBar from "./components/CommunitySearch/searchbar.js";
 import SearchList from "./components/CommunitySearch/SearchList";
-import SearchResults from "./components/CommunitySearch/SearchResults";
+import SearchResults from "./components/CommunitySearch/searchResults";
 import CommunityHomePage from "./components/CommunityHomePage/CommunityHomePage";
 import CreatePost from "./components/CommunityHomePage/CreatePost";
 import Post from "./components/CommunityHomePage/Post";
@@ -104,7 +104,7 @@ const App = () => {
               component={CommununityAnalytics}
             />
             <Route path="/invites" exact component={CommunityInvitePage} />
-            <Route path="/ModerationPage" exact component={Moderation} />
+            {/* <Route path="/ModerationPage" exact component={Moderation} /> */}
             <Route path="/searchbar" exact component={SearchBar} />
             <Route path="/SearchList" exact component={SearchList} />
             <Route path="/SearchResults" exact component={SearchResults} />

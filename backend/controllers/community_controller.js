@@ -246,6 +246,25 @@ const getAllOwnerCommunities = async (req, res) => {
   }
 };
 
+
+const getAllCommunities_dashboard = async (req, res) => {
+  console.log("Get Owner communities API" + JSON.stringify(req.body.email));
+  const usercomms = await UserProfile.find({ email: req.body.email });
+  if (usercomms[0]) {
+    const ownerId = usercomms[0]._id;
+    const ownerComms = await Community.find({ admin: ownerId }).populate('posts');
+    if (ownerComms.length > 0) {
+      return res.status(200).json(ownerComms);
+    } else {
+      return res
+        .status(201)
+        .json({ message: "This User is not an admin in any community" });
+    }
+  } else {
+    return res.status(201).json({ message: "This User does not exist" });
+  }
+};
+
 const getAnalyticsData = async (req, res) => {
   console.log("Get Owner communities API" + JSON.stringify(req.body.email));
   const usercomms = await UserProfile.find({ email: req.body.email });
@@ -322,4 +341,5 @@ module.exports = {
   getAnalyticsData,
   getOwnerCommunities,
   getAllOwnerCommunities,
+  getAllCommunities_dashboard,
 };
