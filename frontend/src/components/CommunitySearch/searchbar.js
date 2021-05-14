@@ -11,12 +11,16 @@ import {
   TextField,
 } from "@material-ui/core";
 import { fade, makeStyles } from "@material-ui/core/styles";
-
+import Apirequest from "../../backendRequestApi";
 import SearchIcon from "@material-ui/icons/Search";
 import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
-  
+  pokedexContainer: {
+    paddingTop: "20px",
+    paddingLeft: "50px",
+    paddingRight: "50px",
+  },
   cardMedia: {
     margin: "auto",
   },
@@ -62,7 +66,7 @@ const SearchBar = (props) => {
 
   
   return (
-    
+    <>
       <AppBar position="static">
         <Toolbar>
           <div className={classes.searchContainer}>
@@ -79,7 +83,7 @@ const SearchBar = (props) => {
     
       
       
-    
+    </>
   );
 };
 

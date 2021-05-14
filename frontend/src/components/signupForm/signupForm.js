@@ -24,7 +24,7 @@ import swal from "sweetalert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
+    marginTop:'8%',
   },
   image: {
     backgroundImage: `url(${img})`,
