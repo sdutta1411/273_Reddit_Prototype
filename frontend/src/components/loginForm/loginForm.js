@@ -21,6 +21,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { userLogin } from "../../actions/loginAction";
 import swal from "sweetalert";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,6 +79,7 @@ const SignIn = (props) => {
     }));
   };
   const handleSubmit = (e) => {
+    debugger;
     e.preventDefault();
     if (inputs.email === "" || inputs.password === "") {
       swal("Error", "Enter Details to Login", "error", {
@@ -90,6 +92,16 @@ const SignIn = (props) => {
     console.log(props.user);
     if (props.user.status == true) {
       console.log("redirect");
+
+      axios
+        .post("http://localhost:3001/api/user/getUserDetails", {
+          email: inputs.email,
+        })
+        .then((response) => {
+          localStorage.setItem("email", response.data.email);
+          localStorage.setItem("user", JSON.stringify(response.data));
+        });
+
       history.push("/dashboard");
     }
 

@@ -11,7 +11,7 @@ router.post("/login", userController.login);
 //test route
 router.post("/test", checkAuth, userController.test);
 //get user details from mongo
-router.post("/getUserDetails", checkAuth, userController.getUserDetails);
+router.post("/getUserDetails", userController.getUserDetails);
 // get all user details
 router.post("/allUsers", userController.getAllUsers);
 
