@@ -56,17 +56,17 @@ const ShowComments = ({ postId }) => {
     onLoadShowComments();
 },[]);
 
-  const replyDetails = (r) => {
-      for(var i=0;i<r.length;i++){
-          //  <p>r[i].comment</p>
-           setReplyComm(r[i].comment)
-        if(r[i].replies.length){
-            return(
-                <p>{r[i].replies}</p>
-            )
-        }
-      }
-  };
+  // const replyDetails = (r) => {
+  //     for(var i=0;i<r.length;i++){
+  //         //  <p>r[i].comment</p>
+  //          setReplyComm(r[i].comment)
+  //       if(r[i].replies.length){
+  //           return(
+  //               <p>{r[i].replies}</p>
+  //           )
+  //       }
+  //     }
+  // };
 
   console.log("comments2 "+ JSON.stringify(comments));
   return (
@@ -139,14 +139,14 @@ const ShowComments = ({ postId }) => {
         </div>
         )} */}
         
-        {c.replies.length !== 0 ? (
+        {/* {c.replies.length !== 0 ? (
             c.replies.map(r => {
              {replyDetails(c.replies)}
              <p>{replyComm}</p>
             })
         ):(
             <p>no replies</p>
-        )}
+        )} */}
         </div>
     </div>
     ))
