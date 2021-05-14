@@ -8,7 +8,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 //import image from "../../static/images/splitwise.png";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -16,7 +16,7 @@ import redditlogo from "../../assets/redditlogo.png";
 import { Image } from "react-bootstrap";
 import { colors } from "@material-ui/core";
 import { shadows } from "@material-ui/system";
-import MyCommunity from '../MyCommunity/MyCommunity'
+import MyCommunity from "../MyCommunity/MyCommunity";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,6 +61,7 @@ export default function MenuAppBar() {
   const [auth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const history = useHistory();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -70,11 +71,11 @@ export default function MenuAppBar() {
     setAnchorEl(null);
   };
 
-  const handleLogout = () =>{
-    
-  }
+  const handleLogout = () => {
+    localStorage.clear();
+    history.push("/home");
+  };
 
-  
   return (
     <div className={classes.root}>
       <AppBar position="static" boxShadow={3} style={{ background: "#ebf7f6" }}>
@@ -98,7 +99,7 @@ export default function MenuAppBar() {
           >
             Home Page of the Internet
           </Typography>
-        
+
           {auth && (
             <div>
               <IconButton
@@ -125,10 +126,35 @@ export default function MenuAppBar() {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem style={{textDecoration:"none",fontSize:"17px"}} component={Link} to='userprofile'>Profile</MenuItem>
-                <MenuItem style={{textDecoration:"none",fontSize:"17px"}} component={Link} to='usersettings'>User Settings</MenuItem>
-                <MenuItem style={{textDecoration:"none",fontSize:"17px"}} component={Link} to='MyCommunity'>MyCommunity</MenuItem>
-                <MenuItem style={{textDecoration:"none",fontSize:"17px"}} component={Link}  onClick={handleLogout} to='landing'>Logout</MenuItem>
+                <MenuItem
+                  style={{ textDecoration: "none", fontSize: "17px" }}
+                  component={Link}
+                  to="userprofile"
+                >
+                  Profile
+                </MenuItem>
+                <MenuItem
+                  style={{ textDecoration: "none", fontSize: "17px" }}
+                  component={Link}
+                  to="usersettings"
+                >
+                  User Settings
+                </MenuItem>
+                <MenuItem
+                  style={{ textDecoration: "none", fontSize: "17px" }}
+                  component={Link}
+                  to="MyCommunity"
+                >
+                  MyCommunity
+                </MenuItem>
+                <MenuItem
+                  style={{ textDecoration: "none", fontSize: "17px" }}
+                  component={Link}
+                  onClick={handleLogout}
+                  to="/"
+                >
+                  Logout
+                </MenuItem>
               </Menu>
             </div>
           )}
