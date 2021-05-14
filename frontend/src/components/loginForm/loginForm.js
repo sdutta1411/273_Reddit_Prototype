@@ -99,9 +99,8 @@ const SignIn = (props) => {
         .then((response) => {
           localStorage.setItem("email", response.data.email);
           localStorage.setItem("user", JSON.stringify(response.data));
-          localStorage.setItem("token", props.token);
+          localStorage.setItem("token", props.user.token);
         });
-
       handleClose();
       history.push("/dashboard");
     }
