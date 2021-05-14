@@ -43,20 +43,30 @@ const theme = createMuiTheme({
 });
 
 const App = () => {
+  const isLoggedIn = () => {
+    if (localStorage.getItem("user")) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   return (
     <Provider store={store}>
       <div>
         <ThemeProvider theme={theme}>
-          <Navbar />
+          {isLoggedIn() ? <NavBarAfterLogin /> : <Navbar />}
           <Switch>
             <Route path="/communityhome" exact component={CommunityHomePage} />
             <Route path="/" exact component={Home} />
 
-         
             {/* <Route path="/ModerationPage" exact component={ModerationPage} />  */}
 
-          <Route path="/chats/:chatid/:username" exact component={ChatsPage} />
-          <Route path="/chatList" exact component={ChatList} />
+            <Route
+              path="/chats/:chatid/:username"
+              exact
+              component={ChatsPage}
+            />
+            <Route path="/chatList" exact component={ChatList} />
 
             <Route path="/login" exact component={LoginForm} />
             <Route path="/signup" exact component={signupForm} />
@@ -69,7 +79,11 @@ const App = () => {
               component={ImageAndVideo}
             />
             <Route path="/createpost/link" exact component={LinkPostType} />
-            <Route path="/mycommunities/analytics" exact component={CommununityAnalytics} />
+            <Route
+              path="/mycommunities/analytics"
+              exact
+              component={CommununityAnalytics}
+            />
             <Route path="/invites" exact component={CommunityInvitePage} />
             {/*  <Route path="/ModerationPage" exact component={ModerationPage} /> */}
 
