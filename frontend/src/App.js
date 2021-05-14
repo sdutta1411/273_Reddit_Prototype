@@ -2,7 +2,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Switch, Route } from "react-router-dom";
 import "./App.css";
 
-import LoginForm from "./components/loginForm/loginForm";
+import LoginForm from "./components/loginForm/LoginForm";
 import signupForm from "./components/signupForm/signupForm";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -10,8 +10,8 @@ import Navbar from "./components/navBar/navBar";
 import Home from "./components/LandingPage/home";
 import UserProfile from "./components/UserProfile/UserProfile";
 // import Home from "./components/LandingPage/home";
-// import SearchBar from "./components/CommunitySearch/searchbar.js";
-/* import SearchBar from "./components/CommunitySearch/searchbar.js"; */
+import SearchBar from "./components/CommunitySearch/searchbar.js";
+/* import SearchResults from "./components/CommunitySearch/SearchResults"; */
 import CommunityHomePage from "./components/CommunityHomePage/CommunityHomePage";
 import CreatePost from "./components/CommunityHomePage/CreatePost";
 import Post from "./components/CommunityHomePage/Post";
@@ -24,7 +24,7 @@ import ChatList from "./components/Chats/ChatList";
 import CommununityAnalytics from "./components/CommunityAnalytics/CommunityAnalytics";
 import CommunityInvitePage from "./components/CommunityInvitePage/CommunityInvitePage";
 import NavBarAfterLogin from "./components/navBar/NavBarAfterLogin";
-/* import ModerationPage from "./components/CommunityModeration/ModerationPage" */
+import Moderation from "./components/CommunityModeration/ModerationPage"
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -53,7 +53,7 @@ const App = () => {
             <Route path="/" exact component={Home} />
 
          
-            {/* <Route path="/ModerationPage" exact component={ModerationPage} />  */}
+            
 
           <Route path="/chats/:chatid/:username" exact component={ChatsPage} />
           <Route path="/chatList" exact component={ChatList} />
@@ -71,7 +71,9 @@ const App = () => {
             <Route path="/createpost/link" exact component={LinkPostType} />
             <Route path="/mycommunities/analytics" exact component={CommununityAnalytics} />
             <Route path="/invites" exact component={CommunityInvitePage} />
-            {/*  <Route path="/ModerationPage" exact component={ModerationPage} /> */}
+            <Route path="/ModerationPage" exact component={Moderation} />
+            <Route path="/searchbar" exact component={SearchBar} />
+            {/* <Route path="/SearchResults" exact component={SearchResults} /> */}
 
             <Route path="/dashboard" exact component={DashboardPage} />
             <Route path="/mycommunity" exact component={MyCommunity} />

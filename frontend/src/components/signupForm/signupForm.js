@@ -15,7 +15,7 @@ import Container from "@material-ui/core/Container";
 import Modal from "@material-ui/core/Modal";
 import Paper from "@material-ui/core/Paper";
 import img from "../../images/Reddit.png";
-import SignIn from "../loginForm/loginForm";
+import SignIn from "../loginForm/LoginForm";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { userSignup } from "../../actions/signUpAction";

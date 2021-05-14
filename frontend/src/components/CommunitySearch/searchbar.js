@@ -1,59 +1,86 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import {
+  Grid,
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  CircularProgress,
+  Toolbar,
+  AppBar,
+  TextField,
+} from "@material-ui/core";
+import { fade, makeStyles } from "@material-ui/core/styles";
 
-import { InputAdornment, IconButton, TextField } from '@material-ui/core';
-import { useNavStyles } from '../styles/muiStyles';
-import SearchIcon from '@material-ui/icons/Search';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import SearchIcon from "@material-ui/icons/Search";
+import axios from "axios";
 
-const SearchBar = ({ isMobile, setSearchOpen }) => {
-  const [searchInput, setSearchInput] = useState('');
-  const history = useHistory();
-  const classes = useNavStyles();
+const useStyles = makeStyles((theme) => ({
+  
+  cardMedia: {
+    margin: "auto",
+  },
+  cardContent: {
+    textAlign: "center",
+  },
+  searchContainer: {
+    display: "flex",
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    paddingLeft: "20px",
+    paddingRight: "20px",
+    marginTop: "5px",
+    marginBottom: "5px",
+  },
+  searchIcon: {
+    alignSelf: "flex-end",
+    marginBottom: "5px",
+  },
+  searchInput: {
+    width: "200px",
+    margin: "5px",
+  },
+}));
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchInput === '') return;
-    history.push(`/search/${searchInput}`);
+const SearchBar = (props) => {
+  const classes = useStyles();
+  const { history } = props;
+  const [open, setOpen] = useState(false);
+  const [communities,setCommunities] =useState([]);
+
+    const handleOpen = () => {
+        setOpen(true);
+
+      };
+    
+      const handleClose = () => {
+        setOpen(false);
+      };
+   
+  const handleSearchChange = (e) => {
+    setOpen(e.target.value);
   };
 
-  const clearSearch = () => {
-    if (isMobile) {
-      setSearchOpen(false);
-    }
-    setSearchInput('');
-  };
-
+  
   return (
-    <div className={classes.search}>
-      <form onSubmit={handleSearch}>
-        <TextField
-          type="search"
-          placeholder="Search for community name"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          className={classes.inputField}
-          variant="outlined"
-          margin="dense"
-          fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon color="primary" />
-              </InputAdornment>
-            ),
-            endAdornment: (searchInput || isMobile) && (
-              <InputAdornment position="end">
-                <IconButton color="primary" size="small" onClick={clearSearch}>
-                  <HighlightOffIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </form>
-    </div>
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          <div className={classes.searchContainer}>
+            <SearchIcon className={classes.searchIcon} />
+            <TextField
+              className={classes.searchInput}
+              onChange={handleSearchChange}
+              label="Community"
+              variant="standard"
+            />
+          </div>
+        </Toolbar>
+      </AppBar>
+    
+      
+      )
+    </>
   );
 };
 
-export default SearchBar
+export default SearchBar;

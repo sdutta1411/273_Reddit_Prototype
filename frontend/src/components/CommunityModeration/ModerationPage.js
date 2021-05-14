@@ -1,65 +1,180 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
-/* eslint-disable react/jsx-no-comment-textnodes */
-import React from 'react';
-import {Link} from "react-router-dom";
-/* import image from "../../images/Reddit.png"; */
-import "./ModerationPage.css";
-export default function ModerationPage(){
-    const menus = [
-        { to: "/popular", text: "Popular" },
-        { to: "/all", text: "All" },
-        { to: "/random", text: "Random" },
-      ];
+import React, {useState, useEffect} from 'react'
+import NavBarAfterLogin from '../navBar/NavBarAfterLogin'
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
+import Apirequest from "../../backendRequestApi";
+import axios from "axios";
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        maxWidth: 345,
+      },
+      modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      paper: {
+        backgroundColor: theme.palette.background.paper,
+        border: '2px solid #000',
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
+      },
+    }));
+
+export const Moderation = () => {
+    const classes = useStyles();
+   
+    const [open, setOpen] = useState(false);
+    const [communities,setCommunities] =useState([]);
+
+    const handleOpen = () => {
+        setOpen(true);
+
+      };
     
-      const subreddits = [
-        "askreddit",
-        "worldnews",
-        "videos",
-        "funny",
-        "todayileaned",
-        "pics",
-        "gaming",
-        'movies',
-        'news', 
-        'gifs',
-        'aww',
-        'mildlyinteresting',
-        'showerthoughts',
-        'televison',
-        'jokes',
-        'science',
-        'soccer',
-        'internetisbeautiful',
-        'dataisbeautiful',
-        'askscience'
-      ];
-        return(
-            <div className="CommunityModerator">
-                {/* <div className="CommunityModerator_logo">
-                    
-                    <img src = {image} alt="this is reddit image"/>
-                </div> */}
-             <div className="CommunityModerator_search">
-                 <input type="text" name="search" placeholder="Search"/>
+      const handleClose = () => {
+        setOpen(false);
+      };
+   
+    useEffect(() => {
+      getallCommunities();
+        
+    },[])
+
+
+    const getallCommunities = () =>{
+
+      // const email = localStorage.getItem("email");
+      const email = {email:"bhagi@gmail.com"};
+      
+
+      axios.defaults.withCredentials = true;
+      axios
+        .post(`${Apirequest}/api/community/getAllOwnerCommunities`, email)
+        .then(({data}) => {
+          console.log(data);
+          setCommunities(data);
+          
+        })
+        .catch((error) => {
+          console.log("error occured while connecting to backend:", error);
+        });
+
+    }
+
+    // get all users
+    // listof users who joined
+    //
+  
+    return (
+        <div>
+            <NavBarAfterLogin></NavBarAfterLogin>
+            <h3>Community Moderation</h3>
+
+            {communities.map((community) =>(
+              <Card className={classes.root}>
+              <CardActionArea>
+                <CardMedia
+                  component="img"
+                  alt="List of communities"
+                  height="140"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="h2">
+                   {community.communityName}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary" component="p">
+                   {community.description}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                
+                <Button size="small" color="primary" onClick={handleOpen}>
+                  View
+                </Button>
+                <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                className={classes.modal}
+                open={open}
+                onClose={handleClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                  timeout: 500,
+                }}
+              >
+        
+              <Fade in={open}>
+              <div className={classes.paper}>
+                <h2 id="transition-modal-title">Transition modal</h2>
+                <p id="transition-modal-description">react-transition-group animates me.</p>
+              </div>
+            </Fade>
+              </Modal>
+                <Button size="small" color="primary">
+                  Edit
+                </Button>
+              </CardActions>
+            </Card>
+
+            ))}
+            <Card className={classes.root}>
+            <CardActionArea>
+              <CardMedia
+                component="list"
+                alt="Contemplative Reptile"
+                height="140"
+                title="Community List"
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                 List of Communities owned
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+            <CardActions>
+              <Button size="small" color="primary" onClick={handleOpen}>
+                
+              </Button>
+              <Modal
+              aria-labelledby="transition-modal-title"
+              aria-describedby="transition-modal-description"
+              className={classes.modal}
+              open={open}
+              onClose={handleClose}
+              closeAfterTransition
+              BackdropComponent={Backdrop}
+              BackdropProps={{
+                timeout: 500,
+              }}
+            >
+      
+            <Fade in={open}>
+            <div className={classes.paper}>
+              <h2 id="transition-modal-title">Transition modal</h2>
+              <p id="transition-modal-description">react-transition-group animates me.</p>
             </div>
-            
-            <div className="CommunityModerator__link">
-        <ul className="CommunityModerator__menu">
-          {menus.map((menu) => (
-            <li>
-              <Link to={menu.to}>{menu.text}</Link>
-            </li>
-          ))}
-        </ul>
-        <hr />
-        <ul className="CommunityModerator__subreddit">
-          {subreddits.map(subreddit => (
-              <li><Link to={`/r/${subreddit}`}>{subreddit}</Link></li>
-          ))}
-        </ul>
-      </div>
-            </div>
-        );
-    
+          </Fade>
+            </Modal>
+              <Button size="small" color="primary">
+                Edit
+              </Button>
+            </CardActions>
+          </Card>
+        </div>
+    )
 }
 
+export default Moderation;
