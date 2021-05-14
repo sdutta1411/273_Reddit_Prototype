@@ -9,7 +9,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 
 const AddComment = ({ user, postId }) => {
   var userLocalStorage = JSON.parse(localStorage.getItem("user"));
-    const token = userLocalStorage.token;
+  const token = localStorage.getItem('token');
   const classes = useCommentInputStyles();
   const [comment, setComment] = useState('');
   const[openAddSnack, setOpenAddSnack] = useState(false);

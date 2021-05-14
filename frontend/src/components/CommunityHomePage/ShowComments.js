@@ -24,12 +24,11 @@ const ShowComments = ({ postId }) => {
   const[replyToReply, setReplyToReply] = useState("");
   var userLocalStorage = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token");
-  const handleCommentUpvote = async (commentId) => {
-    
-  };
-
-  const handleCommentDownvote = async (commentId) => {
-    
+  const userId = JSON.parse(localStorage.getItem("user"))._id;
+  console.log("USERID: "+userId);
+  const handleCommentVote = async (commentId, voteType) => {
+    console.log(commentId, voteType)
+    return
   };
 
   useEffect(() =>{
@@ -71,7 +70,9 @@ const ShowComments = ({ postId }) => {
 
   let start = [];
   const createShowCommentBox = (classes, isDownvoted, isUpvoted, c, count) => {
-      start.push(<ShowCommentBox classes={classes} isDownvoted={setIsDownvoted} isUpvoted={isUpvoted} c={c} indentationVal={count}></ShowCommentBox>)
+      start.push(<ShowCommentBox classes={classes} isDownvoted={isDownvoted}
+         isUpvoted={isUpvoted} c={c} indentationVal={count}
+         handleCommentVote={handleCommentVote} userId={userId}></ShowCommentBox>)
       if (c.replies.length>0) {
         c.replies.map((c1) => (
             createShowCommentBox(classes, c1.isDownvoted, c1.isUpvoted, c1, count+1)
