@@ -10,6 +10,7 @@ import ForumIcon from '@material-ui/icons/Forum';
 import CommentActions from './CommentActions';
 import ReplyActions from './ReplyActions';
 import axios from 'axios';
+import ShowCommentBox from './ShowCommentBox';
 
 const ShowComments = ({ postId }) => {
   console.log("post id: "+postId);
@@ -68,88 +69,26 @@ const ShowComments = ({ postId }) => {
   //     }
   // };
 
+  let start = [];
+  const createShowCommentBox = (classes, isDownvoted, isUpvoted, c, count) => {
+      start.push(<ShowCommentBox classes={classes} isDownvoted={setIsDownvoted} isUpvoted={isUpvoted} c={c} indentationVal={count}></ShowCommentBox>)
+      if (c.replies.length>0) {
+        c.replies.map((c1) => (
+            createShowCommentBox(classes, c1.isDownvoted, c1.isUpvoted, c1, count+1)
+        ))
+      }
+  }
+  comments.map((comment) => {
+    createShowCommentBox(classes, isDownvoted, isUpvoted, comment, 0);
+  });
   console.log("comments2 "+ JSON.stringify(comments));
+  console.log(start);
   return (
     <div className={classes.commentsContainer}>
       {comments.length !== 0 ? (
-        comments.map((c) => (
-        <div className={classes.wholeComment}>
-        <div className={classes.commentWrapper}>
-        <div className={classes.commentVotesWrapper}>
-        <Checkbox
-        // checked={posts.upvotedBy.includes(user._id)}
-        icon={<ArrowUpwardRoundedIcon style={{ color: '#b2b2b2' }} />}
-        checkedIcon={<ArrowUpwardRoundedIcon style={{ color: '#FF8b60' }} />}
-        onChange={handleCommentUpvote}
-        size={'small'}
-        />
-        <Typography
-          variant="body1"
-          style={{
-            color: isUpvoted
-              ? '#FF8b60'
-              : isDownvoted
-              ? '#9494FF'
-              : '#333',
-            fontWeight: 600,
-          }}
-        >
-          {/* {pointsCount} */}
-        </Typography>
-            <Checkbox
-            // checked={posts.downvotedBy.includes(user.id)}
-            icon={<ArrowDownwardRoundedIcon style={{ color: '#b2b2b2' }} />}
-            checkedIcon={<ArrowDownwardRoundedIcon style={{ color: '#9494FF' }} />}
-            onChange={handleCommentDownvote}
-            size={'small'}
-            />
-        </div>
-
-        {/* parent comment display */}
-
-        <div className={classes.commentDetails}>
-        <Typography variant="caption">
-          <Link component={RouterLink} to={`/u/${c.comment.commentedBy}`}>
-            {c.comment.commentedBy}
-          </Link>
-          {` ${c.comment.pointsCount} ${
-            c.comment.pointsCount === 1 ? 'point' : 'points'
-          } • `}
-          <TimeAgo datetime={new Date(c.comment.created_at)} />
-          {c.comment.created_at !== c.updated_at && (
-            <em>
-              {' • edited'} <TimeAgo datetime={new Date(c.comment.updated_at)} />
-            </em>
-          )}
-        </Typography>
-        {/* <CommentActions
-        comment={c}
-        postId={postId}
-        /> */}
-        {c.comment.commentBody}
-        </div>
-
-        {/* display replies */}
-
-        {/* {c.replies.map((r)=>
-        <div className={classes.replyWrapper}>
-        <div className={classes.commentDetails}>
-                  {replyDetails(r,c)}            
-        </div>
-        </div>
-        )} */}
-        
-        {/* {c.replies.length !== 0 ? (
-            c.replies.map(r => {
-             {replyDetails(c.replies)}
-             <p>{replyComm}</p>
-            })
-        ):(
-            <p>no replies</p>
-        )} */}
-        </div>
-    </div>
-    ))
+        start.map((s) => {
+          return s;
+        })
     ): (
         <div className={classes.noCommentsBanner}>
           <ForumIcon color="primary" fontSize="large" />
