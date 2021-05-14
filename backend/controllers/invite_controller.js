@@ -89,7 +89,7 @@ const getOwnerInvites = async (req, res) => {
   const owner = await UserProfile.find({email: req.body.email});
   for (let i = 0; i<usercomms.length; i++){
    for(let j =0; j< usercomms[i].communityStatus.length; j++){
-    if(true){
+    if(usercomms[i].communityStatus[j].invitedBy.toString() === owner[0]._id.toString()){
       let communityInformation = await Community.findById(usercomms[i].communityStatus[j].communityID)
       let item = {
         name:usercomms[i].username,
@@ -117,11 +117,12 @@ const getMyInvites = async (req,res) =>{
         console.log(user.communityStatus[i])
         if(user.communityStatus[i].status === 'Invited' || user.communityStatus[i].status === 'invite'){
             let comm = await Community.findById(user.communityStatus[i].communityID)
+            let owner = await UserProfile.findById(user.communityStatus[i].invitedBy)
             console.log(comm.communityName)
             let item = {
                 communityName: comm.communityName,
                 communityID: user.communityStatus[i].communityID,
-                username: user.username,
+                username: owner.username
             }
             arrToSend.push(item);
         }
@@ -132,19 +133,23 @@ const getMyInvites = async (req,res) =>{
         return res.status(201).json({message:'No Invites Pending'})
     }
 }
+
+// Request to Join Community is in Community Controller 
+
 const getMyRequests = async (req,res) =>{
-    let currentUser = await UserProfile.findOne({email: req.body.email})
+    let currentCommunity = await Community.findOne({communityName:req.body.communityName});
     let users = await UserProfile.find();
     let arrToSend = [];
     console.log()
     for (let j = 0; j< users.length; j++ ){
         for (let i = 0; i<users[j].communityStatus.length; i++){
-            if(users[j].communityStatus[i].invitedBy === currentUser._id){
-                let comm = await Community.findById(users[j].communityStatus[i].communityID)
+            if(users[j].communityStatus[i].status === 'Requested' && users[j].communityStatus[i].communityID==currentCommunity._id){
                 let item = {
-                    communityID: comm._id,
-                    communityName: comm.communityName,
-                    username: users[j].username
+                    communityID: currentCommunity._id,
+                    communityName: currentCommunity.communityName,
+                    username: users[j].username,
+                    userID: users[j]._id,
+                    email: users[j].email
                 }
                 arrToSend.push(item)
             }
@@ -152,17 +157,32 @@ const getMyRequests = async (req,res) =>{
     }
     if(arrToSend.length>0){
         console.log(arrToSend)
-        return res.status(200).json({myInvites:arrToSend})
+        return res.status(200).json({myRequests:arrToSend})
     }else{
-        return res.status(201).json({message:'No Invites Pending'})
+        return res.status(201).json({message:'No requests pending'})
     }
 }
 
-
+const statusChange = (req, res) => {
+  const {userID, communityID, status} = req.body;
+  UserProfile.findOneAndUpdate(
+    {email:userID, 'communityStatus.communityID':communityID},
+    {'communityStatus.$.status':status},
+    {new: true},
+    (err,result)=>{
+      if(err){
+        console.log(err)
+      }else{
+        console.log('Updated', result)
+        return res.status(200).json({message: status})
+      }
+  })
+}
 
 module.exports = {
   sendInvite,
   getOwnerInvites,
   getMyInvites,
-  getMyRequests
+  getMyRequests,
+  statusChange
 };

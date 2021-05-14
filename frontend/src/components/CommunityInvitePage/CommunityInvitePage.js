@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { Button, Paper } from "@material-ui/core";
+import { Button, ButtonGroup, Paper } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Divider from "@material-ui/core/Divider";
@@ -56,10 +56,12 @@ const useStyles = makeStyles((theme) => ({
   },
   inviteLists: {
     fontSize: "18px",
-    position: 'relative'
+    position: 'relative',
+    marginTop:'5px'
   },
   inviteButton: {
-    float: "right",
+    position:'absolute',
+    left: '80%',
     marginRight: "10%",
   },
   inviteCommunity: {
@@ -71,32 +73,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CommunityInvitePage() {
-  const inviteInfos = [
-    {
-      name: "Ujjwal Jain",
-      inviteStatus: "0",
-    },
-    {
-      name: "Abc Xyz",
-      inviteStatus: "1",
-    },
-    {
-      name: "Qwerty Asdfg",
-      inviteStatus: "2",
-    },
-    {
-      name: "Qwerty Uiop",
-      inviteStatus: "0",
-    },
-    {
-      name: "Qwedjkhdas jsklad",
-      inviteStatus: "2",
-    },
-    {
-      name: "dsja m,asdn",
-      inviteStatus: "1",
-    },
-  ];
   const classes = useStyles();
   const [newData, setNewData] = useState([]);
   const [communityData, setCommunityData] = useState([]);
@@ -107,6 +83,8 @@ export default function CommunityInvitePage() {
   const [inviteError, setInviteError] = useState(false);
   const [errorText, setErrorText] = useState("");
   const [rerender, serRerender] = useState(false)
+  const [myInvites, setMyInvites] = useState([]);
+  const userStorage = JSON.parse(localStorage.getItem('user'));
   const email = localStorage.getItem('email')
   const token = localStorage.getItem('token')
   console.log(email)
@@ -124,6 +102,7 @@ export default function CommunityInvitePage() {
       })
       .then((response) => {
         if (response.status === 200) {
+          console.log(response.data)
           setCommunityData(response.data);
         } else {
           setCommunityData(null);
@@ -135,23 +114,39 @@ export default function CommunityInvitePage() {
       email: email,
     })
       .then((response) => {
+        console.log(response)
         if (response.status === 200) {
           console.log(response.data)
           setInviteInfo(response.data.inviteInfo)
         } else {
-          console.log(communityData)
           console.log(response)
         }
       });
   }
   const getMyInvites = async () => {
-    await axios.post(`${ApiRequest}/api/invites/getMyInvites`, {email:'test-6@gmail.com'}).then((response)=>{
+    await axios.post(`${ApiRequest}/api/invites/getMyInvites`, {email:email}).then((response)=>{
       if(response.status === 200) {
-        console.log(response.data)
+        setMyInvites(response.data.myInvites);
+        console.log(response.data.myInvites)
       }
     })
   }
-
+  const acceptHandler = async (communityID) =>{
+    console.log('accept clicked')
+    await axios.post(`${ApiRequest}/api/invites/statusChange`,{userID:email, communityID:communityID, status:"Accepted"}).then((response)=>{
+      if(response.status===200){
+        console.log('response recieved')
+        getMyInvites()
+      }
+    })
+  }
+  const rejectHandler = async (communityID) =>{
+    await axios.post(`${ApiRequest}/api/invites/statusChange`,{userID:email, communityID:communityID, status:"Rejected"}).then((response)=>{
+      if(response.status===200){
+        getMyInvites()
+      }
+    })
+  }
   const handleInvites = async () => {
     if (communityValue && userValue.length > 0) {
       // Backend call to send invite to the users returned in userValue.
@@ -296,6 +291,20 @@ export default function CommunityInvitePage() {
           My pending invites
         </Typography>
         <Divider />
+        <Grid container direction="column">
+            {myInvites.map((invite, index) => (
+              <Grid item className={classes.inviteLists} key={index}>
+                <span className={classes.invite}>{invite.username}</span>{" "}
+                <span className={classes.inviteButton}>
+                  <ButtonGroup>
+                  <Button id='accept_request' onClick={()=>{acceptHandler(invite.communityID)}}>Accept</Button>
+                  <Button id='reject_request' onClick={()=>{rejectHandler(invite.communityID)}}>Reject</Button>
+                  </ButtonGroup>
+                </span>
+                <span className={classes.inviteCommunity}>{invite.communityName}</span>
+              </Grid>
+            ))}
+          </Grid>
       </Paper>
     </div>
   );
