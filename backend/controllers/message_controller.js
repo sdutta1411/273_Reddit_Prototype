@@ -2,13 +2,12 @@ const Messages = require("../models/message-model");
 
 //Initiate Chat
 const getChats = (req, res) => {
-  console.log(req.params);
   const { users } = req.body;
-  console.log(req.body);
+  console.log(users);
 
   Messages.find(
     {
-      "users.user": { $all: users },
+      "users.email": { $all: users },
     },
     function (err, result) {
       if (err) {
@@ -17,7 +16,7 @@ const getChats = (req, res) => {
         console.log(result);
         if (result.length == 0) {
           res.json({
-            status: true,
+            status: false,
             message: "No Chats to Retrive",
           });
         } else {
