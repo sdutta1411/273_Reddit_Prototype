@@ -328,6 +328,7 @@ const topCommunity = async (req,res) =>{
   if (usercomms[0]) {
     const ownerId = usercomms[0]._id;
     const ownerComms = await Community.find({ admin: ownerId }).sort({posts:-1}).limit(10)
+    console.log(ownerComms)
     if (ownerComms.length > 0) {
       return res.status(200).json(ownerComms);
     } else {

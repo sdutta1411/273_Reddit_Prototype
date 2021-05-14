@@ -28,6 +28,8 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import ArrowUpwardRoundedIcon from "@material-ui/icons/ArrowUpwardRounded";
+import ArrowDownwardRoundedIcon from "@material-ui/icons/ArrowDownwardRounded";
 
 export default function DashboardPage() {
   const classes = useCardStyles();
@@ -37,7 +39,65 @@ export default function DashboardPage() {
   const [userids, setuserids] = useState([]);
   const [searchUser, setsearchUser] = useState("");
   const [open, setOpen] = useState(false);
-  const [topCommunity, setTopCommunity] = useState([])
+  const [topCommunity, setTopCommunity] = useState([]);
+  const [isUpvoted, setIsUpvoted] = useState(false);
+  const [isDownvoted, setIsDownvoted] = useState(false);
+
+  var userLocalStorage = JSON.parse(localStorage.getItem("user"));
+  const token = localStorage.getItem("token");
+
+  const handleUpvoteToggle = async (postId) => {
+    console.log("post id: " + postId);
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: token,
+    };
+    const body = {
+      email: userLocalStorage.email,
+      postId: postId,
+    };
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/api/posts/upvote",
+        body,
+        {
+          headers: headers,
+        }
+      );
+      if (response.status === 200) {
+        console.log("you upvoted post");
+        setIsUpvoted(true);
+      }
+    } catch (err) {
+      console.log("Error: " + err);
+    }
+  };
+
+  const handleDownvoteToggle = async (postId) => {
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: token,
+    };
+    const body = {
+      email: userLocalStorage.email,
+      postId: postId,
+    };
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/api/posts/downvote",
+        body,
+        {
+          headers: headers,
+        }
+      );
+      if (response.status === 200) {
+        console.log("you downvoted post");
+        setIsDownvoted(true);
+      }
+    } catch (err) {
+      console.log("Error: " + err);
+    }
+  };
 
   useEffect(() => {
     getPosts();
@@ -57,8 +117,9 @@ export default function DashboardPage() {
   };
 
   const fetchAllUserids = () => {
-    debugger;
-    axios.post("http://localhost:3002/routes/users/")
+    
+    axios
+      .post("http://localhost:3002/routes/users/")
       .then((response) => {
         console.log(response);
         const allusers = response.data.users;
@@ -96,25 +157,26 @@ export default function DashboardPage() {
   ];
 
   const formatPosts = (communities) => {
-    debugger;
+    
     let myPostsArr = [];
     for (let i = 0; i < communities.length; i++) {
       for (let j = 0; j < communities[i].posts.length; j++) {
+        communities[i].posts[j].communityName = communities[i].communityName;
         myPostsArr = [...myPostsArr, communities[i].posts[j]];
       }
     }
     setmyPosts(myPostsArr);
   };
   const email = {
-    email:localStorage.getItem("email")
-  }
+    email: localStorage.getItem("email"),
+  };
 
   const getPosts = () => {
-    debugger;
-   
+    
+
     axios
       .post(`${backendUrl}/api/community/getallcommunities_dashboard`, {
-        email: email,
+        email: userDetails.email,
       })
       .then((response) => {
         formatPosts(response.data);
@@ -123,14 +185,17 @@ export default function DashboardPage() {
         console.log(err);
       });
   };
-  const gettopCommunities=()=>{
-    axios.post(`${backendUrl}/api/community/topCommunity`,email)
-    .then((response)=>{
-      setTopCommunity(response);
-    })
-  }
+  const gettopCommunities = () => {
+   
+    axios
+      .post(`${backendUrl}/api/community/topCommunity`, email)
+      .then((response) => {
+        console.log(response)
+        setTopCommunity(response.data);
+      });
+  };
 
-  const donothing = () => {}
+  const donothing = () => {};
 
   return (
     <Container maxWidth="lg" className={classes.container}>
@@ -139,69 +204,69 @@ export default function DashboardPage() {
           <Paper className={fixedHeightPaper}>
             <h1>Hey {userDetails.username}</h1>
             <Button
-          size="small"
-          color="primary"
-          onClick={handleClickOpen}
-          style={{
-          
-            color: "white",
-            backgroundColor: "orange",
-            font: "icon",
-          }}
-        >
-          Search Posts
-        </Button>
-
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">Posts</DialogTitle>
-          <DialogContent>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Search Posts"
-              type="text"
-              fullWidth
-              onChange={(event) => {
-                setsearchUser(event.target.value);
+              size="small"
+              color="primary"
+              onClick={handleClickOpen}
+              style={{
+                color: "white",
+                backgroundColor: "orange",
+                font: "icon",
               }}
-            />
-            {myPosts
-              .filter((val) => {
-                if (searchUser === "") {
-                  return val;
-                } else if (
-                  val.title.toLowerCase().includes(searchUser.toLowerCase())
-                ) {
-                  return val;
-                }
-              })
-              .map((val, key) => {
-                return (
-                  <Box mt="2"> <Button onClick={(e) => donothing()}>
-                  {val.title}
-                </Button> </Box>
-                  
-                );
-              })}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              Cancel
+            >
+              Search Posts
             </Button>
-            
-          </DialogActions>
-        </Dialog>
+
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="form-dialog-title"
+            >
+              <DialogTitle id="form-dialog-title">Posts</DialogTitle>
+              <DialogContent>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="Search Posts"
+                  type="text"
+                  fullWidth
+                  onChange={(event) => {
+                    setsearchUser(event.target.value);
+                  }}
+                />
+                {myPosts
+                  .filter((val) => {
+                    if (searchUser === "") {
+                      return val;
+                    } else if (
+                      val.title.toLowerCase().includes(searchUser.toLowerCase())
+                    ) {
+                      return val;
+                    }
+                  })
+                  .map((val, key) => {
+                    return (
+                      <Box mt="2">
+                        {" "}
+                        <Button onClick={(e) => donothing()}>
+                          {val.title}
+                        </Button>{" "}
+                      </Box>
+                    );
+                  })}
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Cancel
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={4} lg={3}>
+        <Grid item s={10} md={4} lg={3}>
           <Paper className={fixedHeightPaper}>
             <h1>Top Communities</h1>
-
+           
           </Paper>
         </Grid>
         <Grid item xs={12}>
@@ -213,14 +278,16 @@ export default function DashboardPage() {
                     <ListItem>
                       <ListItemAvatar>
                         <div className={classes.votesWrapper}>
-                          <Checkbox
-                            icon={
-                              <ArrowUpwardIcon style={{ color: "#b2b2b2" }} />
+                          <Button
+                            // checked={posts.upvotedBy.includes(user._id)}
+                            startIcon={
+                              <ArrowUpwardRoundedIcon
+                                style={{ color: "#b2b2b2" }}
+                              />
                             }
-                            checkedIcon={
-                              <ArrowUpwardIcon style={{ color: "#FF8b60" }} />
-                            }
-                            size="small"
+                            // startIcon={<ArrowUpwardRoundedIcon style={{ color: '#FF8b60' }} />}
+                            onClick={() => handleUpvoteToggle(value._id)}
+                            size={"small"}
                           />
                           <Typography
                             variant="body1"
@@ -229,16 +296,17 @@ export default function DashboardPage() {
                               fontWeight: 600,
                             }}
                           >
-                            {value.pointsCount}
+                            {/* {value.pointsCount} */}
                           </Typography>
-                          <Checkbox
-                            icon={
-                              <ArrowDownwardIcon style={{ color: "#b2b2b2" }} />
+                          <Button
+                            // checked={posts.downvotedBy.includes(user.id)}
+                            startIcon={
+                              <ArrowDownwardRoundedIcon
+                                style={{ color: "#b2b2b2" }}
+                              />
                             }
-                            checkedIcon={
-                              <ArrowDownwardIcon style={{ color: "#9494FF" }} />
-                            }
-                            size="small"
+                            onClick={() => handleDownvoteToggle(value._id)}
+                            size={"small"}
                           />
                         </div>
                       </ListItemAvatar>
@@ -246,7 +314,10 @@ export default function DashboardPage() {
                         <div className={classes.thumbnailWrapper}>
                           {value.postType === "Text" ? (
                             <Link
-                            // to={`/comments/${id}`}
+                              to={{
+                                pathname: `/comments`,
+                                state: `${value._id},${value.communityName},${userDetails.username}`,
+                              }}
                             >
                               <Paper
                                 elevation={0}
@@ -292,15 +363,18 @@ export default function DashboardPage() {
                           )}
                         </div>
                       </ListItemAvatar>
-                      <ListItemText primary={value.title} />
-                      <ListItemText primary={value.author.username} />
+                      <ListItemText primary={`/t/${value.title}`} />
+                      <ListItemText primary={`/u/${value.author.username}`} />
                       <Button
                         variant="contained"
                         color="primary"
                         size="small"
                         startIcon={<CommentIcon />}
                         component={Link}
-                        //to={`/commentpage/${value.group_name}/${value._id}`}
+                        to={{
+                          pathname: `/comments`,
+                          state: `${value._id},${value.communityName},${userDetails.username}`,
+                        }}
                       />
                     </ListItem>
                     <Divider />
