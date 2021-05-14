@@ -2,8 +2,8 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Switch, Route } from "react-router-dom";
 import "./App.css";
 
-//import LoginForm from "./components/LoginForm/LoginForm";
-//import signupForm from "./components/SignupForm/signupForm";
+import LoginForm from "./components/loginForm/loginForm";
+import signupForm from "./components/signupForm/signupForm";
 import { Provider } from "react-redux";
 import store from "./store";
 import Navbar from "./components/navBar/navBar";
@@ -48,21 +48,24 @@ const App = () => {
           <Switch>
             <Route path="/communityhome" exact component={CommunityHomePage} />
             <Route path="/" exact component={Home} />
-            {/*
-            <Route path="/login" exact component={LoginForm} />
-          <Route path="/signup" exact component={SignUp} /> 
-          <Route path="/communityhome" exact component={CommunityHomePage} />
-          <Route path="/createpost" exact component={CreatePost} />
-          <Route path="/createpost/post" exact component={Post} />
-          <Route path="/createpost/imageandvideo" exact component={ImageAndVideo}/>
-          <Route path="/createpost/link" exact component={LinkPostType} />
 
-         */}
+            <Route path="/login" exact component={LoginForm} />
+            <Route path="/signup" exact component={signupForm} />
+            <Route path="/communityhome" exact component={CommunityHomePage} />
+            <Route path="/createpost" exact component={CreatePost} />
+            <Route path="/createpost/post" exact component={Post} />
+            <Route
+              path="/createpost/imageandvideo"
+              exact
+              component={ImageAndVideo}
+            />
+            <Route path="/createpost/link" exact component={LinkPostType} />
+            <Route path="/mycommunities/analytics" exact component={CommununityAnalytics} />
+            <Route path="/invites" exact component={CommunityInvitePage} />
             {/*  <Route path="/ModerationPage" exact component={ModerationPage} /> */}
 
             <Route path="/dashboard" exact component={DashboardPage} />
 
-            <Route path="/" exact component={Home} />
             <Route path="/profile" exact component={UserProfile} />
             <Route path="/navbar" exact component={NavBarAfterLogin} />
 
