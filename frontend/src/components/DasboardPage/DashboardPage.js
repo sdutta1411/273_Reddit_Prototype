@@ -13,7 +13,7 @@ import Button from "@material-ui/core/Button";
 import CommentIcon from "@material-ui/icons/Comment";
 import { Link } from "react-router-dom";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import { Divider, CardMedia } from "@material-ui/core";
+import { Divider, CardMedia, Box } from "@material-ui/core";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { useCardStyles } from "./DashboardStyles";
@@ -23,16 +23,50 @@ import LinkIcon from "@material-ui/icons/Link";
 import axios from "axios";
 import swal from "sweetalert";
 import backendUrl from "../../backendUrl";
+import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 export default function DashboardPage() {
   const classes = useCardStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   const [myPosts, setmyPosts] = useState([]);
+  const [userids, setuserids] = useState([]);
+  const [searchUser, setsearchUser] = useState("");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     getPosts();
   }, []);
+
+  const userDetails = JSON.parse(localStorage.user);
+
+  let users = [];
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const fetchAllUserids = () => {
+    debugger;
+    axios.post("http://localhost:3002/routes/users/")
+      .then((response) => {
+        console.log(response);
+        const allusers = response.data.users;
+        users = response.data.users;
+        setuserids(allusers);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const posts = [
     {
@@ -84,12 +118,72 @@ export default function DashboardPage() {
       });
   };
 
+  const donothing = () => {}
+
   return (
     <Container maxWidth="lg" className={classes.container}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={8} lg={9}>
           <Paper className={fixedHeightPaper}>
-            <h1>Hey</h1>
+            <h1>Hey {userDetails.username}</h1>
+            <Button
+          size="small"
+          color="primary"
+          onClick={handleClickOpen}
+          style={{
+          
+            color: "white",
+            backgroundColor: "orange",
+            font: "icon",
+          }}
+        >
+          Search Posts
+        </Button>
+
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Posts</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Search Posts"
+              type="text"
+              fullWidth
+              onChange={(event) => {
+                setsearchUser(event.target.value);
+              }}
+            />
+            {myPosts
+              .filter((val) => {
+                if (searchUser === "") {
+                  return val;
+                } else if (
+                  val.title.toLowerCase().includes(searchUser.toLowerCase())
+                ) {
+                  return val;
+                }
+              })
+              .map((val, key) => {
+                return (
+                  <Box mt="2"> <Button onClick={(e) => donothing()}>
+                  {val.title}
+                </Button> </Box>
+                  
+                );
+              })}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+            
+          </DialogActions>
+        </Dialog>
           </Paper>
         </Grid>
         <Grid item xs={12} md={4} lg={3}>
