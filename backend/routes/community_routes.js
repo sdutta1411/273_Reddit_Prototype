@@ -21,20 +21,17 @@ router.post("/getUserCommunities", checkAuth, communityController.getUserCommuni
 //Check if user is a member of community - community home page
 router.post("/checkUserSubscribed", checkAuth, communityController.checkUserSubscribed);
 
-<<<<<<< HEAD
 // Fetch the communities that the user is an owner of
 router.post("/ownerCommunities", communityController.getOwnerCommunities);
 
 // Fetch data for Community Analytics 
 router.post("/fetchAnalyticsData", communityController.getAnalyticsData);
 
-/* //approve users their request to join
+/*//approve users their request to join
 router.post("/approveUsers", checkAuth, communityController.approveUsers);
 
 //remove users from the moderation page
-router.post("/removeUsers", checkAuth, communityController.removeUsers);
-=======
->>>>>>> c1f6dbffbc867ed93de08e1283e44dd2e595e282
+router.post("/removeUsers", checkAuth, communityController.removeUsers);*/
 
 //search communities
 router.get("/searchCommunity", checkAuth, communityController.searchCommunity);

@@ -2,13 +2,8 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Switch, Route } from "react-router-dom";
 import "./App.css";
 
-<<<<<<< HEAD
 import LoginForm from "./components/loginForm/loginForm";
 import signupForm from "./components/signupForm/signupForm";
-=======
-//import LoginForm from "./components/LoginForm/LoginForm";
-//import signupForm from "./components/SignupForm/signupForm";
->>>>>>> c1f6dbffbc867ed93de08e1283e44dd2e595e282
 import { Provider } from "react-redux";
 import store from "./store";
 import Navbar from "./components/navBar/navBar";
@@ -52,7 +47,6 @@ const App = () => {
           <Switch>
             <Route path="/communityhome" exact component={CommunityHomePage} />
             <Route path="/" exact component={Home} />
-<<<<<<< HEAD
 
             <Route path="/login" exact component={LoginForm} />
             <Route path="/signup" exact component={signupForm} />
@@ -71,27 +65,8 @@ const App = () => {
 
             <Route path="/dashboard" exact component={DashboardPage} />
 
-            <Route path="/" exact component={Home} />
-
-=======
-            {/*
-            <Route path="/login" exact component={LoginForm} />
-          <Route path="/signup" exact component={SignUp} /> 
-          <Route path="/communityhome" exact component={CommunityHomePage} />
-          <Route path="/createpost" exact component={CreatePost} />
-          <Route path="/createpost/post" exact component={Post} />
-          <Route path="/createpost/imageandvideo" exact component={ImageAndVideo}/>
-          <Route path="/createpost/link" exact component={LinkPostType} />
-
-         */}
-            {/*  <Route path="/ModerationPage" exact component={ModerationPage} /> */}
-
-            <Route path="/dashboard" exact component={DashboardPage} />
-
-            <Route path="/" exact component={Home} />
             <Route path="/profile" exact component={UserProfile} />
 
->>>>>>> c1f6dbffbc867ed93de08e1283e44dd2e595e282
             {/* <Route path="/" exact component={Home} /> */}
           </Switch>
         </ThemeProvider>
