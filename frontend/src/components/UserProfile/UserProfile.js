@@ -65,6 +65,7 @@ const UserProfile = () => {
   const [imageSelected, setImageSelected] = useState("");
   const [publicurl, setPublicurl] = useState(localStorage.getItem("publicurl"));
   const [inputFields, setInputFields] = React.useState([{ topics: "" }]);
+  const [userTopics, setTopics] = useState([]);
 
   debugger;
   const uploadImage = (e) => {
@@ -99,6 +100,25 @@ const UserProfile = () => {
         localStorage.setItem(user.description, description);
       }
     });
+  };
+
+  const updatetopics = (e) => {
+    debugger;
+    e.preventDefault();
+    let topics = userTopics.split(",");
+
+    Axios.post(" http://localhost:3001/api/user/updateTopicLists", {
+      userId: user._id,
+      topics: topics,
+    })
+      .then((response) => {
+        if (response.data.status == true) {
+          swal(response.data.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleChangeInput = (event, index) => {
@@ -330,6 +350,10 @@ const UserProfile = () => {
                   id="outlined-basic"
                   label="Topic"
                   variant="outlined"
+                  onChange={(event) => {
+                    event.preventDefault();
+                    setTopics(event.target.value);
+                  }}
                 />
               </AccordionDetails>
             </Accordion>
@@ -337,6 +361,7 @@ const UserProfile = () => {
 
           <CardActions>
             <Button
+              onClick={updatetopics}
               size="small"
               color="primary"
               style={{
