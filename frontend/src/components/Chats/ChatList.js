@@ -51,6 +51,8 @@ export default function ChatList() {
   const [allUsers, setallUsers] = useState([]);
   const [startChatUser, setstartChatUser] = useState([]);
 
+  const userDetails = JSON.parse(localStorage.user);
+
   useEffect(() => {
     getAllUsers();
     getAllChats();
@@ -60,7 +62,7 @@ export default function ChatList() {
     let myChatsArr = [];
     for (let i = 0; i < allChats.length; i++) {
       let email = allChats[i].users.find(
-        ({ email }) => email !== "pavan@gmail.com"
+        ({ email }) => email !== userDetails.email
       );
       const chats = {
         chatId: allChats[i]._id,
@@ -76,7 +78,7 @@ export default function ChatList() {
     debugger;
     await axios
       .post(`${backendUrl}/api/user/allUsers`, {
-        users: "pavan@gmail.com",
+        email: userDetails.email,
       })
       .then((response) => {
         let AllUsers = response.data;
@@ -91,7 +93,7 @@ export default function ChatList() {
     debugger;
     axios
       .post(`${backendUrl}/api/message/initiatechat`, {
-        users: "pavan@gmail.com",
+        users: userDetails.email,
       })
       .then((response) => {
         const allChats = response.data.data;
@@ -106,7 +108,7 @@ export default function ChatList() {
     debugger;
     console.log(startChatUser);
     let email = startChatUser.email;
-    let users = ["pavan@gmail.com", email];
+    let users = [userDetails.email, email];
     axios
       .post(`${backendUrl}/api/message/initiatechat`, {
         users: users,
@@ -117,8 +119,8 @@ export default function ChatList() {
         } else {
           users = [
             {
-              email: "pavan@gmail.com",
-              username: "Pavan Bhatt",
+              email: userDetails.email,
+              username: userDetails.username,
             },
             {
               email: startChatUser.email,
