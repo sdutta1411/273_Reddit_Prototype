@@ -25,12 +25,15 @@ const UserProfileSchema = new mongoose.Schema(
     ],
     gender: {
       type: String,
+      default: "Male",
     },
     location: {
       type: String,
+      default: "USA",
     },
     description: {
       type: String,
+      default: "Busy building reddit prototype",
     },
     posts: [
       {

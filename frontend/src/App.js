@@ -27,6 +27,7 @@ import CommununityAnalytics from "./components/CommunityAnalytics/CommunityAnaly
 import CommunityInvitePage from "./components/CommunityInvitePage/CommunityInvitePage";
 import NavBarAfterLogin from "./components/navBar/NavBarAfterLogin";
 import { useState, useEffect } from "react";
+import User from "./components/UserProfile/user";
 import Moderation from "./components/CommunityModeration/ModerationPage";
 const theme = createMuiTheme({
   palette: {
@@ -45,7 +46,6 @@ const theme = createMuiTheme({
   },
 });
 
-
 const App = () => {
   const [isLogin, setLogin] = useState(false);
   const isLoggedIn = () => {
@@ -56,9 +56,9 @@ const App = () => {
     }
   };
   if (!isLogin) {
-    setInterval(()=>{
-      setLogin(isLoggedIn())
-    }, 500)
+    setInterval(() => {
+      setLogin(isLoggedIn());
+    }, 500);
   }
   return (
     <Provider store={store}>
@@ -68,16 +68,20 @@ const App = () => {
           <Switch>
             <Route path="/communityhome" exact component={CommunityHomePage} />
             <Route path="/" exact component={Home} />
-            
+
             {/* <Route path="/login" exact component={LoginForm} />
           <Route path="/signup" exact component={SignUp} />  */}
-          <Route path="/communityhome" exact component={CommunityHomePage} />
-          <Route path="/createpost" exact component={CreatePost} />
-          <Route path="/createpost/post" exact component={Post} />
-          <Route path="/createpost/imageandvideo" exact component={ImageAndVideo}/>
-          <Route path="/createpost/link" exact component={LinkPostType} />
-          <Route path="/comments" exact component={PostWithComments} />
-
+            <Route path="/communityhome" exact component={CommunityHomePage} />
+            <Route path="/createpost" exact component={CreatePost} />
+            <Route path="/createpost/post" exact component={Post} />
+            <Route
+              path="/createpost/imageandvideo"
+              exact
+              component={ImageAndVideo}
+            />
+            <Route path="/createpost/link" exact component={LinkPostType} />
+            <Route path="/comments" exact component={PostWithComments} />
+            <Route path="/user/:emailid" exact component={User} />
             {/* <Route path="/ModerationPage" exact component={ModerationPage} />  */}
 
             <Route
