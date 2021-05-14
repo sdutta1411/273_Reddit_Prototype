@@ -11,6 +11,7 @@ import  '../../styles/navbar.css';
 import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import MyCommunity from '../MyCommunity/MyCommunity'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -82,6 +83,7 @@ export default function NavBarAfterLogin() {
               >
                 <MenuItem style={{textDecoration:"none",fontSize:"17px"}} component={Link} to='userprofile'>Profile</MenuItem>
                 <MenuItem style={{textDecoration:"none",fontSize:"17px"}} component={Link} to='usersettings'>User Settings</MenuItem>
+                <MenuItem style={{textDecoration:"none",fontSize:"17px"}} component={Link} to='MyCommunity'>MyCommunity</MenuItem>
                 <MenuItem style={{textDecoration:"none",fontSize:"17px"}} component={Link}  onClick={handleLogout} to='landing'>Logout</MenuItem>
               </Menu>
             </div>
