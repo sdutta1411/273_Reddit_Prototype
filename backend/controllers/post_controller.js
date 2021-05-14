@@ -141,7 +141,7 @@ const paginateResults = require("../utils/paginateResults");
       const upvote = async (req,res) =>{
         console.log("In Upvote post API");
         const user = await UserProfile.findOne({email:req.body.email});
-        var postId = user.posts[0];
+        var postId = req.body.postId;
         const post = await Post.findById({_id:postId});
 
         if (post.upvotedBy.includes(user._id.toString())) {
@@ -163,7 +163,7 @@ const paginateResults = require("../utils/paginateResults");
       const downvote = async (req,res) =>{
         console.log("In Downvote post API");
         const user = await UserProfile.findOne({email:req.body.email});
-        var postId = user.posts[0];
+        var postId = req.body.postId;
         const post = await Post.findById({_id:postId});
 
         if (post.downvotedBy.includes(user._id.toString())) {
