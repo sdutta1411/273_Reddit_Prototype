@@ -129,7 +129,7 @@ export default function MenuAppBar() {
                 <MenuItem
                   style={{ textDecoration: "none", fontSize: "17px" }}
                   component={Link}
-                  to="userprofile"
+                  to="profile"
                 >
                   Profile
                 </MenuItem>

@@ -19,13 +19,10 @@ const PostSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  imageSubmission: [
-    {
-    //imageLink: {
-      type: String,
-      trim: true,
-    //}
-  }],
+  imageSubmission: {
+    type: String,
+    trim: true,
+  },
   community: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Community',

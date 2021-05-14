@@ -51,17 +51,17 @@ const paginateResults = require("../utils/paginateResults");
           comments:[],
          ...validatedFields,
         });
-            var images = [];
-            if(req.body.postType==='Image'){
-            if(req.body.imageSubmission){
+        //     var images = [];
+        //     if(req.body.postType==='Image'){
+        //     if(req.body.imageSubmission){
 
-            req.body.imageSubmission.forEach(image=>{
-                console.log("pushing images: "+image);
-                images.push(image);
-            });
-            newPost.imageSubmission.concat(images);
-            }
-        }
+        //     req.body.imageSubmission.forEach(image=>{
+        //         console.log("pushing images: "+image);
+        //         images.push(image);
+        //     });
+        //     newPost.imageSubmission.concat(images);
+        //     }
+        // }
 
         const savedPost = await newPost.save();
         console.log("saved post: "+savedPost);      

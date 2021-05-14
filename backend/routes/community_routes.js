@@ -19,6 +19,11 @@ router.post(
   
   communityController.deleteCommunity
 );
+router.post(
+  "/editCommunity",
+  
+  communityController.editCommunity
+);
 //get all community details - community home page
 router.post(
   "/getCommunityDetails",

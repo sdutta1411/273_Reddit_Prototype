@@ -11,16 +11,51 @@ import CommentActions from './CommentActions';
 import ReplyActions from './ReplyActions';
 import axios from 'axios';
 
+const getVoteCount = (upvotedBy, downvotedBy) => {
+  const totalCount = upvotedBy.length + downvotedBy.length;
+  return totalCount;
+}
+
 const ShowCommentBox = (props) => {
-    return (
+  const [voteCount, setVoteCount] = useState(getVoteCount(props.c.comment.upvotedBy, props.c.comment.downvotedBy))
+  const [checkedUp, setCheckUp] = useState(props.c.comment.upvotedBy.includes(props.userId));
+  const [checkedDown, setCheckDown] = useState(props.c.comment.downvotedBy.includes(props.userId));
+  const handleCommentVote = (event, commentId, voteType) => {
+    if (voteType === -1 && !checkedDown) {
+      props.handleCommentVote(commentId, -1)
+      setVoteCount(voteCount-1);
+      setCheckDown(true)
+      setCheckUp(false)
+    }
+    if (voteType === -1 && checkedDown) {
+      props.handleCommentVote(commentId, 0)
+      setVoteCount(voteCount+1);
+      setCheckDown(false)
+      setCheckUp(false)
+    }
+    if (voteType === 1 && !checkedUp) {
+      props.handleCommentVote(commentId, 1)
+      setVoteCount(voteCount+1);
+      setCheckUp(true)
+      setCheckDown(false)
+    }
+    if (voteType === 1 && checkedUp) {
+      props.handleCommentVote(commentId, 0)
+      setVoteCount(voteCount-1);
+      setCheckUp(false)
+      setCheckDown(false)
+    }
+  }
+  return (
         <div className={props.classes.wholeComment} style={{marginLeft: `${props.indentationVal*15}px`}}>
         <div className={props.classes.commentWrapper}>
         <div className={props.classes.commentVotesWrapper}>
+        <div>{voteCount}</div>  
         <Checkbox
-        // checked={posts.upvotedBy.includes(user._id)}
+        checked={checkedUp}
         icon={<ArrowUpwardRoundedIcon style={{ color: '#b2b2b2' }} />}
         checkedIcon={<ArrowUpwardRoundedIcon style={{ color: '#FF8b60' }} />}
-        // onChange={handleCommentUpvote}
+        onChange={(e) => handleCommentVote(e, props.c.comment._id, 1)}
         size={'small'}
         />
         <Typography
@@ -36,9 +71,10 @@ const ShowCommentBox = (props) => {
         >
         </Typography>
             <Checkbox
+            checked={checkedDown}
             icon={<ArrowDownwardRoundedIcon style={{ color: '#b2b2b2' }} />}
-            checkedIcon={<ArrowDownwardRoundedIcon style={{ color: '#9494FF' }} />}
-            // onChange={handleCommentDownvote}
+            checkedIcon={<ArrowDownwardRoundedIcon style={{ color: 'red' }} />}
+            onChange={(e) => handleCommentVote(e, props.c.comment._id, -1)}
             size={'small'}
             />
         </div>
@@ -48,9 +84,6 @@ const ShowCommentBox = (props) => {
           <Link component={RouterLink} to={`/u/${props.c.comment.commentedBy}`}>
             {props.c.comment.commentedBy}
           </Link>
-          {` ${props.c.comment.pointsCount} ${
-            props.c.comment.pointsCount === 1 ? 'point' : 'points'
-          } • `}
           <TimeAgo datetime={new Date(props.c.comment.created_at)} />
           {props.c.comment.created_at !== props.c.updated_at && (
             <em>

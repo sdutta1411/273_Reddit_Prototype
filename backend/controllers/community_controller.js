@@ -281,7 +281,7 @@ const getAllOwnerCommunities = async (req, res) => {
 
       case 30:
         if(req.body.sorted === true){
-          const ownerComms = await Community.find({ admin: ownerId }).sort({'subscribedBy.length' : 1});
+          const ownerComms = await Community.find({ admin: ownerId }).sort({subscribedBy: 1});
           if (ownerComms.length > 0) {
             return res.status(200).json(ownerComms);
           } else {
@@ -290,7 +290,7 @@ const getAllOwnerCommunities = async (req, res) => {
               .json({ message: "This User is not an admin in any community" });
           }
         }  else if(req.body.sorted === false){
-          const ownerComms = await Community.find({ admin: ownerId }).sort({'subscribedBy.length' : -1});
+          const ownerComms = await Community.find({ admin: ownerId }).sort({subscribedBy: -1});
           if (ownerComms.length > 0) {
             return res.status(200).json(ownerComms);
           } else {
@@ -395,12 +395,36 @@ const getAnalyticsData = async (req, res) => {
   }
 };
 
-const deleteCommunity = async (req, res, next) => {
-  const comm = await Community.findOne({
+const deleteCommunity =  (req, res) => {
+  console.log("Delete Community",req.body)
+  Community.deleteOne({
     _id: req.body.CommunityID,
+  },(err,com)=>{
+    if(err){
+      console.log(err)
+    }else{
+      Post.deleteMany({community: req.body.CommunityID},(error,result)=>{
+        if(error){
+          console.log("Error in Post deletion",error)
+        }else{
+          res.send(result)
+        }
+      })
+    }
   });
+};
 
-  
+const editCommunity =  (req, res) => {
+  console.log("Edit Community",req.body)
+  Community.updateOne({
+    _id: req.body.CommunityID,
+  },{$set: {description: req.body.description}, $push:{rules: req.body.rules.Ruledescription}},(err,com)=>{
+    if(err){
+      console.log(err)
+    }else{
+          res.send(com)
+    }
+  });
 };
 
 module.exports = {
@@ -417,4 +441,5 @@ module.exports = {
   getAllOwnerCommunities,
   getAllCommunities_dashboard,
   deleteCommunity,
+  editCommunity,
 };
