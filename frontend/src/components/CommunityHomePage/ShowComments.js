@@ -24,7 +24,8 @@ const ShowComments = ({ postId }) => {
   const[replyToReply, setReplyToReply] = useState("");
   var userLocalStorage = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token");
-  const userId = localStorage.getItem("user")._id;
+  const userId = JSON.parse(localStorage.getItem("user"))._id;
+  console.log("USERID: "+userId);
   const handleCommentVote = async (commentId, voteType) => {
     console.log(commentId, voteType)
     return
