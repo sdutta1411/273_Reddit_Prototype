@@ -4,41 +4,28 @@ const Community = require("../models/Community");
 const Post = require("../models/Post");
 const UserProfile = require("../models/UserProfile");
 var _ = require("lodash");
+const kafka = require("../kafka/client");
 
 //Create a New Community
-const createnewcommunity = async (req, res) => {
+const createnewcommunity = (req, res) => {
   console.log("In create community API");
   const { communityName, description, admin } = req.body;
-
-  const comm = await Community.findOne({
-    communityName: req.body.communityName,
-  });
-  const admin_user = await UserProfile.findOne({ email: admin });
-
-  if (comm) {
-    return res
-      .status(400)
-      .json({
-        message:
-          "Community with same name already exists.Please choose a different name",
+  console.log("inside postmethod for message backend");
+  console.log("req.body", req.body);
+  let msg = req.body;
+  msg.route = "createnewcommunity";
+  kafka.make_request("community", msg, (err, result) => {
+    console.log("createnewcommunity details:", result);
+    if (result === 201) {
+      res.writeHead(201, {
+        "Content-Type": "text/plain",
       });
-  } else {
-    console.log("creating a new community");
-    const newCommunity = new Community({
-      communityName: req.body.communityName,
-      description: req.body.description,
-      admin: admin_user._id,
-      subscribedBy: [admin_user._id],
-      subscriberCount: 1,
-    });
-    const savedCommunity = await newCommunity.save();
-    admin_user.subscribedCommunities = admin_user.subscribedCommunities.concat(
-      savedCommunity._id
-    );
-    await admin_user.save();
-    return res.status(200).json(savedCommunity);
-    //res.status(200).json(community);
-  }
+      res.status(201)
+        .json({ message: "This User is not an admin in any community" });
+    }  else {
+     res.send(result)
+    }
+  });
 };
 
 // Get all Community details - Community Home Page
@@ -202,227 +189,119 @@ const sortCommunity = async (req, res, next) => {
 };
 
 // Fetch communities that the user is owner of
-const getOwnerCommunities = async (req, res) => {
-  console.log("Get Owner communities API" + JSON.stringify(req.body.email));
-  const usercomms = await UserProfile.find({ email: req.body.email });
-  if (usercomms[0]) {
-    const ownerId = usercomms[0]._id;
-    const ownerComms = await Community.find({ admin: ownerId });
-    if (ownerComms.length > 0) {
-      let objToSend = [];
-      ownerComms.forEach((element) => {
-        let item = {
-          name: element.communityName,
-          CommunityID: element._id,
-          CommunityOwner: element.admin,
-        };
-        objToSend.push(item);
+const getOwnerCommunities =  (req, res) => {
+  console.log("inside postmethod for message backend");
+  console.log("req.body", req.body);
+  let msg = req.body;
+  msg.route = "getOwnerCommunities";
+  kafka.make_request("community", msg, (err, result) => {
+    console.log("getOwnerCommunities details:", result);
+    if (result === 201) {
+      res.writeHead(201, {
+        "Content-Type": "text/plain",
       });
-      return res.status(200).json(objToSend);
-    } else {
-      return res
-        .status(201)
+      res.status(201)
         .json({ message: "This User is not an admin in any community" });
+    }  else {
+     res.send(result)
     }
-  } else {
-    return res.status(201).json({ message: "This User does not exist" });
-  }
-};
-const getAllOwnerCommunities = async (req, res) => {
-  console.log("Get Owner communities API" + JSON.stringify(req.body.email));
-  console.log(req.body)
-  const usercomms = await UserProfile.find({ email: req.body.email });
-  if (usercomms[0]) {
-    const ownerId = usercomms[0]._id;
-    switch (req.body.type) {
-      case 10:
-        if(req.body.sorted === true){
-          const ownerComms = await Community.find({ admin: ownerId }).sort({created_at : 1});
-          if (ownerComms.length > 0) {
-            return res.status(200).json(ownerComms);
-          } else {
-            return res
-              .status(201)
-              .json({ message: "This User is not an admin in any community" });
-          }
-        }  else if(req.body.sorted === false){
-          const ownerComms = await Community.find({ admin: ownerId }).sort({created_at : -1});
-          if (ownerComms.length > 0) {
-            return res.status(200).json(ownerComms);
-          } else {
-            return res
-              .status(201)
-              .json({ message: "This User is not an admin in any community" });
-          }
-        }
-        break;
-
-      case 20:
-        if(req.body.sorted === true){
-          const ownerComms = await Community.find({ admin: ownerId }).sort({posts: 1});
-          if (ownerComms.length > 0) {
-            return res.status(200).json(ownerComms);
-          } else {
-            return res
-              .status(201)
-              .json({ message: "This User is not an admin in any community" });
-          }
-        }  else if(req.body.sorted === false){
-          const ownerComms = await Community.find({ admin: ownerId }).sort({posts : -1});
-          if (ownerComms.length > 0) {
-            return res.status(200).json(ownerComms);
-          } else {
-            return res
-              .status(201)
-              .json({ message: "This User is not an admin in any community" });
-          }
-        }
-        break;
-
-      case 30:
-        if(req.body.sorted === true){
-          const ownerComms = await Community.find({ admin: ownerId }).sort({subscribedBy: 1});
-          if (ownerComms.length > 0) {
-            return res.status(200).json(ownerComms);
-          } else {
-            return res
-              .status(201)
-              .json({ message: "This User is not an admin in any community" });
-          }
-        }  else if(req.body.sorted === false){
-          const ownerComms = await Community.find({ admin: ownerId }).sort({subscribedBy: -1});
-          if (ownerComms.length > 0) {
-            return res.status(200).json(ownerComms);
-          } else {
-            return res
-              .status(201)
-              .json({ message: "This User is not an admin in any community" });
-          }
-        }
-        break;
-    
-      default:
-        break;
-    }
-  }
-   else {
-    return res.status(201).json({ message: "This User does not exist" });
-  }
-
-
+  });
 };
 
 
-const getAllCommunities_dashboard = async (req, res) => {
-  console.log("Get Owner communities API" + JSON.stringify(req.body.email));
-  const usercomms = await UserProfile.find({ email: req.body.email });
-  if (usercomms[0]) {
-    const ownerId = usercomms[0]._id;
-    const ownerComms = await Community.find({ admin: ownerId }).populate('posts');
-    if (ownerComms.length > 0) {
-      return res.status(200).json(ownerComms);
-    } else {
-      return res
-        .status(201)
+const getAllOwnerCommunities =  (req, res) => {
+  console.log("inside postmethod for message backend");
+  console.log("req.body", req.body);
+  let msg = req.body;
+  msg.route = "getAllOwnerCommunities";
+  kafka.make_request("community", msg, (err, result) => {
+    console.log("getAllOwnerCommunities details:", result);
+    if (result === 201) {
+      res.writeHead(201, {
+        "Content-Type": "text/plain",
+      });
+      res.status(201)
         .json({ message: "This User is not an admin in any community" });
+    }  else {
+     res.send(result)
     }
-  } else {
-    return res.status(201).json({ message: "This User does not exist" });
-  }
+  });
 };
 
-const getAnalyticsData = async (req, res) => {
-  console.log("Get Owner communities API" + JSON.stringify(req.body.email));
-  const usercomms = await UserProfile.find({ email: req.body.email });
-  if (usercomms[0]) {
-    const ownerId = usercomms[0]._id;
-    const ownerComms = await Community.find({ admin: ownerId });
-    if (ownerComms.length > 0) {
-      let data = [];
-      let communityTableData = [];
-      let userTableData = [];
-      for (let i = 0; i < ownerComms.length; i++) {
-        commPosts = await Post.find({ community: ownerComms[i]._id });
-        NumOfPost = ownerComms[i].posts.length;
-        numOfUsers = ownerComms[i].subscribedBy.length;
-        commPosts.sort(function (a, b) {
-          var keyA = a.pointsCount,
-            keyB = b.pointsCount;
-          // Compare the 2 dates
-          if (keyA > keyB) return -1;
-          if (keyA < keyB) return 1;
-          return 0;
-        });
-        let counts = {};
-        for (let j = 0; j < commPosts.length; j++) {
-          counts[commPosts[i].author.email] =
-            (counts[commPosts[i].author.email] || 0) + 1;
-        }
-        const sortable = Object.fromEntries(
-          Object.entries(counts).sort(([, a], [, b]) => b - a)
-        );
-        let userItem = {
-          name: ownerComms[i].communityName,
-          ActiveUser:  Object.entries(sortable)[0][0],
-          UserPostCount: Object.entries(sortable)[0][1]
-        }
-        // console.log(commPosts)
-        let mostUpvotedPost = {
-          name: ownerComms[i].communityName,
-          title: commPosts[0].title,
-          Author: commPosts[0].author.email,
-          Votes: commPosts[0].pointsCount,
-        };
-        let item = {
-          name: ownerComms[i].communityName,
-          UserCount: numOfUsers,
-          PostCount: NumOfPost,
-        };
-        userTableData.push(userItem);
-        communityTableData.push(mostUpvotedPost);
-        data.push(item);
-      }
-      return res
-        .status(200)
-        .json({ communityTableData: communityTableData, data: data, userTableData: userTableData });
-    } else {
-      return res
-        .status(201)
+
+const getAllCommunities_dashboard =  (req, res) => {
+  console.log("inside postmethod for message backend");
+  console.log("req.body", req.body);
+  let msg = req.body;
+  msg.route = "getAllCommunities_dashboard";
+  kafka.make_request("community", msg, (err, result) => {
+    console.log("getAllCommunities_dashboard details:", result);
+    if (result === 201) {
+      res.writeHead(201, {
+        "Content-Type": "text/plain",
+      });
+      res.status(201)
         .json({ message: "This User is not an admin in any community" });
+    }  else {
+     res.send(result)
     }
-  } else {
-    return res.status(201).json({ message: "This User does not exist" });
-  }
+  });
+};
+
+const getAnalyticsData =  (req, res) => {
+  console.log("inside postmethod for message backend");
+  console.log("req.body", req.body);
+  let msg = req.body;
+  msg.route = "getAnalyticsData";
+  kafka.make_request("community", msg, (err, result) => {
+    console.log("getAnalyticsData details:", result);
+    if (result === 201) {
+      res.writeHead(201, {
+        "Content-Type": "text/plain",
+      });
+      res.status(201)
+        .json({ message: "This User is not an admin in any community" });
+    }  else {
+     res.send(result)
+    }
+  });
+ 
 };
 
 const deleteCommunity =  (req, res) => {
-  console.log("Delete Community",req.body)
-  Community.deleteOne({
-    _id: req.body.CommunityID,
-  },(err,com)=>{
-    if(err){
-      console.log(err)
-    }else{
-      Post.deleteMany({community: req.body.CommunityID},(error,result)=>{
-        if(error){
-          console.log("Error in Post deletion",error)
-        }else{
-          res.send(result)
-        }
-      })
+  console.log("inside postmethod for message backend");
+  console.log("req.body", req.body);
+  let msg = req.body;
+  msg.route = "deleteCommunity";
+  kafka.make_request("community", msg, (err, result) => {
+    console.log("deleteCommunity details:", result);
+    if (result === 201) {
+      res.writeHead(201, {
+        "Content-Type": "text/plain",
+      });
+      res.status(201)
+        .json({ message: "This User is not an admin in any community" });
+    }  else {
+     res.send(result)
     }
   });
 };
 
 const editCommunity =  (req, res) => {
-  console.log("Edit Community",req.body)
-  Community.updateOne({
-    _id: req.body.CommunityID,
-  },{$set: {description: req.body.description}, $push:{rules: req.body.rules.Ruledescription}},(err,com)=>{
-    if(err){
-      console.log(err)
-    }else{
-          res.send(com)
+  console.log("inside postmethod for message backend");
+  console.log("req.body", req.body);
+  let msg = req.body;
+  msg.route = "editCommunity";
+  kafka.make_request("community", msg, (err, result) => {
+    console.log("editCommunity details:", result);
+    if (result === 201) {
+      res.writeHead(201, {
+        "Content-Type": "text/plain",
+      });
+      res.status(201)
+        .json({ message: "This User is not an admin in any community" });
+    }  else {
+     res.send(result)
     }
   });
 };

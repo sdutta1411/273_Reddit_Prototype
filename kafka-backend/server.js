@@ -8,7 +8,9 @@ InitiateMongoServer();
 
 // let user_login = require("./services/authentication/user_login");
 // let signup = require("./services/authentication/signup");
-let chat = require("./services/chat")
+let user = require("./services/User")
+let community = require("./services/community")
+let message = require("./services/message")
 
 
 function handleTopicRequest(topic_name, fname) {
@@ -69,4 +71,7 @@ function response(data, res, producer) {
 //second argument is a function that will handle this topic request
 // handleTopicRequest("user_login", user_login);
 // handleTopicRequest("signup", signup);
-handleTopicRequest("chat", chat);
+
+handleTopicRequest("community",community);
+handleTopicRequest("message",message);
+handleTopicRequest("user",user);

@@ -127,9 +127,21 @@ const getUserDetails = async (req, res) => {
   res.status(200).json(user);
 };
 
-const getAllUsers = async (req, res) => {
-  const user = await UserProfile.find({ email: { $ne: req.body.email } });
-  res.status(200).json(user);
+const getAllUsers = (req, res) => {
+  
+  console.log("inside postmethod for getAllUsers backend");
+  console.log("req.body", req.body);
+  let msg = req.body;
+  msg.route = "getAllUsers";
+  kafka.make_request("message", msg, (err, result) => {
+    console.log("getAllUsers details:", result);
+      if (result.length == 0) {
+       res.send("No users") 
+       
+    }  else {
+      res.send(result)
+    }
+  });
 };
 
 module.exports = {
