@@ -92,6 +92,7 @@ const login = (req, res) => {
                 username: results[0].name,
                 email: results[0].email,
                 token: "Bearer " + token,
+                status: true,
               });
             } else {
               res.json({
@@ -145,6 +146,7 @@ const signupuser = (req, res) => {
             username: newUser.username,
             email: newUser.email,
             token: "Bearer " + token,
+            status: true,
           });
         })
         .catch(function (err) {

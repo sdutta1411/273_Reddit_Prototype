@@ -200,6 +200,7 @@ const sortCommunity = async (req, res, next) => {
       sortQuery = {};
   }
 };
+
 // Fetch communities that the user is owner of
 const getOwnerCommunities = async (req, res) => {
   console.log("Get Owner communities API" + JSON.stringify(req.body.email));
@@ -269,14 +270,17 @@ const getAnalyticsData = async (req, res) => {
         });
         let counts = {};
         for (let j = 0; j < commPosts.length; j++) {
-          counts[commPosts[i].author.username] =
-            (counts[commPosts[i].author.username] || 0) + 1;
+          counts[commPosts[i].author.email] =
+            (counts[commPosts[i].author.email] || 0) + 1;
         }
-        console.log(counts);
-        console.log(commPosts[0].author);
-        let x = commPosts[0].author;
-        console.log(x);
-        console.log("///////////////////");
+        const sortable = Object.fromEntries(
+          Object.entries(counts).sort(([, a], [, b]) => b - a)
+        );
+        let userItem = {
+          name: ownerComms[i].communityName,
+          ActiveUser:  Object.entries(sortable)[0][0],
+          UserPostCount: Object.entries(sortable)[0][1]
+        }
         // console.log(commPosts)
         let mostUpvotedPost = {
           name: ownerComms[i].communityName,
@@ -289,13 +293,13 @@ const getAnalyticsData = async (req, res) => {
           UserCount: numOfUsers,
           PostCount: NumOfPost,
         };
+        userTableData.push(userItem);
         communityTableData.push(mostUpvotedPost);
         data.push(item);
       }
-      console.log(data);
       return res
         .status(200)
-        .json({ communityTableData: communityTableData, data: data });
+        .json({ communityTableData: communityTableData, data: data, userTableData: userTableData });
     } else {
       return res
         .status(201)

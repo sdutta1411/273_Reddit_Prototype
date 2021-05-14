@@ -20,6 +20,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { userSignup } from "../../actions/signUpAction";
 import { Redirect } from "react-router";
+import swal from "sweetalert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,9 +80,31 @@ const Signup = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (inputs.email === "" || inputs.password === "" || inputs.name === "") {
+      swal("Error", "Enter Details to SignUp", "error", {
+        dangerMode: true,
+      });
+    }
     console.log(inputs);
     props.userSignup(inputs);
     console.log("Hey",props.user);
+    console.log(props.user);
+
+    if (props.user.email === "Invalid Email")
+      swal("Error", "Invalid Email", "error", {
+        dangerMode: true,
+      });
+    else if (props.user.name === "Name must be between 2 and 30 characters")
+      swal("Error", "Name must be between 2 and 30 characters", "error", {
+        dangerMode: true,
+      });
+    else if (
+      props.user.password === "Password must be between 8 and 30 characters"
+    )
+      swal("Error", "Password must be between 8 and 30 chars ", "error", {
+        dangerMode: true,
+      });
+
     if (props.user.status === true) {
       console.log("redirect");
       redirectVar = <Redirect to="/communityhome" />;
@@ -171,10 +194,6 @@ const Signup = (props) => {
                     value={inputs.password}
                   />
                   <br />
-                  <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
-                    label="Remember me"
-                  />
                   <br />
                   <Button
                     type="submit"
@@ -185,19 +204,6 @@ const Signup = (props) => {
                   >
                     Sign Up
                   </Button>
-                  <Grid container>
-                    <Grid item xs>
-                      <Link href="#" variant="body2">
-                        Forgot password?
-                      </Link>
-                    </Grid>
-                    <Grid item>
-                      <Link variant="body2">
-                        Already a redditor? <SignIn></SignIn>
-                      </Link>
-                    </Grid>
-                    <Box mt={5}></Box>
-                  </Grid>
                 </form>
               </div>
             </Grid>
