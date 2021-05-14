@@ -48,6 +48,7 @@ const paginateResults = require("../utils/paginateResults");
           author: author._id,
           upvotedBy: [author._id],
           pointsCount: 1,
+          comments:[],
          ...validatedFields,
         });
             var images = [];
@@ -126,6 +127,15 @@ const paginateResults = require("../utils/paginateResults");
         // res.status(200).json(paginatedPosts);
         res.status(200).json(postsByComm)
       };
+
+      const getPost = async(req,res) =>{
+        console.log("In Get Post API");
+        const post = await Post.findById({_id:req.body.postId});
+        if(post){
+          console.log("Post: "+post);
+          res.status(200).json(post);
+        }
+      }
       
       //upvote post
       const upvote = async (req,res) =>{
@@ -174,6 +184,7 @@ const paginateResults = require("../utils/paginateResults");
     module.exports = {
         createnewpost,
         getPosts,
+        getPost,
         upvote,
         downvote
     };

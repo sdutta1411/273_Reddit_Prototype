@@ -274,6 +274,13 @@ export const useCardStyles = makeStyles(
         margin: 0,
       },
     },
+    pctitle: {
+      marginLeft: "10px",
+      [theme.breakpoints.down('xs')]: {
+        fontSize: '1em',
+        margin: 0,
+      },
+    },
     bottomBtns: {
       display: 'flex',
     },

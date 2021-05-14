@@ -18,6 +18,7 @@ import Post from "./components/CommunityHomePage/Post";
 import ImageAndVideo from "./components/CommunityHomePage/ImageAndVideo";
 import LinkPostType from "./components/CommunityHomePage/LinkPostType";
 import DashboardPage from "./components/DasboardPage/DashboardPage";
+import PostWithComments from "./components/CommunityHomePage/PostWithComments";
 /* import ModerationPage from "./components/CommunityModeration/ModerationPage" */
 const theme = createMuiTheme({
   palette: {
@@ -45,16 +46,16 @@ const App = () => {
           <Switch>
             <Route path="/communityhome" exact component={CommunityHomePage} />
             <Route path="/" exact component={Home} />
-            {/*
-            <Route path="/login" exact component={LoginForm} />
-          <Route path="/signup" exact component={SignUp} /> 
+            
+            {/* <Route path="/login" exact component={LoginForm} />
+          <Route path="/signup" exact component={SignUp} />  */}
           <Route path="/communityhome" exact component={CommunityHomePage} />
           <Route path="/createpost" exact component={CreatePost} />
           <Route path="/createpost/post" exact component={Post} />
           <Route path="/createpost/imageandvideo" exact component={ImageAndVideo}/>
           <Route path="/createpost/link" exact component={LinkPostType} />
+          <Route path="/comments" exact component={PostWithComments} />
 
-         */}
             {/*  <Route path="/ModerationPage" exact component={ModerationPage} /> */}
 
             <Route path="/dashboard" exact component={DashboardPage} />
