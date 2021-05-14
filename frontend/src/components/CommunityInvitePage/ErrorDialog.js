@@ -19,7 +19,7 @@ export default function ErrorDialog (props) {
         <DialogTitle id="alert-dialog-title">{"Error"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Please select a value in both fields.
+            {props.text}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

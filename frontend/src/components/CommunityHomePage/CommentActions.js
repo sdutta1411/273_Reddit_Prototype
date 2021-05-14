@@ -1,7 +1,6 @@
 import React from 'react'
 
-
-export default function CommunityList() {
+export default function CommentActions() {
     return (
         <div>
             

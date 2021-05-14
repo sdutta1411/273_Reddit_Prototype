@@ -56,7 +56,7 @@ export default function CommunityHomePage({communityName}) {
 
     const[commHomePage, setCommHomePage] = useState(true);
     var userLocalStorage = JSON.parse(localStorage.getItem("user"));
-    const token = userLocalStorage.token;
+    const token = userLocalStorage?userLocalStorage.token:'';
     var communityName = 'Team11';
 
     const requestOptions = {
@@ -168,7 +168,8 @@ export default function CommunityHomePage({communityName}) {
     {posts.map(post=>
       <RouterLink
       style={{ textDecoration: 'none' }} 
-      to={{pathanme:`/comments/${post.comments}`, state:{postTitle:`${post.title}`}}}>
+      to={{pathname: `/comments` ,
+                state:`${post._id},${communityName},${user.username}`}}>
       <Paper className={classes.root} variant="outlined">
       {/* upvote and downvote */}
       {/* <span>{post.title}</span> */}
