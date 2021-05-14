@@ -34,7 +34,7 @@ const signup = (req, res) => {
   connection.query(sqlQuery, values, function (error, results, fields) {
     if (error) {
       console.log(error);
-      res.status(400).json({
+      res.status(400).send({
         status: false,
         message: "User already registered",
       });

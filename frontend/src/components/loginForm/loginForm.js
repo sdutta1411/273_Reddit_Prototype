@@ -100,9 +100,16 @@ const SignIn = (props) => {
         .then((response) => {
           localStorage.setItem("email", response.data.email);
           localStorage.setItem("user", JSON.stringify(response.data));
+          localStorage.setItem("token", props.token);
         });
 
       history.push("/dashboard");
+    }
+
+    if (props.user.status == false) {
+      swal("Error", "Invalid Credentials", "error", {
+        dangerMode: true,
+      });
     }
 
     handleClose();
@@ -145,7 +152,7 @@ const SignIn = (props) => {
             >
               <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
-                  <RedditIcon />
+                  <RedditIcon style={{ color: "black" }} />
                 </Avatar>
                 <Typography component="h1" variant="h5">
                   Sign in
