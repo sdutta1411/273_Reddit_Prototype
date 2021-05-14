@@ -22,7 +22,7 @@ import MessageIcon from "@material-ui/icons/Message";
 import LinkIcon from "@material-ui/icons/Link";
 import UserList from "./UserList"
 
-export default function Moderation() {
+export default function UserCommunities() {
 
   // taken from dashboard.js
  const useCardStyles = makeStyles(

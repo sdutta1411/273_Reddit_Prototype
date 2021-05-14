@@ -112,7 +112,7 @@ const App = () => {
             {<Route path="/ModerationPage" exact component={Moderation} />}
             <Route path="/searchbar" exact component={SearchBar} />
             <Route path="/SearchList" exact component={SearchList} />
-            <Route path="/Sort" exact component={Sort} />
+            {/* <Route path="/Sort" exact component={Sort} /> */}
             <Route path="/dashboard" exact component={DashboardPage} />
             <Route path="/mycommunity" exact component={MyCommunity} />
 
