@@ -1,16 +1,23 @@
 const mongoose = require("mongoose");
 
 const ChatSchema = mongoose.Schema({
-  user: {
+  username: {
     type: String,
   },
   chat: {
     type: String,
   },
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const UserSchema = mongoose.Schema({
-  user: {
+  email: {
+    type: String,
+  },
+  username: {
     type: String,
   },
 });
@@ -19,11 +26,6 @@ const MessagesSchema = mongoose.Schema({
   users: [UserSchema],
 
   chats: [ChatSchema],
-
-  created_at: {
-    type: Date,
-    default: Date.now,
-  },
 });
 
 module.exports = mongoose.model("messages", MessagesSchema);
