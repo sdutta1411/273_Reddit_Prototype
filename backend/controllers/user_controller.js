@@ -166,7 +166,7 @@ const getUserDetails = async (req, res) => {
 };
 
 const getAllUsers = async (req, res) => {
-  const user = await UserProfile.find({ "email": { $ne: req.body.email } });
+  const user = await UserProfile.find({ email: { $ne: req.body.email } });
   res.status(200).json(user);
 };
 
@@ -176,5 +176,5 @@ module.exports = {
   signupuser,
   login,
   getUserDetails,
-  getAllUsers
+  getAllUsers,
 };

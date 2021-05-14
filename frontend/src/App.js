@@ -2,13 +2,8 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Switch, Route } from "react-router-dom";
 import "./App.css";
 
-<<<<<<< HEAD
-import LoginForm from "./components/loginForm/loginForm";
-import signupForm from "./components/signupForm/signupForm";
-=======
 //import LoginForm from "./components/LoginForm/LoginForm";
 //import signupForm from "./components/SignupForm/signupForm";
->>>>>>> c1f6dbffbc867ed93de08e1283e44dd2e595e282
 import { Provider } from "react-redux";
 import store from "./store";
 import Navbar from "./components/navBar/navBar";
@@ -23,12 +18,9 @@ import Post from "./components/CommunityHomePage/Post";
 import ImageAndVideo from "./components/CommunityHomePage/ImageAndVideo";
 import LinkPostType from "./components/CommunityHomePage/LinkPostType";
 import DashboardPage from "./components/DasboardPage/DashboardPage";
-<<<<<<< HEAD
+import CommununityAnalytics from "./components/CommunityAnalytics/CommunityAnalytics";
+import CommunityInvitePage from "./components/CommunityInvitePage/CommunityInvitePage";
 import NavBarAfterLogin from "./components/navBar/NavBarAfterLogin";
-=======
-import CommununityAnalytics from "./components/CommunityAnalytics/CommunityAnalytics"
-import CommunityInvitePage from "./components/CommunityInvitePage/CommunityInvitePage"
->>>>>>> 8aebcbd5aa2706930042e44d3ae0b9cfe11f0b10
 /* import ModerationPage from "./components/CommunityModeration/ModerationPage" */
 const theme = createMuiTheme({
   palette: {
@@ -56,28 +48,6 @@ const App = () => {
           <Switch>
             <Route path="/communityhome" exact component={CommunityHomePage} />
             <Route path="/" exact component={Home} />
-<<<<<<< HEAD
-
-            <Route path="/login" exact component={LoginForm} />
-            <Route path="/signup" exact component={signupForm} />
-            <Route path="/communityhome" exact component={CommunityHomePage} />
-            <Route path="/createpost" exact component={CreatePost} />
-            <Route path="/createpost/post" exact component={Post} />
-            <Route
-              path="/createpost/imageandvideo"
-              exact
-              component={ImageAndVideo}
-            />
-            <Route path="/createpost/link" exact component={LinkPostType} />
-            <Route path="/mycommunities/analytics" exact component={CommununityAnalytics} />
-            <Route path="/invites" exact component={CommunityInvitePage} />
-            {/*  <Route path="/ModerationPage" exact component={ModerationPage} /> */}
-
-            <Route path="/dashboard" exact component={DashboardPage} />
-
-            <Route path="/" exact component={Home} />
-
-=======
             {/*
             <Route path="/login" exact component={LoginForm} />
           <Route path="/signup" exact component={SignUp} /> 
@@ -96,7 +66,6 @@ const App = () => {
             <Route path="/profile" exact component={UserProfile} />
             <Route path="/navbar" exact component={NavBarAfterLogin} />
 
->>>>>>> c1f6dbffbc867ed93de08e1283e44dd2e595e282
             {/* <Route path="/" exact component={Home} /> */}
           </Switch>
         </ThemeProvider>
