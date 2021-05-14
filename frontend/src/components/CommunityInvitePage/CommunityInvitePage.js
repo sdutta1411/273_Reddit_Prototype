@@ -64,29 +64,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CommunityInvitePage() {
-  const CommunityData = [
-    {
-      name: "page 1",
-      CommunityID: "Demo",
-      CommunityOwner: "Ujjwal",
-    },
-    {
-      name: "page 2",
-      CommunityID: "Demo2",
-      CommunityOwner: "Ujjwal",
-    },
-    {
-      name: "page 3",
-      CommunityID: "Demo3",
-      CommunityOwner: "Ujjwal",
-    },
-    {
-      name: "page 4",
-      CommunityID: "Demo4",
-      CommunityOwner: "Ujjwal",
-    },
-  ];
-
   const inviteInfo = [
     {
       name: "Ujjwal Jain",
@@ -115,39 +92,73 @@ export default function CommunityInvitePage() {
   ];
   const classes = useStyles();
   const [newData, setNewData] = useState([]);
-  const [communityData, setCommunityData] = useState([])
+  const [communityData, setCommunityData] = useState([]);
   const [userValue, setUserValue] = useState();
   const [communityValue, setCommunityValue] = useState("");
+  const [valueState, setValueState] = useState("");
   const [inviteError, setInviteError] = useState(false);
+  const [errorText, setErrorText] = useState("");
   const GetUserData = async () => {
-    await axios.post(`${ApiRequest}/api/user/allUsers`,{email:'reddit@gmail.com'}).then((response) => {
-      setNewData(response.data);
-    });
+    await axios
+      .post(`${ApiRequest}/api/user/allUsers`, { email: "reddit@gmail.com" })
+      .then((response) => {
+        setNewData(response.data);
+      });
   };
   const GetCommunityData = async () => {
-    await axios.post(`${ApiRequest}/api/community/ownerCommunities`,{email:'bhagi@gmail.com'}).then((response) => {
-      if(response.status===200){
-        setCommunityData(response.data);
-      }else{
-        setCommunityData(null)
-      }
-    });
+    await axios
+      .post(`${ApiRequest}/api/community/ownerCommunities`, {
+        email: "bhagi@gmail.com",
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          setCommunityData(response.data);
+        } else {
+          setCommunityData(null);
+        }
+      });
   };
+  const getSentInvites = async () =>{
 
+  }
   useEffect(() => {
     GetUserData();
-    GetCommunityData()
+    GetCommunityData();
     console.log(newData);
   }, []);
 
-  const handleInvites = () => {
+  const handleInvites = async () => {
     if (communityValue && userValue.length > 0) {
       // Backend call to send invite to the users returned in userValue.
-      setInviteError(false);
-      console.log(userValue);
-      console.log(communityValue);
+      await axios
+        .post(`${ApiRequest}/api/invites/invite_user`, {
+          users: userValue,
+          community: communityValue,
+          status:"invite"
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            setValueState("");
+            console.log(response.data.message);
+            const close = document.getElementsByClassName(
+              "MuiAutocomplete-clearIndicator"
+            )[0];
+            const close2 = document.getElementsByClassName(
+              "MuiAutocomplete-clearIndicator"
+            )[1];
+            close.click();
+            close2.click();
+            setInviteError(false);
+          } else {
+            //Error on request.
+            console.log(response.data.message)
+            setErrorText(response.data.message);
+            setInviteError(true);
+          }
+        });
     } else {
       //Error condition
+      setErrorText("Please select a value in both the fields.");
       setInviteError(true);
     }
   };
@@ -156,7 +167,6 @@ export default function CommunityInvitePage() {
     setInviteError(false);
   };
 
-  
   return (
     <div className={classes.root}>
       <Paper>
@@ -165,7 +175,11 @@ export default function CommunityInvitePage() {
         </Typography>
       </Paper>
       {inviteError && (
-        <ErrorDialog open={inviteError} handleClose={handleClose} />
+        <ErrorDialog
+          open={inviteError}
+          text={errorText}
+          handleClose={handleClose}
+        />
       )}
       {communityData && (
         <Paper className={classes.body} elevation={0}>
@@ -186,9 +200,10 @@ export default function CommunityInvitePage() {
                 multiple
                 id="UserSelection"
                 options={newData}
-                getOptionSelected={(option, value) =>
-                  option.username === value.username
-                }
+                inputValue={valueState}
+                // getOptionSelected={(option, value) =>
+                //   option.username === value.username
+                // }
                 onChange={(event, newInputValue) => {
                   setUserValue(newInputValue);
                 }}

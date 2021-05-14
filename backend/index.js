@@ -11,8 +11,10 @@ const comment = require("./routes/comment_routes");
 const post = require("./routes/post_routes");
 const message = require("./routes/message_routes");
 const community = require("./routes/community_routes");
+const invite = require('./routes/invite_routes')
 const bodyParser = require("body-parser");
 var InitiateMongoServer = require("./config/mongo_config");
+
 
 //Connecting to Mongo Server
 mongoose.Promise = global.Promise;
@@ -87,6 +89,8 @@ app.use("/api/posts", post);
 app.use("/api/comment", comment);
 //Message Routes
 app.use("/api/message", message);
+//Invite Routes
+app.use("/api/invites", invite)
 
 app.listen(3001, (req, res) => {
   console.log("server running on port 3001....");
