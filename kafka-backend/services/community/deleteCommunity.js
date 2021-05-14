@@ -1,5 +1,5 @@
 const Community = require("../../Models/Community")
-const Post = require("../models/Post");
+const Post = require("../../Models/Post");
 
 
 const deleteCommunity =(msg, callback) => {

@@ -1,21 +1,25 @@
 const Community = require("../../Models/Community")
-const Post = require("../models/Post");
-const UserProfile = require("../models/UserProfile");
+const Post = require("../../Models/Post");
+const UserProfile = require("../../Models/UserProfile");
+var redisClient = require("redis").createClient;
+var redis = redisClient(6379, "localhost", {detect_buffers : true});
 
-const getAllCommunities_dashboard =async(msg, callback) => {
-
+const getAllCommunitiesdashboard = (msg, callback) => {
+const {email} = msg.email
+console.log("email", email)
   try {
-    redis.get(getallcommunities, (err, getallcommunities) => {
+    redis.get(email, (err, getallcommunities) => {
       if (getallcommunities) {
         console.log("Reddis")
         let results = JSON.parse(getallcommunities);
         console.log(results[0])
           return callback(null, results);
       } else {
-        const usercomms = await UserProfile.find({ email: msg.email });
+        const usercomms =  UserProfile.find({ email: msg.email });
         if (usercomms[0]) {
           const ownerId = usercomms[0]._id;
-          const ownerComms = await Community.find({ admin: ownerId }).populate('posts');
+          const ownerComms =  Community.find({ admin: ownerId }).populate('posts');
+          console.log("Owner....",ownerComms)
           if (ownerComms.length > 0) {
             let objToSend = [];
             ownerComms.forEach((element) => {
@@ -26,7 +30,7 @@ const getAllCommunities_dashboard =async(msg, callback) => {
               };
               objToSend.push(item);
             });
-            redis.set(getallcommunities, JSON.stringify(objToSend));
+            redis.set(email, JSON.stringify(objToSend));
             return callback(objToSend);
           } else {
             return callback(null,201)
@@ -44,10 +48,7 @@ const getAllCommunities_dashboard =async(msg, callback) => {
     console.log(error);
     return callback(null,501);
 }
-
-    console.log("---------------",msg);
-    console.log("Get Owner communities API" + JSON.stringify(msg.email));
    
 }
 
-exports.getAllCommunities_dashboard = getAllCommunities_dashboard;
+exports.getAllCommunitiesdashboard = getAllCommunitiesdashboard;

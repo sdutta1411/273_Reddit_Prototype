@@ -2,7 +2,7 @@
 const { getOwnerCommunities } = require("./getOwnerCommunities");
 const { createnewcommunity } = require("./CreatenewCommunity");
 const {getAllOwnerCommunities} = require("./getAllOwnerCommunities");
-const {getAllCommunities_dashboard} = require("./getAllCommunities_dashboard");
+const {getAllCommunitiesdashboard} = require("./getAllCommunities_dashboard");
 const {getAnalyticsData} =require("./getAnalyticsData");
 const {deleteCommunity} = require("./deleteCommunity");
 const {editCommunity} = require("./editCommunity");
@@ -19,8 +19,8 @@ let handle_request = (msg, callback) => {
     case "getAllOwnerCommunities":
         getAllOwnerCommunities(msg, callback);
       break;
-    case "getAllCommunities_dashboard":
-        getAllCommunities_dashboard(msg, callback);
+    case "getAllCommunitiesdashboard":
+        getAllCommunitiesdashboard(msg, callback);
       break;  
     case "getAnalyticsData":
         getAnalyticsData(msg, callback);

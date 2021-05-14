@@ -1,5 +1,5 @@
 const Community = require("../../Models/Community")
-
+const UserProfile = require("../../Models/UserProfile");
 
 const createnewcommunity = async(msg, callback) => {
     console.log("---------------",msg);

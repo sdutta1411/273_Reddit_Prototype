@@ -1,9 +1,10 @@
 const Community = require("../../Models/Community")
-const Post = require("../models/Post");
-const UserProfile = require("../models/UserProfile");
+const Post = require("../../Models/Post");
+const UserProfile = require("../../Models/UserProfile");
 
 const getAnalyticsData =async(msg, callback) => {
     console.log("---------------",msg);
+    console.log("-helo");
     console.log("Get Owner communities API" + JSON.stringify(msg.email));
   const usercomms = await UserProfile.find({ email: msg.email });
   if (usercomms[0]) {

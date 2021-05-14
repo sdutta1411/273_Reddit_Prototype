@@ -1,8 +1,8 @@
-const UserProfile = require("../models/UserProfile");
+const UserProfile = require("../../Models/UserProfile");
 var redisClient = require("redis").createClient;
 var redis = redisClient(6379, "localhost", {detect_buffers : true});
 
-const getAllUsers = async(msg, callback) => {
+const getAllUsers = (msg, callback) => {
     console.log("---------------",msg);
 
 try {
@@ -13,7 +13,7 @@ try {
         console.log(results[0])
           return callback(null, results);
       } else {
-        const user = await UserProfile.find({ email: { $ne: msg.email } });
+        const user =  UserProfile.find({ email: { $ne: msg.email } });
         redis.set(users, JSON.stringify(result));
         callback(null,user)
       }

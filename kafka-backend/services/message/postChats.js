@@ -1,4 +1,6 @@
 const Messages = require("../../Models/message-model")
+var redisClient = require("redis").createClient;
+var redis = redisClient(6379, "localhost", {detect_buffers : true});
 
 
 const postChats = async(msg, callback) => {

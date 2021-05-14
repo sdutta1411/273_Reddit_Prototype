@@ -1,4 +1,4 @@
-
+const kafka = require("../kafka/client");
 
 //Initiate Chat
 const getChats = (req, res) => {

@@ -8,9 +8,9 @@ InitiateMongoServer();
 
 // let user_login = require("./services/authentication/user_login");
 // let signup = require("./services/authentication/signup");
-let user = require("./services/User")
-let community = require("./services/community")
-let message = require("./services/message")
+let user = require("./services/User/index")
+let community = require("./services/community/index")
+let message = require("./services/message/index")
 
 
 function handleTopicRequest(topic_name, fname) {

@@ -17,9 +17,7 @@ const createnewcommunity = (req, res) => {
   kafka.make_request("community", msg, (err, result) => {
     console.log("createnewcommunity details:", result);
     if (result === 201) {
-      res.writeHead(201, {
-        "Content-Type": "text/plain",
-      });
+    
       res.status(201)
         .json({ message: "This User is not an admin in any community" });
     }  else {
@@ -47,20 +45,46 @@ const joinCommunity = async (req, res) => {
   console.log(
     "Join Community API" + req.body.email + "," + req.body.communityName
   );
-  const comm = await Community.findOne({
-    communityName: req.body.communityName,
-  });
   const user = await UserProfile.findOne({ email: req.body.email });
-  console.log("community exists: " + comm);
-  console.log("user exists: " + user);
 
-  if (comm) {
-    comm.subscribedBy = comm.subscribedBy.concat(user._id);
-    await comm.save();
-    user.subscribedCommunities = user.subscribedCommunities.concat(comm._id);
-    await user.save();
-    return res.status(200).json("You joined community");
-  }
+  await Community.findOne({
+    communityName: req.body.communityName,
+  },
+    async (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        //Check if the user is already part of the community they are being invited to
+        if (result.subscribedBy.includes(user._id)) {
+          // Can't request user as they are already part of community
+          // Store the users already part of the community
+          return res.status(201).json({ message: 'User is subscribed to the community' })
+        } else {
+          // The user hasn't joined the community yet
+          if (user.communityStatus.length != 0) {
+            for (let i = 0; i < user.communityStatus.length; i++) {
+              if (user.communityStatus[i].communityID == result._id &&
+                user.communityStatus[i].status == 'Requested') {
+                // request found
+                break
+              } else {
+                //create request
+                user.communityStatus = user.communityStatus.concat({communityID: result._id,status:'Requested',invitedBy: user._id, ts: Date.now()})
+                return res.status(200).json("You have requested to join community")
+              }
+            }
+          }
+        }
+      }
+    }
+  )
+  // if (comm) {
+  //   comm.subscribedBy = comm.subscribedBy.concat(user._id);
+  //   await comm.save();
+  //   user.subscribedCommunities = user.subscribedCommunities.concat(comm._id);
+  //   await user.save();
+  //   return res.status(200).json("You joined community");
+  // }
 };
 
 // Leave Community - Community Home Page
@@ -106,9 +130,9 @@ const getUserCommunities = async (req, res) => {
 const checkUserSubscribed = async (req, res) => {
   console.log(
     "checkUserSubscribed API" +
-      JSON.stringify(req.body.email) +
-      " " +
-      JSON.stringify(req.body.communityName)
+    JSON.stringify(req.body.email) +
+    " " +
+    JSON.stringify(req.body.communityName)
   );
   var userSubscribed = false;
   const usercomms = await UserProfile.find(
@@ -197,9 +221,7 @@ const getOwnerCommunities =  (req, res) => {
   kafka.make_request("community", msg, (err, result) => {
     console.log("getOwnerCommunities details:", result);
     if (result === 201) {
-      res.writeHead(201, {
-        "Content-Type": "text/plain",
-      });
+   
       res.status(201)
         .json({ message: "This User is not an admin in any community" });
     }  else {
@@ -217,9 +239,7 @@ const getAllOwnerCommunities =  (req, res) => {
   kafka.make_request("community", msg, (err, result) => {
     console.log("getAllOwnerCommunities details:", result);
     if (result === 201) {
-      res.writeHead(201, {
-        "Content-Type": "text/plain",
-      });
+   
       res.status(201)
         .json({ message: "This User is not an admin in any community" });
     }  else {
@@ -228,24 +248,22 @@ const getAllOwnerCommunities =  (req, res) => {
   });
 };
 
-
-const getAllCommunities_dashboard =  (req, res) => {
-  console.log("inside postmethod for message backend");
-  console.log("req.body", req.body);
-  let msg = req.body;
-  msg.route = "getAllCommunities_dashboard";
-  kafka.make_request("community", msg, (err, result) => {
-    console.log("getAllCommunities_dashboard details:", result);
-    if (result === 201) {
-      res.writeHead(201, {
-        "Content-Type": "text/plain",
-      });
-      res.status(201)
+const getAllCommunities_dashboard = async (req, res) => {
+  console.log("Get Owner communities API" + JSON.stringify(req.body.email));
+  const usercomms = await UserProfile.find({ email: req.body.email });
+  if (usercomms[0]) {
+    const ownerId = usercomms[0]._id;
+    const ownerComms = await Community.find({ admin: ownerId }).populate('posts');
+    if (ownerComms.length > 0) {
+      return res.status(200).json(ownerComms);
+    } else {
+      return res
+        .status(201)
         .json({ message: "This User is not an admin in any community" });
-    }  else {
-     res.send(result)
     }
-  });
+  } else {
+    return res.status(201).json({ message: "This User does not exist" });
+  }
 };
 
 const getAnalyticsData =  (req, res) => {
@@ -256,9 +274,7 @@ const getAnalyticsData =  (req, res) => {
   kafka.make_request("community", msg, (err, result) => {
     console.log("getAnalyticsData details:", result);
     if (result === 201) {
-      res.writeHead(201, {
-        "Content-Type": "text/plain",
-      });
+  
       res.status(201)
         .json({ message: "This User is not an admin in any community" });
     }  else {
@@ -276,9 +292,7 @@ const deleteCommunity =  (req, res) => {
   kafka.make_request("community", msg, (err, result) => {
     console.log("deleteCommunity details:", result);
     if (result === 201) {
-      res.writeHead(201, {
-        "Content-Type": "text/plain",
-      });
+      
       res.status(201)
         .json({ message: "This User is not an admin in any community" });
     }  else {
