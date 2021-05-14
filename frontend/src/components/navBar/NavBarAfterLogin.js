@@ -78,7 +78,7 @@ export default function MenuAppBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" boxShadow={3} style={{ background: "#ebf7f6" }}>
+      <AppBar position="static" boxshadow={3} style={{ background: "#ebf7f6" }}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -146,6 +146,14 @@ export default function MenuAppBar() {
                   to="MyCommunity"
                 >
                   MyCommunity
+                </MenuItem>
+                <MenuItem
+                  style={{ textDecoration: "none", fontSize: "17px" }}
+                  component={Link}
+                  to="/chatList"
+                  onClick={handleClose}
+                >
+                  Messages
                 </MenuItem>
                 <MenuItem
                   style={{ textDecoration: "none", fontSize: "17px" }}

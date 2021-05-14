@@ -9,6 +9,6 @@ router.post("/invite_user",  inviteController.sendInvite);
 router.post("/getSentInvites",  inviteController.getOwnerInvites);
 router.post("/getMyInvites",  inviteController.getMyInvites);
 router.post("/getMyRequests",  inviteController.getMyRequests);
-
+router.post("/statusChange", inviteController.statusChange)
 
 module.exports = router;
