@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -17,6 +17,7 @@ import { Image } from "react-bootstrap";
 import { colors } from "@material-ui/core";
 import { shadows } from "@material-ui/system";
 import MyCommunity from '../MyCommunity/MyCommunity'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -36,6 +37,22 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 500,
     width: 500,
+  },
+  searchContainer: {
+    display: "flex",
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    paddingLeft: "20px",
+    paddingRight: "20px",
+    marginTop: "5px",
+    marginBottom: "5px",
+  },
+  searchIcon: {
+    alignSelf: "flex-end",
+    marginBottom: "5px",
+  },
+  searchInput: {
+    width: "200px",
+    margin: "5px",
   },
 }));
 
@@ -57,6 +74,7 @@ export default function MenuAppBar() {
     
   }
 
+  
   return (
     <div className={classes.root}>
       <AppBar position="static" boxShadow={3} style={{ background: "#ebf7f6" }}>
@@ -80,6 +98,7 @@ export default function MenuAppBar() {
           >
             Home Page of the Internet
           </Typography>
+        
           {auth && (
             <div>
               <IconButton

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import NavBarAfterLogin from '../navBar/NavBarAfterLogin'
+// import NavBarAfterLogin from '../navBar/NavBarAfterLogin'
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -75,9 +75,7 @@ export const MyCommunity = () => {
   
     return (
         <div>
-            <NavBarAfterLogin></NavBarAfterLogin>
             <h3>My Communities</h3>
-
             {communities.map((community) =>(
               <Card className={classes.root}>
               <CardActionArea>

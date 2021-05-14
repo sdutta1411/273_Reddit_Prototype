@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import SendIcon from "@material-ui/icons/Send";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,7 +11,12 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Input from "@material-ui/core/Input";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import Avatar from "@material-ui/core/Avatar";
+import { Avatar, Grid, Paper } from "@material-ui/core";
+import moment from "moment";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
+import swal from "sweetalert";
+import backendUrl from "../../backendUrl";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -48,6 +53,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ChatsPage() {
   const classes = useStyles();
+  const location = useLocation();
+
+  const [message, setMessage] = useState("");
+  const [allChats, setallChats] = useState([]);
+
+  useEffect(() => {
+    getAllChats();
+  }, []);
+
+  const chatId = location.pathname.split("/")[2];
+  const email = location.pathname.split("/")[3];
 
   const messages = [
     {
@@ -66,6 +82,42 @@ export default function ChatsPage() {
       created_at: "13-05-2021",
     },
   ];
+
+  const getAllChats = () => {
+    let users = ["pavan@gmail.com", email];
+    axios
+      .post(`${backendUrl}/api/message/initiatechat`, {
+        users: users,
+      })
+      .then((response) => {
+        if (response.data.status == true) {
+          setallChats(response.data.data[0].chats);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const postChat = () => {
+    debugger;
+    let data = {
+      chatId: chatId,
+      chats: {
+        username: "Pavan Bhatt",
+        chat: message,
+      },
+    };
+    axios
+      .post(`${backendUrl}/api/message/postchat`, data)
+      .then((response) => {
+        getAllChats();
+        setMessage("");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div>
@@ -100,13 +152,35 @@ export default function ChatsPage() {
             Messages
           </Typography>
 
-          {messages.map((message) => {
+          {allChats.map((message) => {
             return (
-              <List component="nav">
-                <ListItem className="container darker">
-                  <Typography component="div">{message.chat}</Typography>
-                </ListItem>
-              </List>
+              <Paper
+                style={{
+                  padding: "30px 10px",
+                  marginTop: 30,
+                  width: "400px",
+                  height: "100px",
+                }}
+              >
+                <Grid container wrap="wrap" spacing={2}>
+                  <Grid item>
+                    <Avatar
+                      alt={message.username}
+                      src="/static/images/avatar/1.jpg"
+                    />
+                  </Grid>
+                  <Grid justifyContent="left" item xs zeroMinWidth>
+                    <h4 style={{ margin: 0, textAlign: "left" }}>
+                      {message.username}
+                    </h4>
+                    <p style={{ textAlign: "left" }}>{message.chat}</p>
+                    <p style={{ textAlign: "right", color: "gray" }}>
+                      {moment(message.created_at).format("HH:MM")}
+                    </p>
+                  </Grid>
+                  <Button className="mr10">X</Button>
+                </Grid>
+              </Paper>
             );
           })}
         </CardContent>
@@ -115,8 +189,15 @@ export default function ChatsPage() {
             placeholder="Type your message"
             className={classes.input}
             inputProps="aria-label"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
           />
-          <Button size="small" color="primary" startIcon={<SendIcon />} />
+          <Button
+            size="small"
+            color="primary"
+            onClick={(e) => postChat(e)}
+            startIcon={<SendIcon />}
+          />
         </CardActions>
       </Card>
     </div>
