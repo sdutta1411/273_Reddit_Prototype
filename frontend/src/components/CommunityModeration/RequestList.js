@@ -20,9 +20,10 @@ import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { Checkbox, Container, Typography } from "@material-ui/core";
 import MessageIcon from "@material-ui/icons/Message";
 import LinkIcon from "@material-ui/icons/Link";
-import UserList from "./UserList"
+import Apirequest from "../../backendRequestApi";
+import Axios from "axios";
 
-export default function Moderation() {
+export default function UserList() {
 
   // taken from dashboard.js
  const useCardStyles = makeStyles(
@@ -96,40 +97,63 @@ export default function Moderation() {
   { index: 1 }
 );
 
+/* const uploadImage = (e) => {
+  debugger;
+  const formData = new FormData();
+  formData.append("file", imageSelected);
+
+  formData.append("upload_preset", "i9dmdl7y");
+  Axios.defaults.withCredentials = true;
+  Axios.post(
+    "https://api.cloudinary.com/v1_1/dikqsaz3t/image/upload",
+    formData
+  )
+    .then((response) => {
+      setPublicurl(response.data.secure_url);
+      localStorage.setItem("community_image_url", response.data.secure_url);
+      console.log(publicurl);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}; */
+
+
   const classes = useCardStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
-  const myCommunities = [
+  const userRequests = [
     {
-      title: "Comm1",
-      userrequest:"",
+      title: "Monica",
+      postType: "Image",
+      imageSubmission: "",
       community: "TestCommunity1",
-      upvotedBy: 19,
-      downvotedBy: 10,
+      upvotedBy: 2,
+      downvotedBy: 3,
     },
     {
-      title: "Comm2",
-      userrequest:"",
+      title: "Monica",
+      postType: "",
+      imageSubmission: "",
       community: "TestCommunity2",
-      upvotedBy: 12,
-      downvotedBy:9,
+      upvotedBy: 2,
+      downvotedBy: 3,
     },
   ];
-
-  
+    
   return (
     <Paper className={classes.root} variant="outlined">
       <Container maxWidth="lg" className={classes.container}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8} lg={9}>
             <Paper className={fixedHeightPaper}>
-              <h1>Mod tools</h1>
+              <h1>User List</h1>
             </Paper>
           </Grid>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
               <CardContent>
-                {myCommunities.map((value) => {
+                {userRequests.map((value) => {
                   return (
                     <List className={classes.root}>
                       <ListItem>
@@ -191,16 +215,8 @@ export default function Moderation() {
                           primary={value.author}
                           secondary={value.amount}
                         />
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          size="small"
-                          startIcon={<CommentIcon />}
-                          component={Link}
-                        
-                        />
-                        <Button component={ Link } to="/UserList"  variant="contained" size="small" >Details</Button>
-                        <Button component={ Link } to="/RequestList"  variant="contained" size="small" >UserRequests</Button>
+                        <Button component={ Link } to="/UserCommunities"  variant="contained" size="small">Accept</Button>
+                        <Button component={ Link } to="/UserCommunities"  variant="contained" size="small">Reject</Button>
                         
                       
                       </ListItem>
