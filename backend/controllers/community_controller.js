@@ -258,8 +258,8 @@ const getAnalyticsData = async (req, res) => {
       let userTableData = [];
       for (let i = 0; i < ownerComms.length; i++) {
         commPosts = await Post.find({ community: ownerComms[i]._id });
-        NumOfPost = commPosts.length;
-        numOfUsers = ownerComms[i].subscriberCount;
+        NumOfPost = ownerComms[i].posts.length;
+        numOfUsers = ownerComms[i].subscribedBy.length;
         commPosts.sort(function (a, b) {
           var keyA = a.pointsCount,
             keyB = b.pointsCount;
