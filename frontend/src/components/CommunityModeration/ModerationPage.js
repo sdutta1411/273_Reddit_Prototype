@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
@@ -21,6 +21,8 @@ import { Checkbox, Container, Typography } from "@material-ui/core";
 import MessageIcon from "@material-ui/icons/Message";
 import LinkIcon from "@material-ui/icons/Link";
 import UserList from "./UserList"
+import axios from "axios";
+import ApiRequest from "../../backendRequestApi";
 
 export default function Moderation() {
 
@@ -98,8 +100,27 @@ export default function Moderation() {
 
   const classes = useCardStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
-  const myCommunities = [
+  const [myCommunities,setMyCommunities] = useState()
+  const getallCommunities = async () => {
+    const LocalEmail = localStorage.getItem("email");
+    const email = { email: LocalEmail, sorted: false, type:10 };
+    axios.defaults.withCredentials = true;
+    await axios
+      .post(`${ApiRequest}/api/community/getAllOwnerCommunities`, email)
+      .then((response) => {
+        console.log('hey')
+        console.log(response);
+        if(response.status===201){
+          setMyCommunities(null)
+        }else if (response.status===200){
+          setMyCommunities(response.data)
+        }
+      })
+      .catch((error) => {
+        console.log("error occured while connecting to backend:", error);
+      });
+  };
+  const myCommunities2 = [
     {
       title: "Comm1",
       userrequest:"",
@@ -116,7 +137,9 @@ export default function Moderation() {
     },
   ];
 
-  
+  useEffect(()=>{
+    getallCommunities()
+  },[])
   return (
     <Paper className={classes.root} variant="outlined">
       <Container maxWidth="lg" className={classes.container}>
@@ -128,7 +151,7 @@ export default function Moderation() {
           </Grid>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              <CardContent>
+              {myCommunities?(<CardContent>
                 {myCommunities.map((value) => {
                   return (
                     <List className={classes.root}>
@@ -174,7 +197,7 @@ export default function Moderation() {
                                 <CardMedia
                                   className={classes.thumbnail}
                                   image={value.imageSubmission}
-                                  title={value.title}
+                                  title={value.communityName}
                                   component="a"
                                   href={value.imageSubmission}
                                   target="_noblank"
@@ -184,7 +207,7 @@ export default function Moderation() {
                           </div>
                         </ListItemAvatar>
                         <ListItemText
-                          primary={value.title}
+                          primary={value.communityName}
                           secondary={value.community}
                         />
                         <ListItemText
@@ -199,8 +222,8 @@ export default function Moderation() {
                           component={Link}
                         
                         />
-                        <Button component={ Link } to="/UserList"  variant="contained" size="small" >Details</Button>
-                        <Button component={ Link } to="/RequestList"  variant="contained" size="small" >UserRequests</Button>
+                        <Button component={ Link } to="/UserList"  variant="contained" size="small" onClick={()=>{localStorage.setItem('communityName', value.communityName)}}>Details</Button>
+                        <Button component={ Link } to="/RequestList"  variant="contained" size="small" onClick={()=>{localStorage.setItem('communityName', value.communityName)}}>UserRequests</Button>
                         
                       
                       </ListItem>
@@ -208,7 +231,7 @@ export default function Moderation() {
                     </List>
                   );
                 })}
-              </CardContent>
+              </CardContent>):(<h3>This user is not an admin in any community</h3>)}
             </Paper>
           </Grid>
         </Grid>
